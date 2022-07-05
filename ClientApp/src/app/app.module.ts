@@ -7,9 +7,8 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
-
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-
+import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 
 
@@ -19,6 +18,7 @@ import { LoginComponent } from './login/login.component';
     NavMenuComponent,
     HomeComponent,
     ForgotPasswordComponent,
+    SignupComponent,
   ],
   
   imports: [
