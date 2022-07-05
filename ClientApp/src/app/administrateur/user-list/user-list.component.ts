@@ -7,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserListComponent implements OnInit {
 
-  constructor() { }
+  listUser: Array<number>
+  constructor() {
+    this.listUser = new Array<number>();
+  }
 
   ngOnInit(): void {
   }
+  selectAll()
+  {
 
+  }
+  setUser(id: number, e: Event) {
+    if ((<HTMLInputElement> e.target).checked) {
+      this.listUser.push(id);
+    } else {
+      let index = this.listUser.indexOf(id);
+      this.listUser.splice(index, 1);
+    }
+  }
 }

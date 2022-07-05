@@ -19,17 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-<<<<<<< HEAD
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'admin', loadChildren: () => import('./administrateur/administrateur.module').then(m => m.AdministrateurModule) },
-    ]),
-=======
-    ]),
     AppRoutingModule
->>>>>>> 5c7289fb38f86cbeb35ea8315152fc688839163e
   ],
   providers: [],
   bootstrap: [AppComponent]
