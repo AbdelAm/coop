@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 <<<<<<< Updated upstream
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SignupComponent } from './signup/signup.component';
 =======
 import { LoginComponent } from './login/login.component';
 >>>>>>> Stashed changes
@@ -19,6 +20,7 @@ import { LoginComponent } from './login/login.component';
     NavMenuComponent,
     HomeComponent,
     ForgotPasswordComponent,
+    SignupComponent,
   ],
   
   imports: [

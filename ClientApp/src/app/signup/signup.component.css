@@ -1,0 +1,21 @@
+.title, .subtitle {
+  text-align: center;
+  font-size: 18px;
+}
+.subtitle {
+  color: #97999D;
+}
+.title {
+  font-weight: 500;
+}
+input {
+  background-color: #F3F6F9;
+}
+input::placeholder {
+  color: #97999D;
+  font-size: 13px;
+}
+img{
+    width:50%;
+    height:50%;
+}
