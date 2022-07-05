@@ -18,7 +18,7 @@ export class RequestListComponent implements OnInit {
   {
 
   }
-  setTransaction(id: number, e: Event) {
+  setRequest(id: number, e: Event) {
     if ((<HTMLInputElement> e.target).checked) {
       this.listRequest.push(id);
     } else {
