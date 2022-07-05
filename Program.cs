@@ -14,6 +14,7 @@ namespace coop2._0
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -21,6 +22,9 @@ namespace coop2._0
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+
+
                 });
+
     }
 }
