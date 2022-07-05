@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 
 
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'admin', loadChildren: () => import('./administrateur/administrateur.module').then(m => m.AdministrateurModule) },
   { path: 'forgotpassword', component: ForgotPasswordComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'signup', component:SignupComponent }
 
 
 
