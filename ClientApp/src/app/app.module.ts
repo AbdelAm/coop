@@ -11,6 +11,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LoginComponent } from './login/login.component';
 import { AdministrateurModule } from './administrateur/administrateur.module';
 import { SignupComponent } from './signup/signup.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { SignupComponent } from './signup/signup.component';
     LoginComponent,
     ForgotPasswordComponent,
     SignupComponent,
+    PageNotFoundComponent,
   ],
   
   imports: [

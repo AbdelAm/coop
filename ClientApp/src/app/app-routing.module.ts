@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'signup', component:SignupComponent },
   { path: 'forgotpassword', component: ForgotPasswordComponent},
   { path: 'admin', loadChildren: () => import('./administrateur/administrateur.module').then(m => m.AdministrateurModule) },
+  {path: '**', component: PageNotFoundComponent}
 ];
 
 @NgModule({
