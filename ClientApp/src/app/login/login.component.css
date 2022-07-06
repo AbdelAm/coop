@@ -19,12 +19,7 @@ body {
   background: white;
 }
 
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
+
 
 .screen {
   background: white;
@@ -157,30 +152,77 @@ body {
   margin-left: auto;
   color: #015790;
 }
-
 .social-login {
   position: absolute;
   height: 140px;
   width: 160px;
-  text-align: center;
+  /*text-align: center;*/
   bottom: 0px;
   right: 0px;
   color: #fff;
 }
 
 .social-icons {
+  padding-top: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  /*align-items: center;
+  justify-content: center;*/
+  
+}
+.social-icons a {
+  color: #ffffff;
 }
 
-.social-login__icon {
-  padding: 20px 10px;
-  color: #fff;
-  text-decoration: none;
-  text-shadow: 0px 0px 8px #7875B5;
-}
+  .social-login__icon {
+    padding: 20px 10px;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0px 0px 8px #7875B5;
+  }
 
   .social-login__icon:hover {
     transform: scale(1.5);
   }
+.topdiv{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+
+
+
+/*------------------- CSS blog */
+
+.section-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+
+/* read more css */
+.ReadMore {
+  color: #099446;
+}
+.ReadMore:hover {
+    color: #00568E;
+}
+@media (max-width: 600px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-between;
+  }
+  section-container {
+    display: flex;
+    flex-direction: column;
+    padding-top:20px;
+    align-content: center;
+    justify-content: space-between;
+  }
+
+}
