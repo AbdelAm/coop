@@ -10,6 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
 import { AdministrateurModule } from './administrateur/administrateur.module';
+import { SignupComponent } from './signup/signup.component';
+
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { AdministrateurModule } from './administrateur/administrateur.module';
     HomeComponent,
     LoginComponent,
     ForgotPasswordComponent,
+    SignupComponent,
   ],
   
   imports: [
