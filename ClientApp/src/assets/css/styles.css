@@ -106,6 +106,7 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
+  color: #648494;
 }
 
 h1, .h1 {
@@ -6543,6 +6544,7 @@ textarea.form-control-lg {
   right: 0;
   left: 0;
   z-index: 1030;
+  background-color: #04548c !important;
 }
 
 .fixed-bottom {
@@ -11481,32 +11483,35 @@ body {
 }
 
 .sb-sidenav-dark {
-  background-color: #212529;
-  color: rgba(255, 255, 255, 0.5);
+  background-color: #048c54;
+  /*color: rgba(255, 255, 255, 0.5);*/
 }
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
-  color: rgba(255, 255, 255, 0.25);
-}
-.sb-sidenav-dark .sb-sidenav-menu .nav-link {
   color: rgba(255, 255, 255, 0.5);
 }
+.sb-sidenav-dark .sb-sidenav-menu .nav-link {
+  color: #fff;
+}
 .sb-sidenav-dark .sb-sidenav-menu .nav-link .sb-nav-link-icon {
-  color: rgba(255, 255, 255, 0.25);
+  color: #fff;
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
-  color: rgba(255, 255, 255, 0.25);
+  color: #fff;
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link:hover {
-  color: #fff;
+  color: #0b9444;
+  background-color: #fff;
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link.active {
-  color: #fff;
+  color: #0b9444;
+  background-color: #fff;
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
   color: #fff;
 }
 .sb-sidenav-dark .sb-sidenav-footer {
-  background-color: #343a40;
+  background-color: #0b9444;
+  color: #fff;
 }
 
 .sb-sidenav-light {
@@ -11616,6 +11621,7 @@ body {
 /* TABLE */
 .dataTable-table {
   border-collapse: collapse;
+  color: #648494;
 }
 
 .dataTable-table > tbody > tr > td,
