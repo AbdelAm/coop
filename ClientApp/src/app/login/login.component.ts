@@ -21,10 +21,10 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.loginObj.userName == 'admin' && this.loginObj.password == '1234') {
-      this.router.navigateByUrl('')
+        this.router.navigateByUrl('home');
     }
     else {
-      alert('wrong information')
+      alert('wrong information');
     }
   }
 
