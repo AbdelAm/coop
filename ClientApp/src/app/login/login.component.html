@@ -1,30 +1,64 @@
 <div class="topdiv">
-  <div class="container">
-    <img src="assets/logoCoophalal.png" class="logo">
-    <div class="screen">
-      <div class="screen__content">
-        <form class="login">
-          <div class="login__field">
-            <i class="login__icon fas fa-user"></i>
-            <input type="text" name="user" class="login__input" placeholder="nombre de usuario">
-          </div>
-          <div class="login__field">
-            <i class="login__icon fas fa-lock"></i>
-            <input type="password" name="pass" class="login__input" placeholder="clave">
-          </div>
-          <button class="button login__submit" (click)="login()">
-            <span class="button__text">Iniciar sesión</span>
-            <i class="button__icon fas fa-chevron-right"></i>
-          </button>
-        </form>
-        
-      </div>
-      <div class="screen__background">
-        <span class="screen__background__shape screen__background__shape4"></span>
-        <span class="screen__background__shape screen__background__shape3"></span>
-        <span class="screen__background__shape screen__background__shape2"></span>
-        <span class="screen__background__shape screen__background__shape1"></span>
+  <div class="logo-container d-flex justify-content-center "> <!-- CSS BOOTSTRAP FOR LOGO -->
+    <img src="../../assets/logoCoophalal.jpg" class="logo">
+  </div>
+
+  <div class="section-container d-flex flex-wrap">
+    <!-- CSS BOOTSTRAP FOR SECTION -->
+
+
+
+    <div class=" d-flex flex-grow-1 justify-content-center align-items-center flex-shrink-1 ">
+      <div class="card d-flex justify-content-center align-items-center" style="width:400px">
+        <img class="card-img-top" src="../../assets/Malaga-1-900x500.jpg" alt="project image">
+        <div class="card-body">
+          <h4 class="card-title text-black">Financiación vivienda en Málaga</h4>
+          <a href="https://www.coophalal.eu/financiacion-vivienda-en-malaga/" class="ReadMore">Leer más...>></a>
+        </div>
       </div>
     </div>
+    <div class="clear">
+      <p></p>
+    </div>
+    <div class=" d-flex flex-grow-1 justify-content-around align-items-center ">
+      <!--      here      -->
+      <div class="screen">
+        <div class="screen__content">
+          <form class="login">
+            <div class="login__field">
+              <i class="login__icon fas fa-user"></i>
+              <input type="text" name="user" class="login__input" placeholder="nombre de usuario">
+            </div>
+            <div class="login__field">
+              <i class="login__icon fas fa-lock"></i>
+              <input type="password" name="pass" class="login__input" placeholder="clave">
+            </div>
+            <button class="button login__submit" (click)="login()">
+              <span class="button__text">Iniciar sesión</span>
+              <i class="button__icon fas fa-chevron-right"></i>
+            </button>
+            <a href="#">Inscribirse</a>
+          </form>
+          <div class="social-login">
+            <h3></h3>
+            <div class="social-icons">
+              <a href="#">¿Contraseña olvidada?</a>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="screen__background">
+          <span class="screen__background__shape screen__background__shape4"></span>
+          <span class="screen__background__shape screen__background__shape3"></span>
+          <span class="screen__background__shape screen__background__shape2"></span>
+          <span class="screen__background__shape screen__background__shape1"></span>
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
+  
 </div>

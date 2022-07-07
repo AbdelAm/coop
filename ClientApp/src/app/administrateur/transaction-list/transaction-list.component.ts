@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TransactionPopupComponent } from '../../transaction-popup/transaction-popup.component';
 
 @Component({
   selector: 'app-transaction-list',
@@ -6,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./transaction-list.component.css']
 })
 export class TransactionListComponent implements OnInit {
-  listTransaction: Array<number>
-  constructor() {
+  listTransaction: Array<number>;
+  constructor(public dialog:MatDialog) {
     this.listTransaction = new Array<number>();
+  }
+
+  addTransaction() : void {
+    this.dialog.open(TransactionPopupComponent, {
+      width: '50%',
+      height:'50%',
+      data: "right click"
+    })
   }
 
   ngOnInit(): void {

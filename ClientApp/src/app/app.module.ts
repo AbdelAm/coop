@@ -13,6 +13,11 @@ import { AdministrateurModule } from './administrateur/administrateur.module';
 import { SignupComponent } from './signup/signup.component';
 import { GlobalComponent } from './global/global.component';
 
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TransactionPopupComponent } from './transaction-popup/transaction-popup.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   declarations: [
@@ -23,6 +28,8 @@ import { GlobalComponent } from './global/global.component';
     ForgotPasswordComponent,
     SignupComponent,
     GlobalComponent,
+    PageNotFoundComponent,
+    TransactionPopupComponent,
   ],
   
   imports: [
@@ -30,7 +37,10 @@ import { GlobalComponent } from './global/global.component';
     HttpClientModule,
     FormsModule,
     AdministrateurModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatStepperModule
   ],
   providers: [],
   bootstrap: [AppComponent]

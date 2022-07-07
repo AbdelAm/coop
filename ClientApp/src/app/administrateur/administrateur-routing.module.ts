@@ -6,8 +6,8 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
-  {path: '', component: AdministrateurComponent, children: [
-    {path: '', redirectTo: 'users', pathMatch: 'full'},
+  {path: 'admin', component: AdministrateurComponent, 
+  children: [
     {path: 'users', component: UserListComponent},
     {path: 'transactions', component: TransactionListComponent},
     {path: 'requests', component: RequestListComponent} 
