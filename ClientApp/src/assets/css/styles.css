@@ -6544,7 +6544,7 @@ textarea.form-control-lg {
   right: 0;
   left: 0;
   z-index: 1030;
-  background-color: #04548c !important;
+  background-color: #002f50 !important;
 }
 
 .fixed-bottom {
@@ -11388,14 +11388,15 @@ body {
   z-index: 1038;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
-  padding-top: 56px;
+  padding-top: 95px;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav .sb-sidenav-menu {
   overflow-y: auto;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
   padding-left: 225px;
-  top: 56px;
+  top: 0;
+  padding-top: 80px;
 }
 
 #layoutError {
@@ -11422,7 +11423,7 @@ body {
 
 .sb-topnav {
   padding-left: 0;
-  height: 56px;
+  /*height: 56px;*/
   z-index: 1039;
 }
 .sb-topnav .navbar-brand {

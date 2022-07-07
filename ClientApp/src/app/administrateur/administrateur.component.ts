@@ -11,15 +11,5 @@ export class AdministrateurComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  setActiveClass(e: Event)
-  {
-    let current = document.querySelector(".active");
-    current.classList.remove("active");
-    (<HTMLInputElement> e.target).classList.add("active");
-  }
-  toggleSideBar()
-  {
-    document.body.classList.toggle('sb-sidenav-toggled');
-  }
 
 }
