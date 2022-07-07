@@ -15,5 +15,8 @@ export class HeaderComponent implements OnInit {
   {
     document.body.classList.toggle('sb-sidenav-toggled');
   }
-
+  toggleMenu()
+  {
+    document.querySelector(".dropdown-menu").classList.toggle("show");
+  }
 }
