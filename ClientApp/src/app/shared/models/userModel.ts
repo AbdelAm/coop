@@ -9,6 +9,7 @@ export class UserModel {
     password!: string;
     accounts!: Array<AccountModel>;
     dateCreated!: Date;
+    isAdmin!: boolean;
     isConfirmed: boolean = false;
     isValid: boolean = false;
 }
