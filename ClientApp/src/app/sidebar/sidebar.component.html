@@ -15,6 +15,12 @@
                         <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                     </nav>
                 </div>-->
+                <a class="nav-link collapsed" routerLink="global" (click)="setActiveClass($event)">
+                    <div class="sb-nav-link-icon"><i class="fa fa-eur" aria-hidden="true"></i>
+                    </div>
+                    global
+                    <!--<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
+                </a>
                 <a class="nav-link collapsed" routerLink="transactions" (click)="setActiveClass($event)">
                     <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                     Actas
