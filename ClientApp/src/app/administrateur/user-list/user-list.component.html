@@ -39,7 +39,7 @@
                             <table id="datatablesSimple" class="dataTable-table">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" (change)="selectAll()"></th>
+                                        <th><input type="checkbox" (change)="selectAll($event)"></th>
                                         <th data-sortable="" style="width: 19.6337%;"><a href="#" class="dataTable-sorter">Name</a></th>
                                         <th data-sortable="" style="width: 28.9556%;"><a href="#" class="dataTable-sorter">Position</a></th>
                                         <th data-sortable="" style="width: 15.5915%;"><a href="#" class="dataTable-sorter">Office</a></th>
@@ -50,7 +50,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Tiger Nixon</td>
                                         <td>System Architect</td>
                                         <td>Edinburgh</td>
@@ -59,7 +59,7 @@
                                         <td>$320,800</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Garrett Winters</td>
                                         <td>Accountant</td>
                                         <td>Tokyo</td>
@@ -68,7 +68,7 @@
                                         <td>$170,750</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Ashton Cox</td>
                                         <td>Junior Technical Author</td>
                                         <td>San Francisco</td>
@@ -77,7 +77,7 @@
                                         <td>$86,000</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Cedric Kelly</td>
                                         <td>Senior Javascript Developer</td>
                                         <td>Edinburgh</td>
@@ -86,7 +86,7 @@
                                         <td>$433,060</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Airi Satou</td>
                                         <td>Accountant</td>
                                         <td>Tokyo</td>
@@ -95,7 +95,7 @@
                                         <td>$162,700</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Brielle Williamson</td>
                                         <td>Integration Specialist</td>
                                         <td>New York</td>
@@ -104,7 +104,7 @@
                                         <td>$372,000</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Herrod Chandler</td>
                                         <td>Sales Assistant</td>
                                         <td>San Francisco</td>
@@ -113,7 +113,7 @@
                                         <td>$137,500</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Rhona Davidson</td>
                                         <td>Integration Specialist</td>
                                         <td>Tokyo</td>
@@ -122,7 +122,7 @@
                                         <td>$327,900</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Colleen Hurst</td>
                                         <td>Javascript Developer</td>
                                         <td>San Francisco</td>
@@ -131,7 +131,7 @@
                                         <td>$205,500</td>
                                     </tr>
                                     <tr>
-                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox"/></td>
+                                        <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1"/></td>
                                         <td>Sonya Frost</td>
                                         <td>Software Engineer</td>
                                         <td>Edinburgh</td>

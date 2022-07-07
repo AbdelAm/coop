@@ -15,12 +15,20 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     window.scrollTo(0, 0);
   }
-  selectAll()
+  selectAll(e: Event)
   {
+    let items = document.querySelectorAll('.items');
+    for(let i = 0; i < items.length; i++)
+    {
+      (<HTMLInputElement> items[i]).checked = (<HTMLInputElement> e.target).checked;
+      let id = parseInt((<HTMLInputElement> items[i]).value);
+      this.setUser(id, (<HTMLInputElement> items[i]).checked);
+    }
+    console.log(this.listUser);
 
   }
-  setUser(id: number, e: Event) {
-    if ((<HTMLInputElement> e.target).checked) {
+  setUser(id: number, isChecked: boolean) {
+    if (isChecked) {
       this.listUser.push(id);
     } else {
       let index = this.listUser.indexOf(id);
