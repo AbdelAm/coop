@@ -22,17 +22,21 @@ export class UserListComponent implements OnInit {
     {
       (<HTMLInputElement> items[i]).checked = (<HTMLInputElement> e.target).checked;
       let id = parseInt((<HTMLInputElement> items[i]).value);
-      this.setUser(id, (<HTMLInputElement> items[i]).checked);
+      this.toggleItem(id, (<HTMLInputElement> e.target).checked);
     }
-    console.log(this.listUser);
 
   }
-  setUser(id: number, isChecked: boolean) {
+  setUser(id: number, e:Event) {
+    this.toggleItem(id, (<HTMLInputElement> e.target).checked);
+  }
+  toggleItem(id: number, isChecked: boolean)
+  {
     if (isChecked) {
       this.listUser.push(id);
     } else {
       let index = this.listUser.indexOf(id);
       this.listUser.splice(index, 1);
     }
+    console.log(this.listUser);
   }
 }
