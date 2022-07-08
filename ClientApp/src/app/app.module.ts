@@ -20,6 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     GlobalComponent,
     PageNotFoundComponent,
     TransactionPopupComponent,
+    ProfileComponent,
   ],
   
   imports: [
