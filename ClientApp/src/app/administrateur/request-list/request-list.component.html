@@ -6,11 +6,7 @@
         <li class="breadcrumb-item"><a href="../admin/global">Global</a></li>
         <li class="breadcrumb-item active">Peticiones</li>
       </ol>
-      <div class="card-body">
-        DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-      </div>
-      <div class="card mb-4" style=" height: 600px;  overflow: scroll;">
-
+      <div class="card mb-4">
         <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
           <div class="card mb-4">
             <div class="card-header">
@@ -20,19 +16,18 @@
             <div class="card-body">
               <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
                 <div class="dataTable-top">
-                  <!--<div class="dataTable-dropdown">
-                  <label>
-                      <select class="dataTable-selector">
-                          <option value="5">5</option>
-                          <option value="10" selected="">10</option>
-                          <option value="15">15</option>
-                          <option value="20">20</option>
-                          <option value="25">25</option>
-                      </select>
-                      entradas por pagina
-                  </label>
-              </div>-->
-                  <div class="dataTable-search">
+                    <div class="dataTable-dropdown pt-2 d-none">
+                        <button class="border-0 bg-transparent align-middle">
+                          <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                        </button>
+                        <button class="border-0 bg-transparent align-middle">
+                          <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                        </button>
+                        <button class="border-0 bg-transparent align-middle">
+                          <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                        </button>
+                    </div>
+                    <div class="dataTable-search">
                     <input class="dataTable-input" placeholder="Búsqueda..." type="text">
                     <button style="margin-bottom:30px" type="button" class="btn btn-success" (click)="addRequest()">Add request </button>
                   </div>
@@ -41,7 +36,7 @@
                   <table id="datatablesSimple" class="dataTable-table">
                     <thead>
                       <tr>
-                        <th><input type="checkbox"></th>
+                        <th><input type="checkbox" (change)="selectAll($event)"></th>
                         <th data-sortable="" style="width: 10%;">Usuario</th>
                         <th data-sortable="" style="width: 10%;">Email</th>
                         <th data-sortable="" style="width: 10%;">Número social</th>
@@ -52,7 +47,7 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td><input class="items" type="checkbox" /></td>
+                        <td><input (change)="setRequest(1, $event)" class="items" type="checkbox" value="1" /></td>
                         <td>alex</td>
                         <td>alex@hotmail.com</td>
                         <td>1</td>
@@ -65,7 +60,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td><input class="items" type="checkbox" /></td>
+                        <td><input (change)="setRequest(1, $event)" class="items" type="checkbox" value="1" /></td>
                         <td>lora</td>
                         <td>lora@hotmail.com</td>
                         <td>2</td>

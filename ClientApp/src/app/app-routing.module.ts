@@ -19,7 +19,6 @@ const routes: Routes = [
   { path: 'admin', loadChildren: () => import('./administrateur/administrateur.module').then(m => m.AdministrateurModule) },
   { path: '**', component: PageNotFoundComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'global', component: GlobalComponent }
 ];
 
 @NgModule({
