@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
+  selectedButton: String='user';
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  onSelected(s) : void {
+    this.selectedButton = s;
+  }
 }

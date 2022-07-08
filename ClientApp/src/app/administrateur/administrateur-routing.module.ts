@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GlobalComponent } from '../global/global.component';
+import { ProfileComponent } from '../profile/profile.component';
 import { AdministrateurComponent } from './administrateur.component';
 import { RequestListComponent } from './request-list/request-list.component';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
@@ -12,7 +13,8 @@ const routes: Routes = [
     {path: 'users', component: UserListComponent},
     {path: 'transactions', component: TransactionListComponent},
     {path: 'requests', component: RequestListComponent},
-    { path: 'global', component: GlobalComponent }
+    { path: 'global', component: GlobalComponent },
+    {path: 'profil', component: ProfileComponent}
 
   ]}
 ];
