@@ -21,6 +21,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProfileComponent } from './profile/profile.component';
+import { RequestPopupComponent } from './request-popup/request-popup.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ProfileComponent } from './profile/profile.component';
     PageNotFoundComponent,
     TransactionPopupComponent,
     ProfileComponent,
+    RequestPopupComponent,
   ],
   
   imports: [

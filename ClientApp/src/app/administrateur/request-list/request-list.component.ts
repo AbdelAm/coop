@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { RequestPopupComponent } from '../../request-popup/request-popup.component';
 
 @Component({
   selector: 'app-request-list',
@@ -6,9 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./request-list.component.css']
 })
 export class RequestListComponent implements OnInit {
-
   listRequest: Array<number>
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.listRequest = new Array<number>();
   }
 
@@ -44,5 +45,12 @@ export class RequestListComponent implements OnInit {
     } else {
       elt.classList.add("d-none");
     }
+  }
+  addRequest(): void {
+    this.dialog.open(RequestPopupComponent, {
+      width: '60%',
+      height: '60%',
+      data: "right click"
+    })
   }
 }
