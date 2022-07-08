@@ -15,8 +15,7 @@ export class TransactionListComponent implements OnInit {
 
   addTransaction() : void {
     this.dialog.open(TransactionPopupComponent, {
-      width: '50%',
-      height:'50%',
+      width: '60%',
       data: "right click"
     })
   }
@@ -35,17 +34,23 @@ export class TransactionListComponent implements OnInit {
     }
 
   }
-  setRequest(id: number, e:Event) {
+  setTransaction(id: number, e:Event) {
     this.toggleItem(id, (<HTMLInputElement> e.target).checked);
   }
   toggleItem(id: number, isChecked: boolean)
   {
+    let elt = document.querySelector('.dataTable-dropdown');
     if (isChecked) {
       this.listTransaction.push(id);
     } else {
       let index = this.listTransaction.indexOf(id);
       this.listTransaction.splice(index, 1);
     }
-    console.log(this.listTransaction);
+    if(this.listTransaction.length != 0)
+    {
+      elt.classList.remove("d-none");
+    } else {
+      elt.classList.add("d-none");
+    }
   }
 }

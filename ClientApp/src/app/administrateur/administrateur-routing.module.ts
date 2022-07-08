@@ -11,8 +11,7 @@ const routes: Routes = [
   children: [
     {path: 'users', component: UserListComponent},
     {path: 'transactions', component: TransactionListComponent},
-    {path: 'requests', component: RequestListComponent},
-    {path: 'global', component: GlobalComponent},
+    {path: 'requests', component: RequestListComponent}
 
   ]}
 ];

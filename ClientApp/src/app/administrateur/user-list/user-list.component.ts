@@ -31,12 +31,18 @@ export class UserListComponent implements OnInit {
   }
   toggleItem(id: number, isChecked: boolean)
   {
+    let elt = document.querySelector('.dataTable-dropdown');
     if (isChecked) {
       this.listUser.push(id);
     } else {
       let index = this.listUser.indexOf(id);
       this.listUser.splice(index, 1);
     }
-    console.log(this.listUser);
+    if(this.listUser.length != 0)
+    {
+      elt.classList.remove("d-none");
+    } else {
+      elt.classList.add("d-none");
+    }
   }
 }

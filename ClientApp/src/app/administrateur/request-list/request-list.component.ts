@@ -31,12 +31,18 @@ export class RequestListComponent implements OnInit {
   }
   toggleItem(id: number, isChecked: boolean)
   {
+    let elt = document.querySelector(".dataTable-dropdown");
     if (isChecked) {
       this.listRequest.push(id);
     } else {
       let index = this.listRequest.indexOf(id);
       this.listRequest.splice(index, 1);
     }
-    console.log(this.listRequest);
+    if(this.listRequest.length != 0)
+    {
+      elt.classList.remove("d-none");
+    } else {
+      elt.classList.add("d-none");
+    }
   }
 }
