@@ -17,15 +17,15 @@ export class UserServiceService {
   }
 
   setUser(): Observable<UserModel> {
-    return this.http.post<UserModel>(this.baseUrl + '/users/add', this.user);
+    return this.http.post<UserModel>(this.baseUrl + '/admin/users/add', this.user);
   }
-  setUsers(): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(this.baseUrl + '/users/list');
+  getUsers(page: number = 1): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(this.baseUrl + `/admin/users/list/${page}`);
   }
   validateUsers(userList: Array<number>): Observable<UserModel[]> {
-    return this.http.post<UserModel[]>(this.baseUrl + '/users/validate', userList);
+    return this.http.post<UserModel[]>(this.baseUrl + '/admin/users/validate', userList);
   }
   deleteUsers(userList: Array<number>): Observable<UserModel[]> {
-    return this.http.post<UserModel[]>(this.baseUrl + '/users/delete', userList);
+    return this.http.post<UserModel[]>(this.baseUrl + '/admin/users/delete', userList);
   }
 }

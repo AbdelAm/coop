@@ -1,5 +1,5 @@
 <div id="layoutSidenav_content">
-  <main >
+  <main style="width: calc(100vw - 245px);">
     <div class="container-fluid px-4">
       <h1 class="mt-4">usuarios</h1>
       <ol class="breadcrumb mb-4">
@@ -8,7 +8,7 @@
       </ol>
       
       
-      <div class="card mb-4" style=" height: 600px; width:70%; overflow: scroll;">
+      <div class="card mb-4" style=" height: 600px">
         <div class="card-body">
           <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
             <div class="card mb-4">
@@ -37,16 +37,16 @@
                           <table id="datatablesSimple" class="dataTable-table">
                             <thead>
                               <tr>
-                                <th><input type="checkbox"></th>
-                                <th data-sortable="" style="width: 10%;">Usernam</th>
-                                <th data-sortable="" style="width: 10%;">email</th>
-                                <th data-sortable="" style="width: 10%;">numero social</th>
-                                <th data-sortable="" style="width: 30%;">acción</th>
+                                <th><input (change)="selectAll($event)" type="checkbox"></th>
+                                <th data-sortable="">Usernam</th>
+                                <th data-sortable="">email</th>
+                                <th data-sortable="">numero social</th>
+                                <th data-sortable="">acción</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
-                                <td><input (change)="setUser(1, $event)" class="items" type="checkbox" /></td>
+                                <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1" /></td>
                                 <td>alex</td>
                                 <td>alex@hotmail.com</td>
                                 <td>1</td>
@@ -57,10 +57,43 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td><input (change)="setUser(1, $event)" class="items" type="checkbox" /></td>
+                                <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1" /></td>
                                 <td>lora</td>
                                 <td>lora@hotmail.com</td>
                                 <td>2</td>
+                                <td class="icons d-flex justify-content-evenly">
+                                  <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                                  <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                                  <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1" /></td>
+                                <td>alex</td>
+                                <td>alex@hotmail.com</td>
+                                <td>1</td>
+                                <td class="icons d-flex justify-content-evenly">
+                                  <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                                  <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                                  <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1" /></td>
+                                <td>lora</td>
+                                <td>lora@hotmail.com</td>
+                                <td>2</td>
+                                <td class="icons d-flex justify-content-evenly">
+                                  <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                                  <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                                  <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td><input (change)="setUser(1, $event)" class="items" type="checkbox" value="1" /></td>
+                                <td>alex</td>
+                                <td>alex@hotmail.com</td>
+                                <td>1</td>
                                 <td class="icons d-flex justify-content-evenly">
                                   <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
                                   <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>

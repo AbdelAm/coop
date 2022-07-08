@@ -17,17 +17,17 @@ export class RequestServiceService {
   setRequest(): Observable<RequestModel> {
     return this.http.post<RequestModel>(this.baseUrl + '/requests/add', this.request);
   }
-  getRequests(): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(this.baseUrl + '/requests/list');
+  getRequests(page: number = 1): Observable<RequestModel[]> {
+    return this.http.get<RequestModel[]>(this.baseUrl + `/admin/requests/list/${page}`);
   }
-  getRequestsByUser(userId: string): Observable<RequestModel[]>
+  getRequestsByUser(userId: string, page: number = 1): Observable<RequestModel[]>
   {
-    return this.http.get<RequestModel[]>(this.baseUrl + `/requests/list/${userId}`);
+    return this.http.get<RequestModel[]>(this.baseUrl + `/requests/list/${userId}/${page}`);
   }
   validateRequests(requestList: Array<number>): Observable<RequestModel[]> {
-    return this.http.post<RequestModel[]>(this.baseUrl + '/requests/validate', requestList);
+    return this.http.post<RequestModel[]>(this.baseUrl + '/admin/requests/validate', requestList);
   }
   deleteRequests(requestList: Array<number>): Observable<RequestModel[]> {
-    return this.http.post<RequestModel[]>(this.baseUrl + '/requests/delete', requestList);
+    return this.http.post<RequestModel[]>(this.baseUrl + '/admin/requests/delete', requestList);
   }
 }

@@ -5,6 +5,7 @@ export class UserModel {
     id!: string;
     nomComplet!: string;
     socialNumber!: number;
+    cifNumber!: number;
     email!: string;
     password!: string;
     accounts!: Array<AccountModel>;

@@ -19,17 +19,17 @@ export class TransactionServiceService {
   setTransaction(): Observable<TransactionModel> {
     return this.http.post<TransactionModel>(this.baseUrl + '/transactions/add', this.transaction);
   }
-  getTransactions(): Observable<TransactionModel[]> {
-    return this.http.get<TransactionModel[]>(this.baseUrl + '/transactions/list');
+  getTransactions(page: number = 1): Observable<TransactionModel[]> {
+    return this.http.get<TransactionModel[]>(this.baseUrl + `/admin/transactions/list/${page}`);
   }
-  getTransactionsByUser(userId: string): Observable<TransactionModel[]>
+  getTransactionsByUser(userId: string, page: number = 1): Observable<TransactionModel[]>
   {
-    return this.http.get<TransactionModel[]>(this.baseUrl + `/transactions/list/${userId}`);
+    return this.http.get<TransactionModel[]>(this.baseUrl + `/transactions/list/${userId}/${page}`);
   }
   validateTransactions(userList: Array<number>): Observable<TransactionModel[]> {
-    return this.http.post<TransactionModel[]>(this.baseUrl + '/transactions/validate', userList);
+    return this.http.post<TransactionModel[]>(this.baseUrl + '/admin/transactions/validate', userList);
   }
   deleteTransactions(userList: Array<number>): Observable<TransactionModel[]> {
-    return this.http.post<TransactionModel[]>(this.baseUrl + '/transactions/delete', userList);
+    return this.http.post<TransactionModel[]>(this.baseUrl + '/admin/transactions/delete', userList);
   }
 }
