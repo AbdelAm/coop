@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 
 @Component({
   selector: 'app-user-list',
@@ -38,5 +38,12 @@ export class UserListComponent implements OnInit {
       this.listUser.splice(index, 1);
     }
     console.log(this.listUser);
+  }
+  @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
+
+  uncheckAll() {
+    this.checkboxes.forEach((element) => {
+      element.nativeElement.checked = false;
+    });
   }
 }
