@@ -1,5 +1,5 @@
-import { TransactionModel } from "./transactionModel";
-import { UserModel } from "./userModel";
+import { TransactionModel } from "./transaction-model";
+import { UserModel } from "./user-model";
 
 
 export class AccountModel {

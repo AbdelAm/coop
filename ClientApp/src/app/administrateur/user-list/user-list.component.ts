@@ -1,4 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TransactionPopupComponent } from 'src/app/transaction-popup/transaction-popup.component';
 
 @Component({
   selector: 'app-user-list',
@@ -8,7 +10,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular
 export class UserListComponent implements OnInit {
 
   listUser: Array<number>
-  constructor() {
+  constructor(public dialog:MatDialog) {
     this.listUser = new Array<number>();
   }
 
@@ -25,6 +27,12 @@ export class UserListComponent implements OnInit {
       this.toggleItem(id, (<HTMLInputElement> e.target).checked);
     }
 
+  }
+  addUser() : void {
+    this.dialog.open(TransactionPopupComponent, {
+      width: '60%',
+      data: "right click"
+    })
   }
   setUser(id: number, e:Event) {
     this.toggleItem(id, (<HTMLInputElement> e.target).checked);

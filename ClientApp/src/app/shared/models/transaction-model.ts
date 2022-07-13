@@ -1,4 +1,4 @@
-import { AccountModel } from "./accountModel";
+import { AccountModel } from "./account-model";
 
 export class TransactionModel {
     id!: number;

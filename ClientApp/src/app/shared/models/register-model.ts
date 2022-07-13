@@ -1,14 +1,10 @@
-import { AccountModel } from "./accountModel";
 
-
-export class UserModel {
-    id!: string;
-    nomComplet!: string;
+export class RegisterModel {
+    name!: string;
     socialNumber!: number;
     cifNumber!: number;
     email!: string;
     password!: string;
-    accounts!: Array<AccountModel>;
     dateCreated!: Date;
     isAdmin!: boolean;
     isConfirmed: boolean = false;
