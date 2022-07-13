@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace coop2._0.Entity
 {
@@ -10,6 +12,8 @@ namespace coop2._0.Entity
         public string CifNumber { get; set; }
         public DateTime DateCreated { get; set; }
         public bool IsAdmin { get; set; }
-        public bool isValid { get; set; }
+        [Column(TypeName = "nvarchar(50)")]
+        [DefaultValue(Status.Progress)]
+        public Status Status { get; set; }
     }
 }
