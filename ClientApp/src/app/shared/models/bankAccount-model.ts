@@ -2,7 +2,7 @@ import { TransactionModel } from "./transaction-model";
 import { UserModel } from "./user-model";
 
 
-export class AccountModel {
+export class BankAccountModel {
     id!: number;
     accountNumber!: string;
     balance!: number;

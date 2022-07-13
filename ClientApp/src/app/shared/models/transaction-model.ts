@@ -1,4 +1,4 @@
-import { AccountModel } from "./account-model";
+import { BankAccountModel } from "./bankAccount-model";
 
 export class TransactionModel {
     id!: number;
@@ -6,7 +6,7 @@ export class TransactionModel {
     dateCreated!: Date;
     senderAccountId!: number;
     receiverAccountId: number;
-    senderAccount!: AccountModel;
-    receiverAccount!: AccountModel;
+    senderAccount!: BankAccountModel;
+    receiverAccount!: BankAccountModel;
     isValid: boolean = false;
 }

@@ -19,8 +19,18 @@ namespace coop2._0.Entity
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
+            builder.Entity<Transaction>()
+             .HasKey(ds => new { ds.Id, ds.SenderBankAccountId, ds.ReceiverBankAccountId });
+            builder.Entity<Transaction>()
+                .HasOne(d => d.SenderBankAccount)
+                .WithMany(ds => ds.Transactions)
+                .HasForeignKey(ds => ds.SenderBankAccountId);
+            builder.Entity<Transaction>()
+                .HasOne(s => s.ReceiverBankAccount)
+                .WithMany(ds => ds.Transactions)
+                .HasForeignKey(ds => ds.ReceiverBankAccountId);
             this.SeedRoles(builder);
+            base.OnModelCreating(builder);
 
         }
         private void SeedRoles(ModelBuilder builder)
