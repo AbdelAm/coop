@@ -10,5 +10,4 @@ export class AccountModel {
     ownerId!: string;
     owner!: UserModel;
     transactions!: Array<TransactionModel>;
-    isValid: boolean = false;
 }

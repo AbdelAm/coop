@@ -2,5 +2,8 @@
 {
     public class Request
     {
+        int id;
+        string type;
+        string message;
     }
 }

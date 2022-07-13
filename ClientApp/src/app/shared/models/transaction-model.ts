@@ -3,10 +3,10 @@ import { AccountModel } from "./account-model";
 export class TransactionModel {
     id!: number;
     amount!: number;
-    dateCreated!: Date;
+    dateTransaction!: Date;
     senderAccountId!: number;
     receiverAccountId: number;
     senderAccount!: AccountModel;
-    receiverAccount!: AccountModel;
-    isValid: boolean = false;
+    receiverAccount!: AccountModel; 
+    status: string;
 }
