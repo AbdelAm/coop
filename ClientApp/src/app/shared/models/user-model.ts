@@ -1,4 +1,4 @@
-import { AccountModel } from "./account-model";
+import { BankAccountModel } from "./bankAccount-model";
 
 
 export class UserModel {
@@ -8,7 +8,7 @@ export class UserModel {
     cifNumber!: number;
     email!: string;
     password!: string;
-    accounts!: Array<AccountModel>;
+    accounts!: Array<BankAccountModel>;
     dateCreated!: Date;
     isAdmin!: boolean;
     isConfirmed: boolean = false;
