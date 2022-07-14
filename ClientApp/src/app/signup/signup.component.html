@@ -7,28 +7,28 @@
         <b>Registro de usuario</b>
         <form class="login">
           <div class="login__field">
-            <input class="login__input" placeholder="Nombre / Apellido">
+            <input class="login__input" placeholder="Nombre / Apellido" formControlName="name">
           </div>
           <div class="login__field">
-            <input class="login__input" placeholder="DNI / NIF / CIF">
+            <input class="login__input" placeholder="DNI / NIF / CIF" formControlName="cifNumber">
           </div>
           <div class="login__field">
-            <input class="login__input" placeholder="Teléfono">
+            <input class="login__input" placeholder="Teléfono" >
           </div>
           <div class="login__field">
-            <input class="login__input" placeholder="Numero de Socio / a">
+            <input class="login__input" placeholder="Numero de Socio / a" formControlName="socialNumber">
           </div>
           <div class="login__field">
-            <input class="login__input" placeholder="Email">
+            <input class="login__input" placeholder="Email" formControlName="email">
           </div>
           <div class="login__field">
-            <input class="login__input" placeholder="Cuenta Externa">
+            <input class="login__input" placeholder="Cuenta Externa" >
           </div>
           <div class="login__field">
-            <input type="password" name="pass" class="login__input" placeholder="Contrasena">
+            <input type="password" name="pass" class="login__input" placeholder="Contrasena" required>
           </div>
           <div class="login__field">
-            <input type="password" name="pass" class="login__input" placeholder="Confirmar Contrasena">
+            <input type="password" name="pass" class="login__input" placeholder="Confirmar Contrasena" formControlName="password" required>
           </div>
           <button class="button login__submit">
             <span class="button__text">Enviar</span>
