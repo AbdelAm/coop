@@ -23,23 +23,23 @@ namespace coop2._0.Entity
              .HasKey(ds => new { ds.Id, ds.SenderBankAccountId, ds.ReceiverBankAccountId });
             builder.Entity<Transaction>()
                 .HasOne(d => d.SenderBankAccount)
-                .WithMany(ds => ds.Transactions)
+                .WithMany(ds => ds.TransactionsSended)
                 .HasForeignKey(ds => ds.SenderBankAccountId);
             builder.Entity<Transaction>()
                 .HasOne(s => s.ReceiverBankAccount)
-                .WithMany(ds => ds.Transactions)
+                .WithMany(ds => ds.TransactionsReceived)
                 .HasForeignKey(ds => ds.ReceiverBankAccountId);
-            this.SeedRoles(builder);
+            //this.SeedRoles(builder);
             base.OnModelCreating(builder);
 
         }
-        private void SeedRoles(ModelBuilder builder)
+        /*private void SeedRoles(ModelBuilder builder)
         {
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = "ADMIN", ConcurrencyStamp = Guid.NewGuid().ToString(), NormalizedName = "ADMIN" },
                 new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = "USER", ConcurrencyStamp = Guid.NewGuid().ToString(), NormalizedName = "USER" }
             );
-        }
+        }*/
 
     }
 }

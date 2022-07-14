@@ -12,5 +12,5 @@ export class UserModel {
     dateCreated!: Date;
     isAdmin!: boolean;
     isConfirmed: boolean = false;
-    isValid: boolean = false;
+    status!: string;
 }

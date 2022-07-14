@@ -48,7 +48,7 @@ namespace coop2._0.Controllers
                 DateCreated = model.DateCreated,
                 IsAdmin = model.IsAdmin,
                 EmailConfirmed = model.IsConfirmed,
-                isValid = model.isValid,
+                Status = model.Status,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
             var result = await _userManager.CreateAsync(user, model.Password);

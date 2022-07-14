@@ -8,5 +8,5 @@ export class RegisterModel {
     dateCreated!: Date;
     isAdmin!: boolean;
     isConfirmed: boolean = false;
-    isValid: boolean = false;
+    status!: string;
 }

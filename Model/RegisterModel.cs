@@ -1,4 +1,5 @@
-﻿using System;
+﻿using coop2._0.Entity;
+using System;
 
 namespace coop2._0.Model
 {
@@ -12,6 +13,6 @@ namespace coop2._0.Model
         public DateTime DateCreated { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsConfirmed { get; set; }
-        public bool isValid { get; set; }
+        public Status Status { get; set; }
     }
 }

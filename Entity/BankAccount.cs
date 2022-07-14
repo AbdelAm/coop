@@ -11,7 +11,8 @@ namespace coop2._0.Entity
         public DateTime DateCreated { get; set; }
         public int UserId { get; set; }
         public virtual User User { get; set; }
-        public virtual ICollection<Transaction> Transactions { get; set; }
+        public virtual ICollection<Transaction> TransactionsSended { get; set; }
+        public virtual ICollection<Transaction> TransactionsReceived { get; set; }
         public bool IsValid { get; set; }
     }
 }
