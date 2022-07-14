@@ -27,7 +27,7 @@ export class UserService {
     return this.http.post<Response>(this.baseUrl + '/register', this.registerModel);
   }
   login(): Observable<TokenModel> {
-    return this.http.post<TokenModel>(this.baseUrl + '/login', this.login);
+    return this.http.post<TokenModel>(this.baseUrl + '/login', this.loginModel);
   }
   getUsers(page: number = 1): Observable<UserModel[]> {
     return this.http.get<UserModel[]>(this.baseUrl + `/admin/users/list/${page}`);
