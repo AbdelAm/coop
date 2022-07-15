@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace coop2._0.Entity
+namespace coop2._0.Entities
 {
     public class BankAccount
     {

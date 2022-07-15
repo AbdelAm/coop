@@ -20,8 +20,7 @@ export class RequestServiceService {
   getRequests(page: number = 1): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `/admin/requests/list/${page}`);
   }
-  getRequestsByUser(userId: string, page: number = 1): Observable<RequestModel[]>
-  {
+  getRequestsByUser(userId: string, page: number = 1): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `/requests/list/${userId}/${page}`);
   }
   validateRequests(requestList: Array<number>): Observable<RequestModel[]> {

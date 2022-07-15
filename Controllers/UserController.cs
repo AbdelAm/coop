@@ -1,10 +1,9 @@
-﻿using coop2._0.Entity;
+﻿using coop2._0.Entities;
 using coop2._0.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -54,7 +53,7 @@ namespace coop2._0.Controllers
 
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
-            
+
             var role = _roleManager.FindByNameAsync("USER").Result;
             await _userManager.AddToRoleAsync(user, role.Name);
             return Ok(new Response { Status = "Success", Message = "User created successfully!, To complete your registration, An email has been sent to confirm your registration" });

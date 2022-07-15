@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
-namespace coop2._0.Entity
+namespace coop2._0.Entities
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
@@ -14,13 +12,16 @@ namespace coop2._0.Entity
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
         }
+
+        /*public ApplicationDbContext() //ajoute par Abdelaziz pour request controller
+        {
+        }*/
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Transaction>()
-             .HasKey(ds => new { ds.Id, ds.SenderBankAccountId, ds.ReceiverBankAccountId });
+                .HasKey(ds => new { ds.Id, ds.SenderBankAccountId, ds.ReceiverBankAccountId });
             builder.Entity<Transaction>()
                 .HasOne(d => d.SenderBankAccount)
                 .WithMany(ds => ds.TransactionsSended)
@@ -31,7 +32,6 @@ namespace coop2._0.Entity
                 .HasForeignKey(ds => ds.ReceiverBankAccountId);
             //this.SeedRoles(builder);
             base.OnModelCreating(builder);
-
         }
         /*private void SeedRoles(ModelBuilder builder)
         {
@@ -40,6 +40,5 @@ namespace coop2._0.Entity
                 new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = "USER", ConcurrencyStamp = Guid.NewGuid().ToString(), NormalizedName = "USER" }
             );
         }*/
-
     }
 }

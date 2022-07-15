@@ -1,4 +1,4 @@
-﻿namespace coop2._0.Entity
+﻿namespace coop2._0.Entities
 {
     public enum Status
     {

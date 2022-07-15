@@ -11,12 +11,10 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  toggleSideBar()
-  {
+  toggleSideBar() {
     document.body.classList.toggle('sb-sidenav-toggled');
   }
-  toggleMenu()
-  {
-    document.querySelector(".dropdown-menu").classList.toggle("show");
+  toggleMenu() {
+    document.querySelector('.dropdown-menu').classList.toggle('show');
   }
 }

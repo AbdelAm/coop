@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace coop2._0.Entity
+namespace coop2._0.Entities
 {
     public class Request
     {

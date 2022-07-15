@@ -14,7 +14,8 @@ export class UserService {
 
   readonly baseUrl = environment.apiUrl;
   user: UserModel;
-  registerModel : RegisterModel;
+  registerModel: RegisterModel;
+  loginModel: LoginModel;
 
   constructor(private http: HttpClient) {
     this.user = new UserModel();

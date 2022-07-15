@@ -1,4 +1,4 @@
-﻿using coop2._0.Entity;
+﻿using coop2._0.Entities;
 using System;
 
 namespace coop2._0.Model

@@ -10,7 +10,7 @@ import { TokenModel } from '../shared/models/token-model';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {  
+export class LoginComponent implements OnInit {
 
   loginModel: LoginModel;
   constructor(public userService: UserService) {
