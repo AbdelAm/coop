@@ -8,15 +8,20 @@ namespace coop2._0.Controllers
     [ApiController]
     public class RequestController : ControllerBase
     {
-        ApplicationDbContext Context = new ApplicationDbContext();
+        public readonly ApplicationDbContext _context;
+
+        public RequestController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public void MakRequest(Request r)
         {
             if(ModelState.IsValid)
             {
                 r.Status = Status.Progress;
-                Context.Requests.Add(r);
-                Context.SaveChanges();
+                _context.Requests.Add(r);
+                _context.SaveChanges();
             }
         }
         public void ValidateRequest(Request r)
@@ -24,7 +29,7 @@ namespace coop2._0.Controllers
             if (ModelState.IsValid)
             {
                 r.Status = Status.Approuved;
-                Context.SaveChanges();
+                _context.SaveChanges();
             }
         }
         public void RejecteRequest(Request r)
@@ -32,7 +37,7 @@ namespace coop2._0.Controllers
             if (ModelState.IsValid)
             {
                 r.Status = Status.Rejected;
-                Context.SaveChanges();
+                _context.SaveChanges();
             }
             
         }

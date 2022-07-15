@@ -15,25 +15,23 @@ export class UserService {
   readonly baseUrl = environment.apiUrl;
   user: UserModel;
   registerModel : RegisterModel;
-  loginModel: LoginModel;
 
   constructor(private http: HttpClient) {
     this.user = new UserModel();
     this.registerModel = new RegisterModel();
-    this.loginModel = new LoginModel();
   }
 
   register(): Observable<Response> {
-    return this.http.post<Response>(this.baseUrl + '/register', this.registerModel);
+    return this.http.post<Response>(this.baseUrl + 'register', this.registerModel);
   }
-  login(): Observable<TokenModel> {
-    return this.http.post<TokenModel>(this.baseUrl + '/login', this.loginModel);
+  login(loginModel: LoginModel): Observable<TokenModel> {
+    return this.http.post<TokenModel>(this.baseUrl + 'user/login', loginModel);
   }
   getUsers(page: number = 1): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(this.baseUrl + `/admin/users/list/${page}`);
+    return this.http.get<UserModel[]>(this.baseUrl + `admin/users/list/${page}`);
   }
   validateUsers(userList: Array<number>): Observable<UserModel[]> {
-    return this.http.post<UserModel[]>(this.baseUrl + '/admin/users/validate', userList);
+    return this.http.post<UserModel[]>(this.baseUrl + 'admin/users/validate', userList);
   }
   deleteUsers(userList: Array<number>): Observable<UserModel[]> {
     return this.http.post<UserModel[]>(this.baseUrl + '/admin/users/delete', userList);

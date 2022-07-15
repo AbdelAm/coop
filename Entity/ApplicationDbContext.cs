@@ -17,10 +17,6 @@ namespace coop2._0.Entity
 
         }
 
-        public ApplicationDbContext() //ajoute par Abdelaziz pour request controller
-        {
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Transaction>()

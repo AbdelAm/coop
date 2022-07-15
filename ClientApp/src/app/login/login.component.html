@@ -24,16 +24,16 @@
       <!--      here      -->
       <div class="screen">
         <div class="screen__content">
-          <form class="login">
+          <form class="login" #loginForm="ngForm" (submit)="onSubmit()">
             <div class="login__field">
               <i class="login__icon fas fa-user"></i>
-              <input type="text" name="user" class="login__input" placeholder="nombre de usuario">
+              <input type="text" name="name" #name="ngModel" [(ngModel)]="this.loginModel.cif" class="login__input" placeholder="NIF/CIF...">
             </div>
             <div class="login__field">
               <i class="login__icon fas fa-lock"></i>
-              <input type="password" name="pass" class="login__input" placeholder="clave">
+              <input type="password" name="password" #passoword="ngModel" [(ngModel)]="this.loginModel.password" class="login__input" placeholder="clave">
             </div>
-            <button class="button login__submit" (click)="login()">
+            <button type="submit" class="button login__submit">
               <span class="button__text">Iniciar sesión</span>
               <i class="button__icon fas fa-chevron-right"></i>
             </button>
