@@ -44,7 +44,6 @@ namespace coop2._0.Controllers
                 UserName = model.Name,
                 Email = model.Email,
                 SocialNumber = model.SocialNumber,
-                CifNumber = model.CifNumber,
                 DateCreated = model.DateCreated,
                 IsAdmin = model.IsAdmin,
                 EmailConfirmed = model.IsConfirmed,
@@ -64,15 +63,15 @@ namespace coop2._0.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Name);
+            var user = await _userManager.FindByIdAsync(model.Cif);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
 
                 var jwtSecurityToken = await CreateJwtToken(user);
 
                 return Ok(new TokenModel { 
-                    UserId = user.Id,
-                    UserName = user.Name,
+                    Cif = user.Id,
+                    Name = user.Name,
                     IsAdmin = user.IsAdmin,
                     Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                     ValidTo = jwtSecurityToken.ValidTo
@@ -94,7 +93,7 @@ namespace coop2._0.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, user.Name),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("UserId", user.Id)
+                new Claim("Cif", user.Id)
             }
             .Union(roleClaims);
 

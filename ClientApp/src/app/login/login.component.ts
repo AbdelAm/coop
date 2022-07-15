@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';     // Pour constructor(private router:Router)  : fonctionne
+import { UserService } from '../shared/services/user-service.service';
+import { NgForm } from '@angular/forms';
+import { LoginModel } from '../shared/models/login-model';
+import { TokenModel } from '../shared/models/token-model';
 
 @Component({
   selector: 'app-login',
@@ -8,24 +12,23 @@ import { Router } from '@angular/router';     // Pour constructor(private router
 })
 export class LoginComponent implements OnInit {  
 
-  loginObj: any;
-  constructor(private router:Router) {
-    this.loginObj = {
-      userName:'',
-      password:''
-    };
+  loginModel: LoginModel;
+  constructor(public userService: UserService) {
+    this.loginModel = new LoginModel();
   }
 
   ngOnInit(): void {
   }
 
-  login() {
-    if (this.loginObj.userName == 'admin' && this.loginObj.password == '1234') {
-        this.router.navigateByUrl('home');
-    }
-    else {
-      alert('wrong information');
-    }
+  onSubmit()
+  {
+    this.userService.login(this.loginModel).subscribe(
+      res => {
+        console.log(res);
+        let tokenModel = new TokenModel(res);
+        tokenModel.save();
+      }
+    )
   }
 
 }

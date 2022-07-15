@@ -14,7 +14,7 @@ import { GlobalComponent } from './global/global.component';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component:SignupComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'forgotpassword', component: ForgotPasswordComponent },
   { path: 'admin', loadChildren: () => import('./administrateur/administrateur.module').then(m => m.AdministrateurModule) },
   { path: '**', component: PageNotFoundComponent },
@@ -23,10 +23,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    [RouterModule.forRoot(routes)],
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
