@@ -21,7 +21,7 @@ namespace coop2._0.Services
             return _transactionRepository.GetTransaction(id);
         }
 
-        public Task<ActionResult<IEnumerable<Transaction>>> GetTransactions(int id)
+        public Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
         {
             return _transactionRepository.GetTransactions();
         }

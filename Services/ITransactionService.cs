@@ -8,6 +8,6 @@ namespace coop2._0.Services
     public interface ITransactionService
     {
         Task<ActionResult<Transaction>> GetTransaction(int id);
-        Task<ActionResult<IEnumerable<Transaction>>> GetTransactions(int id);
+        Task<ActionResult<IEnumerable<Transaction>>> GetTransactions();
     }
 }
