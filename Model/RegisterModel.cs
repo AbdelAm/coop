@@ -10,8 +10,5 @@ namespace coop2._0.Model
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime DateCreated { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsConfirmed { get; set; }
-        public Status Status { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace coop2._0.Entities
         public string SocialNumber { get; set; }
         public string CifNumber { get; set; }
         public DateTime DateCreated { get; set; }
+        [DefaultValue(false)]
         public bool IsAdmin { get; set; }
         [Column(TypeName = "nvarchar(50)")]
         [DefaultValue(Status.Progress)]
