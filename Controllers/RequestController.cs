@@ -1,6 +1,9 @@
 ﻿using coop2._0.Entities;
+using coop2._0.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace coop2._0.Controllers
 {
@@ -8,39 +11,52 @@ namespace coop2._0.Controllers
     [ApiController]
     public class RequestController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private  ApplicationDbContext _context;
+        IRequestService _RequestService;
 
-        public RequestController(ApplicationDbContext context)
+        
+        public RequestController(IRequestService RequestService)
         {
-            _context = context;
+            _RequestService = RequestService;
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        {
+            return await _RequestService.GetRequests();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Request>> GetRequest(int id)
+        {
+            var transaction = await _RequestService.GetRequest(id);
+            if (transaction == null)
+                return NotFound();
+            return Ok(transaction);
+        }
         public void MakeRequest(Request request)
         {
             if (ModelState.IsValid)
             {
                 request.Status = Status.Progress;
                 _context.Requests.Add(request);
-                _context.SaveChanges();
             }
         }
 
-        public void ValidateRequest(Request request)
+        public void ValidateRequest(int id)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid )
             {
-                request.Status = Status.Approuved;
-                _context.SaveChanges();
+                GetRequest(id).Status=Status.Approuved;
             }
         }
 
-        public void RejectRequest(Request request)
+        public void RejectRequest(int id)
         {
             if (ModelState.IsValid)
             {
-                request.Status = Status.Rejected;
-                _context.SaveChanges();
+                GetRequest(id).Status = Status.Rejected;
             }
         }
     }
+    
 }
