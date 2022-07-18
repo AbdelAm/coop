@@ -11,24 +11,29 @@ namespace coop2._0.Controllers
     [ApiController]
     public class RequestController : ControllerBase
     {
+        // context is in repository implementation, remove it from controller
+        // every method that interacts with the database should be in the repository implementation 
+
         private  ApplicationDbContext _context;
-        IRequestService _RequestService;
+
+        private readonly IRequestService _requestService;
 
         
-        public RequestController(IRequestService RequestService)
+        public RequestController(IRequestService requestService)
         {
-            _RequestService = RequestService;
+            _requestService = requestService;
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
         {
-            return await _RequestService.GetRequests();
+            return await _requestService.GetRequests();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
-            var transaction = await _RequestService.GetRequest(id);
+            var transaction = await _requestService.GetRequest(id);
             if (transaction == null)
                 return NotFound();
             return Ok(transaction);
@@ -46,7 +51,7 @@ namespace coop2._0.Controllers
         {
             if (ModelState.IsValid )
             {
-                GetRequest(id).Status=Status.Approuved;
+                GetRequest(id).Status=Status.Approved;
             }
         }
 
