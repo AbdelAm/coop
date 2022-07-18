@@ -1,16 +1,8 @@
-﻿using coop2._0.Entities;
-using coop2._0.Model;
+﻿using coop2._0.Model;
+using coop2._0.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace coop2._0.Controllers
@@ -19,94 +11,39 @@ namespace coop2._0.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
+        private readonly IUserService userService;
 
-        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public UserController(IUserService userService)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _configuration = configuration;
+            this.userService = userService;
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.Name);
-            if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
-
-            User user = new()
+            try
             {
-                UserName = model.Name,
-                Email = model.Email,
-                SocialNumber = model.SocialNumber,
-                DateCreated = model.DateCreated,
-                IsAdmin = model.IsAdmin,
-                EmailConfirmed = model.IsConfirmed,
-                Status = model.Status,
-                SecurityStamp = Guid.NewGuid().ToString(),
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
-
-            var role = _roleManager.FindByNameAsync("USER").Result;
-            await _userManager.AddToRoleAsync(user, role.Name);
-            return Ok(new Response { Status = "Success", Message = "User created successfully!, To complete your registration, An email has been sent to confirm your registration" });
+                Response response = await userService.register(model);
+                return Ok(response);
+              
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await _userManager.FindByIdAsync(model.Cif);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            try
             {
-
-                var jwtSecurityToken = await CreateJwtToken(user);
-
-                return Ok(new TokenModel { 
-                    Cif = user.Id,
-                    Name = user.Name,
-                    IsAdmin = user.IsAdmin,
-                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                    ValidTo = jwtSecurityToken.ValidTo
-                });
-            }
-            return Unauthorized();
-        }
-
-        private async Task<JwtSecurityToken> CreateJwtToken(User user)
-        {
-            var roles = await _userManager.GetRolesAsync(user);
-            var roleClaims = new List<Claim>();
-
-            foreach (var role in roles)
-                roleClaims.Add(new Claim("roles", role));
-
-            var claims = new[]
+                TokenModel token = await userService.login(model);
+                return Ok(token);
+            } catch (Exception ex)
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Name),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("Cif", user.Id)
+                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = ex.Message });
             }
-            .Union(roleClaims);
-
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: _configuration["JWT:Issuer"],
-                audience: _configuration["JWT:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JWT:DurationInMinutes"])),
-                signingCredentials: signingCredentials);
-
-            return jwtSecurityToken;
         }
 
     }
