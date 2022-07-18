@@ -7,7 +7,11 @@ namespace coop2._0.Services
 {
     public interface ITransactionService
     {
+        Task<ActionResult<IEnumerable<Transaction>>> GetAllTransactions();
         Task<ActionResult<Transaction>> GetTransaction(int id);
-        Task<ActionResult<IEnumerable<Transaction>>> GetTransactions();
+        Task<ActionResult> RemoveTransaction(int id);
+        Task<ActionResult<Transaction>> RejectTransaction(int id);
+        Task<ActionResult<Transaction>> AddTransaction(double amount, int senderId, int receiverId);
+        Task<ActionResult<Transaction>> ValidateTransaction(int id);
     }
 }

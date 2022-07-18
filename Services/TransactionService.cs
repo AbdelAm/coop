@@ -8,7 +8,7 @@ namespace coop2._0.Services
 {
     public class TransactionService : ITransactionService
     {
-        private ITransactionRepository _transactionRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
         public TransactionService(ITransactionRepository transactionRepository)
         {
@@ -16,14 +16,36 @@ namespace coop2._0.Services
         }
 
 
-        public Task<ActionResult<Transaction>> GetTransaction(int id)
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetAllTransactions()
         {
-            return _transactionRepository.GetTransaction(id);
+            return await _transactionRepository.GetAllTransactions();
         }
 
-        public Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
+        public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
-            return _transactionRepository.GetTransactions();
+            return await _transactionRepository.GetTransaction(id);
         }
+
+        public Task<ActionResult> RemoveTransaction(int id)
+        {
+           return _transactionRepository.RemoveTransaction(id);
+        }
+
+        public async Task<ActionResult<Transaction>> RejectTransaction(int id)
+        {
+            return await _transactionRepository.RejectTransaction(id);
+        }
+
+        public async Task<ActionResult<Transaction>> AddTransaction(double amount, int senderId, int receiverId)
+        {
+            return await _transactionRepository.AddTransaction(amount, senderId, receiverId);
+        }
+
+        public async Task<ActionResult<Transaction>> ValidateTransaction(int id)
+        {
+            return await _transactionRepository.ValidateTransaction(id);
+        }
+
+        
     }
 }

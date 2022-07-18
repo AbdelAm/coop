@@ -29,7 +29,7 @@ namespace coop2._0.Controllers
         {
             if (ModelState.IsValid)
             {
-                request.Status = Status.Approuved;
+                request.Status = Status.Approved;
                 _context.SaveChanges();
             }
         }

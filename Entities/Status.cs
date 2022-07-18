@@ -3,7 +3,7 @@
     public enum Status
     {
         Progress,
-        Approuved,
+        Approved,
         Rejected
     }
 }
