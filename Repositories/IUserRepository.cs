@@ -8,9 +8,9 @@ namespace coop2._0.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> getUserByEmail(string email);
-        Task<string> setUser(User user, string password);
-        Task<User> getUser(LoginModel model);
-        Task<List<string>> getUserRoles(User user);
+        Task<User> GetUserByEmail(string email);
+        Task<string> SetUser(User user, string password);
+        Task<User> GetUser(LoginModel model);
+        Task<List<string>> GetUserRoles(User user);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using coop2._0.Entities;
+using coop2._0.Model;
 using coop2._0.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,9 +37,9 @@ namespace coop2._0.Services
             return await _transactionRepository.RejectTransaction(id);
         }
 
-        public async Task<ActionResult<Transaction>> AddTransaction(double amount, int senderId, int receiverId)
+        public async Task<ActionResult<Transaction>> AddTransaction(TransactionModel model)
         {
-            return await _transactionRepository.AddTransaction(amount, senderId, receiverId);
+            return await _transactionRepository.AddTransaction(model);
         }
 
         public async Task<ActionResult<Transaction>> ValidateTransaction(int id)

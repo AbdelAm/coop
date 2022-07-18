@@ -7,7 +7,7 @@ namespace coop2._0.Services
 {
     public interface IUserService
     {
-        Task<Response> register(RegisterModel model);
-        Task<TokenModel> login(LoginModel model);
+        Task<Response> Register(RegisterModel model);
+        Task<TokenModel> Login(LoginModel model);
     }
 }

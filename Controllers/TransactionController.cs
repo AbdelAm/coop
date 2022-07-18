@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using coop2._0.Model;
 using coop2._0.Services;
 
 namespace coop2._0.Controllers
@@ -55,9 +56,9 @@ namespace coop2._0.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Transaction>> AddTransaction(double amount, int senderId, int receiverId)
+        public async Task<ActionResult<Transaction>> AddTransaction(TransactionModel model)
         {
-            return await _transactionService.AddTransaction(amount, senderId, receiverId);
+            return await _transactionService.AddTransaction(model);
         }
     }
 }

@@ -14,11 +14,11 @@ namespace coop2._0.Controllers
         // context is in repository implementation, remove it from controller
         // every method that interacts with the database should be in the repository implementation 
 
-        private  ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
         private readonly IRequestService _requestService;
 
-        
+
         public RequestController(IRequestService requestService)
         {
             _requestService = requestService;
@@ -38,6 +38,7 @@ namespace coop2._0.Controllers
                 return NotFound();
             return Ok(transaction);
         }
+
         public void MakeRequest(Request request)
         {
             if (ModelState.IsValid)
@@ -49,9 +50,9 @@ namespace coop2._0.Controllers
 
         public void ValidateRequest(int id)
         {
-            if (ModelState.IsValid )
+            if (ModelState.IsValid)
             {
-                GetRequest(id).Status=Status.Approved;
+                GetRequest(id).Status = Status.Approved;
             }
         }
 
@@ -63,5 +64,4 @@ namespace coop2._0.Controllers
             }
         }
     }
-    
 }

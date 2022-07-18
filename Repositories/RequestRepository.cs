@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace coop2._0.Repositories
 {
-    public class RequestnRepository : IRequestRepository
+    public class RequestRepository : IRequestRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public RequestnRepository(ApplicationDbContext context)
+        public RequestRepository(ApplicationDbContext context)
         {
             _context = context;
         }

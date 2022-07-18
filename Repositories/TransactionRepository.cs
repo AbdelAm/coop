@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using coop2._0.Model;
 
 namespace coop2._0.Repositories
 {
@@ -52,20 +53,20 @@ namespace coop2._0.Repositories
             return transaction;
         }
 
-        public async Task<ActionResult<Transaction>> AddTransaction(double amount, int senderId, int receiverId)
+        public async Task<ActionResult<Transaction>> AddTransaction(TransactionModel model)
         {
-            var sender = await _context.BankAccounts.FindAsync(senderId);
-            var receiver = await _context.BankAccounts.FindAsync(receiverId);
+            var sender = await _context.BankAccounts.FindAsync(model.SenderId);
+            var receiver = await _context.BankAccounts.FindAsync(model.ReceiverId);
 
             if (sender == null || receiver == null) return null;
 
             var transaction = new Transaction()
             {
-                SenderBankAccountId = senderId,
-                ReceiverBankAccountId = receiverId,
+                SenderBankAccountId = model.SenderId,
+                ReceiverBankAccountId = model.ReceiverId,
                 SenderBankAccount = sender,
                 ReceiverBankAccount = receiver,
-                Amount = amount,
+                Amount = model.Amount,
                 DateTransaction = DateTime.Now
             };
             _context.Transactions.Add(transaction);

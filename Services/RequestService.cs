@@ -9,22 +9,22 @@ namespace coop2._0.Services
 {
     public class RequestService : IRequestService
     {
-        private IRequestRepository _requestnRepository;
+        private readonly IRequestRepository _requestRepository;
 
-        public RequestService(IRequestRepository requestnRepository)
+        public RequestService(IRequestRepository requestRepository)
         {
-            _requestnRepository = requestnRepository;
+            _requestRepository = requestRepository;
         }
 
 
         public Task<ActionResult<Request>> GetRequest(int id)
         {
-            return _requestnRepository.GetRequest(id);
+            return _requestRepository.GetRequest(id);
         }
 
         public Task<ActionResult<IEnumerable<Request>>> GetRequests()
         {
-            return _requestnRepository.GetRequests();
+            return _requestRepository.GetRequests();
         }
     }
 }

@@ -11,11 +11,11 @@ namespace coop2._0.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService userService;
+        private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
-            this.userService = userService;
+            this._userService = userService;
         }
 
         [HttpPost]
@@ -24,27 +24,30 @@ namespace coop2._0.Controllers
         {
             try
             {
-                Response response = await userService.register(model);
+                Response response = await _userService.Register(model);
                 return Ok(response);
-              
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "Error", Message = ex.Message });
             }
         }
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             try
             {
-                TokenModel token = await userService.login(model);
+                TokenModel token = await _userService.Login(model);
                 return Ok(token);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "Error", Message = ex.Message });
             }
         }
-
     }
 }
