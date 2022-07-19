@@ -8,7 +8,7 @@ using coop2._0.Services;
 
 namespace coop2._0.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/{id:int}")]
     [ApiController]
     public class TransactionController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace coop2._0.Controllers
             return await _transactionService.GetAllTransactions();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("")]
         public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
             var transaction = await _transactionService.GetTransaction(id);
@@ -34,7 +34,7 @@ namespace coop2._0.Controllers
             return Ok(transaction);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("")]
         public async Task<ActionResult> RemoveTransaction(int id)
         {
             var deletedTransaction = await _transactionService.RemoveTransaction(id);
@@ -43,13 +43,13 @@ namespace coop2._0.Controllers
             return Ok(deletedTransaction);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("")]
         public async Task<ActionResult<Transaction>> RejectTransaction(int id)
         {
             return await _transactionService.RejectTransaction(id);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("")]
         public async Task<ActionResult<Transaction>> ValidateTransaction(int id)
         {
             return await _transactionService.ValidateTransaction(id);
