@@ -38,8 +38,9 @@ namespace coop2._0.Services
                 Name = model.Name,
                 Email = model.Email,
                 UserName =  Regex.Replace(model.Name.ToLower(), @"\s+", ""),
+                PhoneNumber = model.Phone,
                 SocialNumber = model.SocialNumber,
-                DateCreated = model.DateCreated,
+                DateCreated = DateTime.Now,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
             var result = await _userRepository.SetUser(user, model.Password);

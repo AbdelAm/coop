@@ -45,15 +45,15 @@ namespace coop2._0.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4571156f-dee6-44c8-a142-10e1c7f47404",
-                            ConcurrencyStamp = "442a38e2-fddf-4617-b0e1-63cab048989e",
+                            Id = "df03e6fe-bb22-42bf-a972-6115b8270ad1",
+                            ConcurrencyStamp = "0f1dc26a-a485-4bbb-bd0b-14ffa93a94e7",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "695029a0-64ac-4807-b9df-13ab882667fc",
-                            ConcurrencyStamp = "dc589fba-16e4-4cb4-8222-a2e10044efc2",
+                            Id = "6ee2a5ea-ab9f-41a4-875e-fd4c1b142631",
+                            ConcurrencyStamp = "991e6117-550a-4823-a9b5-86db99beaf72",
                             Name = "USER",
                             NormalizedName = "USER"
                         });
@@ -179,15 +179,12 @@ namespace coop2._0.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("BankAccounts");
                 });
@@ -291,9 +288,6 @@ namespace coop2._0.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Phone")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
@@ -384,7 +378,7 @@ namespace coop2._0.Migrations
                 {
                     b.HasOne("coop2._0.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
