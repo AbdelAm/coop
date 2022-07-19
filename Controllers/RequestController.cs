@@ -1,4 +1,5 @@
 ﻿using coop2._0.Entities;
+using coop2._0.Model;
 using coop2._0.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,6 @@ namespace coop2._0.Controllers
         private ApplicationDbContext _context;
 
         private readonly IRequestService _requestService;
-
 
         public RequestController(IRequestService requestService)
         {
@@ -39,29 +39,33 @@ namespace coop2._0.Controllers
             return Ok(transaction);
         }
 
-        public void MakeRequest(Request request)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> RemoveRequest(int id)
         {
-            if (ModelState.IsValid)
-            {
-                request.Status = Status.Progress;
-                _context.Requests.Add(request);
-            }
+            var deletedRequest = await _requestService.RemoveRequest(id);
+            if (deletedRequest == null)
+                return BadRequest();
+            return Ok(deletedRequest);
         }
 
-        public void ValidateRequest(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Request>> RejectRequest(int id)
         {
-            if (ModelState.IsValid)
-            {
-                GetRequest(id).Status = Status.Approved;
-            }
+            return await _requestService.RejectRequest(id);
         }
 
-        public void RejectRequest(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Request>> ValidateRequest(int id)
         {
-            if (ModelState.IsValid)
-            {
-                GetRequest(id).Status = Status.Rejected;
-            }
+            return await _requestService.ValidateRequest(id);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Request>> AddRequest(RequestModel model)
+        {
+            return await _requestService.AddRequest(model);
+        }
+
+ 
     }
 }
