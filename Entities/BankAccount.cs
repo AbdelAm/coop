@@ -9,7 +9,7 @@ namespace coop2._0.Entities
         public string AccountNumber { get; set; }
         public double Balance { get; set; }
         public DateTime DateCreated { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<Transaction> TransactionsSended { get; set; }
         public virtual ICollection<Transaction> TransactionsReceived { get; set; }

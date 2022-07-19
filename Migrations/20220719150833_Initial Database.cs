@@ -40,8 +40,6 @@ namespace coop2._0.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     SocialNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CifNumber = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(50)", nullable: false),
@@ -230,8 +228,7 @@ namespace coop2._0.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Balance = table.Column<double>(type: "double", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<string>(type: "varchar(255)", nullable: true)
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsValid = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
@@ -239,8 +236,8 @@ namespace coop2._0.Migrations
                 {
                     table.PrimaryKey("PK_BankAccounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BankAccounts_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_BankAccounts_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -279,12 +276,12 @@ namespace coop2._0.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "f19d8595-e18d-4460-b79d-b3e787e16911", "38d8299b-a845-4e3c-998c-01001837a91a", "ADMIN", "ADMIN" });
+                values: new object[] { "df03e6fe-bb22-42bf-a972-6115b8270ad1", "0f1dc26a-a485-4bbb-bd0b-14ffa93a94e7", "ADMIN", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "81a348bb-234d-4971-a243-432cf728b487", "2f9bea6b-1115-4623-8b17-ef59ed1f1cbd", "USER", "USER" });
+                values: new object[] { "6ee2a5ea-ab9f-41a4-875e-fd4c1b142631", "991e6117-550a-4823-a9b5-86db99beaf72", "USER", "USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -324,9 +321,9 @@ namespace coop2._0.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BankAccounts_UserId1",
+                name: "IX_BankAccounts_UserId",
                 table: "BankAccounts",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_ReceiverBankAccountId",

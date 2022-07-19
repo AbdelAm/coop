@@ -8,7 +8,6 @@ namespace coop2._0.Entities
     public class User : IdentityUser
     {
         public string Name { get; set; }
-        public string Phone { get; set; }
         public string SocialNumber { get; set; }
         public DateTime DateCreated { get; set; }
         [DefaultValue(false)]

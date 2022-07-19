@@ -81,7 +81,7 @@ namespace coop2._0.Repositories
             var user = new User()
             {
                 SocialNumber = model.SocialNumber,
-                CifNumber = model.CifNumber,
+                //CifNumber = model.CifNumber,
                 IsAdmin=model.IsAdmin,
                 DateCreated = DateTime.Now,
                 Status = model.Status
