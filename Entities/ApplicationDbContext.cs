@@ -38,8 +38,8 @@ namespace coop2._0.Entities
         private void SeedRoles(ModelBuilder builder)
         {
             builder.Entity<IdentityRole>().HasData(
-                new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = "ADMIN", ConcurrencyStamp = Guid.NewGuid().ToString(), NormalizedName = "ADMIN" },
-                new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = "USER", ConcurrencyStamp = Guid.NewGuid().ToString(), NormalizedName = "USER" }
+                new IdentityRole() { Id = "6ee2a5ea-ab9f-41a4-875e-fd4c1b142631", Name = "ADMIN", ConcurrencyStamp = "991e6117-550a-4823-a9b5-86db99beaf72", NormalizedName = "ADMIN" },
+                new IdentityRole() { Id = "df03e6fe-bb22-42bf-a972-6115b8270ad1", Name = "USER", ConcurrencyStamp = "0f1dc26a-a485-4bbb-bd0b-14ffa93a94e7", NormalizedName = "USER" }
             );
         }
     }
