@@ -9,7 +9,7 @@ using coop2._0.Entities;
 namespace coop2._0.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220719150833_Initial Database")]
+    [Migration("20220719151547_Initial Database")]
     partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,15 +47,15 @@ namespace coop2._0.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "df03e6fe-bb22-42bf-a972-6115b8270ad1",
-                            ConcurrencyStamp = "0f1dc26a-a485-4bbb-bd0b-14ffa93a94e7",
+                            Id = "6ee2a5ea-ab9f-41a4-875e-fd4c1b142631",
+                            ConcurrencyStamp = "991e6117-550a-4823-a9b5-86db99beaf72",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "6ee2a5ea-ab9f-41a4-875e-fd4c1b142631",
-                            ConcurrencyStamp = "991e6117-550a-4823-a9b5-86db99beaf72",
+                            Id = "df03e6fe-bb22-42bf-a972-6115b8270ad1",
+                            ConcurrencyStamp = "0f1dc26a-a485-4bbb-bd0b-14ffa93a94e7",
                             Name = "USER",
                             NormalizedName = "USER"
                         });

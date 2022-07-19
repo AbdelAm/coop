@@ -276,12 +276,12 @@ namespace coop2._0.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "df03e6fe-bb22-42bf-a972-6115b8270ad1", "0f1dc26a-a485-4bbb-bd0b-14ffa93a94e7", "ADMIN", "ADMIN" });
+                values: new object[] { "6ee2a5ea-ab9f-41a4-875e-fd4c1b142631", "991e6117-550a-4823-a9b5-86db99beaf72", "ADMIN", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6ee2a5ea-ab9f-41a4-875e-fd4c1b142631", "991e6117-550a-4823-a9b5-86db99beaf72", "USER", "USER" });
+                values: new object[] { "df03e6fe-bb22-42bf-a972-6115b8270ad1", "0f1dc26a-a485-4bbb-bd0b-14ffa93a94e7", "USER", "USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
