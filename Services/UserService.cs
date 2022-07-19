@@ -2,6 +2,7 @@
 using coop2._0.Model;
 using coop2._0.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -47,11 +48,12 @@ namespace coop2._0.Services
             if (result == null)
                 throw new Exception("There is problem with registering user, please try again");
 
+            string token = await _userRepository.GenerateConfirmationToken(user);
             MailModel mailModel = new MailModel()
             {
                 Email = model.Email,
                 Subject = "Email Confirmation",
-                Body = "<h1>Hello from mail sender</h1>"
+                Body = user.Name + '-' + token + '-' + user.Email,
             };
             await _mailService.SendEmail(mailModel);
             
@@ -79,6 +81,30 @@ namespace coop2._0.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 ValidTo = jwtSecurityToken.ValidTo
             };
+        }
+
+        public async Task<Response> ConfirmUser(string param)
+        {
+            var values = param.Split('-');
+            var user = await _userRepository.GetUserByEmail(values[1]);
+            if(user is not { EmailConfirmed: false, Status: Status.Progress })
+            {
+                throw new Exception("The user is already confirmed");
+            }
+            var token = values[0].Replace(' ', '+');
+            IdentityResult res = await _userRepository.ConfirmEmail(user, token);
+            if(!res.Succeeded)
+            {
+                throw new Exception("the email hasn't been confirmed, please try again");
+            }
+
+            return new Response
+            {
+                Status = "Success",
+                Message =
+                    "User is confirmed successfully"
+            };
+
         }
 
         private async Task<JwtSecurityToken> CreateJwtToken(User user)

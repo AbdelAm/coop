@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace coop2._0.Services
@@ -23,25 +25,27 @@ namespace coop2._0.Services
             mail.From.Add(MailboxAddress.Parse("contact@coophalal.net"));
             mail.To.Add(MailboxAddress.Parse(mailer.Email));
             mail.Subject = mailer.Subject;
-            mail.Body = new TextPart(TextFormat.Html) { Text = mailer.Body };
-            // create email message
-            /*var mail = new MailMessage();
-            mail.From = new MailAddress("register@coophalal.net");
-            mail.Sender = new MailAddress(mailer.Email);
-            mail.Subject = mailer.Subject;
-            mail.IsBodyHtml = true;
-            mail.Body = mailer.Body;*/
+            var builder = new BodyBuilder();
+            using (StreamReader SourceReader = System.IO.File.OpenText("./Templates/Mail.cshtml"))
+            {
+
+                builder.HtmlBody = SourceReader.ReadToEnd();
+
+            }
+            var values = mailer.Body.Split('-', 2);
+
+            string messageBody = string.Format(builder.HtmlBody,
+                        values[0],
+                        values[1]
+                        );
+            mail.Body = new TextPart(TextFormat.Html) { Text = messageBody };
 
             // send email
             using var smtp = new SmtpClient();
-                /*smtp.Host = _configuration["Mail:Host"];
-                smtp.Port = Convert.ToInt32(_configuration["Mail:Port"]);
-                smtp.Credentials = new NetworkCredential(_configuration["Mail:Email"], _configuration["Mail:Password"]);
-                smtp.Send(mail);*/
-                smtp.Connect(_configuration["Mail:Host"], Convert.ToInt32(_configuration["Mail:Port"]), SecureSocketOptions.StartTls);
-                smtp.Authenticate(_configuration["Mail:Email"], _configuration["Mail:Password"]);
-                await smtp.SendAsync(mail);
-                smtp.Disconnect(true);
+            smtp.Connect(_configuration["Mail:Host"], Convert.ToInt32(_configuration["Mail:Port"]), SecureSocketOptions.StartTls);
+            smtp.Authenticate(_configuration["Mail:Email"], _configuration["Mail:Password"]);
+            await smtp.SendAsync(mail);
+            smtp.Disconnect(true);
             
         }
     }

@@ -26,6 +26,11 @@ namespace coop2._0.Repositories
             User user = await _userManager.FindByEmailAsync(email);
             return user;
         }
+        public async Task<User> GetUserById(string id)
+        {
+            User user = await _userManager.FindByIdAsync(id);
+            return user;
+        }
 
         public async Task<string> SetUser(User user, string password)
         {
@@ -35,7 +40,6 @@ namespace coop2._0.Repositories
                 await _userManager.AddToRoleAsync(user, "USER");
                 return user.Id;
             }
-
             return null;
         }
 
@@ -52,7 +56,15 @@ namespace coop2._0.Repositories
 
         public async Task<List<string>> GetUserRoles(User user)
         {
-            return (List<string>)await _userManager.GetRolesAsync(user);
+            return (List<string>) await _userManager.GetRolesAsync(user);
+        }
+        public async Task<string> GenerateConfirmationToken(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+        public async Task<IdentityResult> ConfirmEmail(User user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
         }
         public async Task<ActionResult> RemoveUser(int id)
         {

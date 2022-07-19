@@ -49,5 +49,20 @@ namespace coop2._0.Controllers
                     new Response { Status = "Error", Message = ex.Message });
             }
         }
+
+        [HttpGet]
+        [Route("email-confirmation")]
+        public async Task<IActionResult> ConfirmUser([FromQuery] string param)
+        {
+            try
+            {
+                Response response = await _userService.ConfirmUser(param);
+                return Ok(response);
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "Error", Message = ex.Message });
+            }
+        }
     }
 }
