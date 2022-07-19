@@ -13,7 +13,7 @@ import { TokenModel } from '../shared/models/token-model';
 export class LoginComponent implements OnInit {
 
   loginModel: LoginModel;
-  constructor(public userService: UserService) {
+  constructor(private userService: UserService) {
     this.loginModel = new LoginModel();
   }
 

@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using coop2._0.Entities;
+using coop2._0.Services;
+using coop2._0.Repositories;
 
 namespace coop2._0
 {
@@ -35,6 +37,17 @@ namespace coop2._0
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            //Inject services 
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IRequestService, RequestService>();
+
+            //Inject Repositories
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IRequestRepository, RequestRepository>();
 
             // Adding Authentication
             services.AddAuthentication(options =>

@@ -52,6 +52,7 @@ export class UserListComponent implements OnInit {
     } else {
       elt.classList.add("d-none");
     }
+    console.log(this.listUser);
   }
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
 

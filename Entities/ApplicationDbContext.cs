@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace coop2._0.Entities
 {
@@ -30,15 +32,15 @@ namespace coop2._0.Entities
                 .HasOne(s => s.ReceiverBankAccount)
                 .WithMany(ds => ds.TransactionsReceived)
                 .HasForeignKey(ds => ds.ReceiverBankAccountId);
-            //this.SeedRoles(builder);
+            this.SeedRoles(builder);
             base.OnModelCreating(builder);
         }
-        /*private void SeedRoles(ModelBuilder builder)
+        private void SeedRoles(ModelBuilder builder)
         {
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = "ADMIN", ConcurrencyStamp = Guid.NewGuid().ToString(), NormalizedName = "ADMIN" },
                 new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = "USER", ConcurrencyStamp = Guid.NewGuid().ToString(), NormalizedName = "USER" }
             );
-        }*/
+        }
     }
 }

@@ -1,12 +1,10 @@
 
 export class RegisterModel {
     name!: string;
+    phone!: string;
     socialNumber!: number;
-    cifNumber!: number;
     email!: string;
     password!: string;
+    confirmPassword!: string;
     dateCreated!: Date;
-    isAdmin!: boolean;
-    isConfirmed: boolean = false;
-    status!: string;
 }

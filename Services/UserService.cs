@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace coop2._0.Services
@@ -17,11 +18,13 @@ namespace coop2._0.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IMailService _mailService;
 
-        public UserService(IUserRepository userRepository, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, IConfiguration configuration, IMailService mailService)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _mailService = mailService;
         }
 
         public async Task<Response> Register(RegisterModel model)
@@ -32,16 +35,25 @@ namespace coop2._0.Services
 
             User user = new()
             {
-                UserName = model.Name,
+                Name = model.Name,
                 Email = model.Email,
+                UserName =  Regex.Replace(model.Name.ToLower(), @"\s+", ""),
                 SocialNumber = model.SocialNumber,
                 DateCreated = model.DateCreated,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
-
-            if (_userRepository.SetUser(user, model.Password) == null)
+            var result = await _userRepository.SetUser(user, model.Password);
+            if (result == null)
                 throw new Exception("There is problem with registering user, please try again");
 
+            MailModel mailModel = new MailModel()
+            {
+                Email = model.Email,
+                Subject = "Email Confirmation",
+                Body = "<h1>Hello from mail sender</h1>"
+            };
+            await _mailService.SendEmail(mailModel);
+            
             return new Response
             {
                 Status = "Success",
