@@ -14,10 +14,11 @@ namespace coop2._0.Repositories
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
 
-        public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         public async Task<User> GetUserByEmail(string email)
@@ -81,7 +82,6 @@ namespace coop2._0.Repositories
             var user = new User()
             {
                 SocialNumber = model.SocialNumber,
-                CifNumber = model.CifNumber,
                 IsAdmin=model.IsAdmin,
                 DateCreated = DateTime.Now,
                 Status = model.Status
