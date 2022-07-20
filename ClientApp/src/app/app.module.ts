@@ -22,6 +22,7 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RequestPopupComponent } from './request-popup/request-popup.component';
+import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { RequestPopupComponent } from './request-popup/request-popup.component';
     TransactionPopupComponent,
     ProfileComponent,
     RequestPopupComponent,
+    EmailConfirmationComponent,
   ],
   
   imports: [

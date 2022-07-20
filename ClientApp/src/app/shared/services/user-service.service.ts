@@ -22,6 +22,10 @@ export class UserService {
   register(registerModel: RegisterModel): Observable<Response> {
     return this.http.post<Response>(this.baseUrl + 'user/register', registerModel);
   }
+  confirmEmail(url: string)
+  {
+    return this.http.get<Response>(this.baseUrl + `user${url}`);
+  }
   login(loginModel: LoginModel): Observable<TokenModel> {
     return this.http.post<TokenModel>(this.baseUrl + 'user/login', loginModel);
   }

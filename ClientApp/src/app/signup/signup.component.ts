@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegisterModel } from '../shared/models/register-model';
 import { UserService } from '../shared/services/user-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-signup',
@@ -21,7 +22,14 @@ export class SignupComponent implements OnInit {
   onSubmit()
   {
     this.userService.register(this.registerModel).subscribe(
-      res => console.log(res)
+      res => {
+        console.log(res);
+        Swal.fire({
+          title: "User created successfully!!!",
+          text: res["message"],
+          icon: "success",
+        });
+      }
     )
   }
 
