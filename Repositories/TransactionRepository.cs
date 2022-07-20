@@ -33,7 +33,7 @@ namespace coop2._0.Repositories
         {
             var transaction = await _context.Transactions.FindAsync(id);
 
-            if (transaction == null || transaction.Status == Status.Approved) return null;
+            if (transaction == null || transaction.Status == Status.Approuved) return null;
 
             _context.Transactions.Remove(transaction);
 
@@ -82,7 +82,7 @@ namespace coop2._0.Repositories
 
             transaction.SenderBankAccount.Balance -= transaction.Amount;
             transaction.ReceiverBankAccount.Balance += transaction.Amount;
-            transaction.Status = Status.Approved;
+            transaction.Status = Status.Approuved;
             _context.Update(transaction);
             await _context.SaveChangesAsync();
             return transaction;

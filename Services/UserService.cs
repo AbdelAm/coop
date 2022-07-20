@@ -30,9 +30,14 @@ namespace coop2._0.Services
 
         public async Task<Response> Register(RegisterModel model)
         {
-            var existingUser = await _userRepository.GetUserByEmail(model.Email);
-            if (existingUser != null)
-                throw new BadHttpRequestException("User already exists");
+            var u = await _userRepository.GetUserByEmail(model.Email);
+            Exception e = new();
+            if (u != null)
+            {
+                e.Data.Add("email_error", "email is already existe");
+                throw e;
+            }
+            
 
             User user = new()
             {
@@ -46,7 +51,10 @@ namespace coop2._0.Services
             };
             var result = await _userRepository.SetUser(user, model.Password);
             if (result == null)
-                throw new Exception("There is problem with registering user, please try again");
+            {
+                e.Data.Add("user", "There is problem with registering user, please try again");
+                throw e;
+            }
 
             string token = await _userRepository.GenerateConfirmationToken(user);
             MailModel mailModel = new MailModel()
@@ -59,17 +67,20 @@ namespace coop2._0.Services
             
             return new Response
             {
-                Status = "Success",
-                Message =
-                    "User created successfully!, To complete your registration, An email has been sent to confirm your registration"
+                Status = "success",
+                Message = "To complete your registration, An email has been sent to confirm your registration"
             };
         }
 
         public async Task<TokenModel> Login(LoginModel model)
         {
             var user = await _userRepository.GetUser(model);
-            if (user is not { EmailConfirmed: true, Status: Status.Approved })
-                throw new Exception("The user doesn't exists or it has not been approved yet");
+            if (user is null)
+                throw new Exception("The user doesn't exist");
+            if (user is not { EmailConfirmed: true })
+                throw new Exception("The user has not been confirmed yet");
+            if (user is not { Status: Status.Approuved })
+                throw new Exception("The user has not been approved yet");
 
             var jwtSecurityToken = await CreateJwtToken(user);
 

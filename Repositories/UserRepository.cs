@@ -70,7 +70,7 @@ namespace coop2._0.Repositories
         {
             var user = await _context.Users.FindAsync(id);
 
-            if (user == null || user.Status == Status.Approved) return null;
+            if (user == null || user.Status == Status.Approuved) return null;
 
             _context.Users.Remove(user);
 
@@ -108,7 +108,7 @@ namespace coop2._0.Repositories
             var user = await _context.Users.FindAsync(id);
 
             if (user is not { Status: Status.Progress }) return null;
-            user.Status = Status.Approved;
+            user.Status = Status.Approuved;
             _context.Update(user);
             await _context.SaveChangesAsync();
             return user;

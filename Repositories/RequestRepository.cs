@@ -33,7 +33,7 @@ namespace coop2._0.Repositories
         {
             var request = await _context.Requests.FindAsync(id);
 
-            if (request == null || request.Status == Status.Approved) return null;
+            if (request == null || request.Status == Status.Approuved) return null;
 
             _context.Requests.Remove(request);
 
@@ -74,7 +74,7 @@ namespace coop2._0.Repositories
             var request = await _context.Requests.FindAsync(id);
 
             if (request is not { Status: Status.Progress }) return null;
-            request.Status = Status.Approved;
+            request.Status = Status.Approuved;
             _context.Update(request);
             await _context.SaveChangesAsync();
             return request;

@@ -27,10 +27,9 @@ namespace coop2._0.Controllers
                 Response response = await _userService.Register(model);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = "Error", Message = ex.Message });
+                return BadRequest(e.Data);
             }
         }
 

@@ -7,25 +7,37 @@
         <b>Registro de usuario</b>
         <form class="login" #registerForm="ngForm" (submit)="onSubmit()">
           <div class="login__field">
-            <input class="login__input" name="name" #name="ngModel" [(ngModel)]="this.registerModel.name" placeholder="Nombre / Apellido">
+            <input class="login__input" name="name" #name="ngModel" [(ngModel)]="this.registerModel.name" (focus)="emptyError('name_error')" placeholder="Nombre / Apellido">
+            <strong id="name_error" class="form-text text-danger d-block">
+            </strong>
           </div>
           <div class="login__field">
-            <input class="login__input" name="phone" #phone="ngModel" [(ngModel)]="this.registerModel.phone" placeholder="Teléfono" >
+            <input class="login__input" name="phone" #phone="ngModel" [(ngModel)]="this.registerModel.phone" (focus)="emptyError('phone_error')" placeholder="Teléfono" >
+            <strong id="phone_error" class="form-text text-danger d-block">
+            </strong>
           </div>
           <div class="login__field">
-            <input class="login__input" name="socialNumber" #socialNumber="ngModel" [(ngModel)]="this.registerModel.socialNumber" placeholder="Numero de Socio / a">
+            <input class="login__input" name="socialNumber" #socialNumber="ngModel" [(ngModel)]="this.registerModel.socialNumber" (focus)="emptyError('socialNumber_error')" placeholder="Numero de Socio / a">
+            <strong id="socialNumber_error" class="form-text text-danger d-block">
+            </strong>
           </div>
           <div class="login__field">
-            <input class="login__input" name="email" #email="ngModel" [(ngModel)]="this.registerModel.email" placeholder="Email">
+            <input class="login__input" name="email" #email="ngModel" [(ngModel)]="this.registerModel.email" (focus)="emptyError('email_error')" placeholder="Email">
+            <strong id="email_error" class="form-text text-danger d-block">
+            </strong>
           </div>
           <!--<div class="login__field">
             <input class="login__input" placeholder="Cuenta Externa" >
           </div>-->
           <div class="login__field">
-            <input type="password" class="login__input" name="password" #password="ngModel" [(ngModel)]="this.registerModel.password" placeholder="Contrasena" required>
+            <input type="password" class="login__input" name="password" #password="ngModel" [(ngModel)]="this.registerModel.password" (focus)="emptyError('password_error')" placeholder="Contrasena" required>
+            <strong id="password_error" class="form-text text-danger d-block">
+            </strong>
           </div>
           <div class="login__field">
-            <input type="password" class="login__input" name="confirmPassword" #confirmPAssword="ngModel" [(ngModel)]="this.registerModel.confirmPassword" placeholder="Confirmar Contrasena" required>
+            <input type="password" class="login__input" name="confirmPassword" #confirmPAssword="ngModel" [(ngModel)]="this.registerModel.confirmPassword" (focus)="emptyError('confirmPassword_error')" placeholder="Confirmar Contrasena" required>
+            <strong id="confirmPassword_error" class="form-text text-danger d-block">
+            </strong>
           </div>
           <button type="submit" class="button login__submit">
             <span class="button__text">Enviar</span>
