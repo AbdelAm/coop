@@ -15,6 +15,7 @@ namespace coop2._0.Repositories
         Task<User> GetUser(LoginModel model);
         Task<List<string>> GetUserRoles(User user);
         Task<string> GenerateConfirmationToken(User user);
+        Task<string> GenerateResetToken(User user);
         Task<IdentityResult> ConfirmEmail(User user, string token);
         Task<ActionResult> RemoveUser(int id);
         Task<ActionResult<User>> RejectUser(int id);

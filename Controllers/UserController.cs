@@ -51,7 +51,7 @@ namespace coop2._0.Controllers
 
         [HttpGet]
         [Route("email-confirmation")]
-        public async Task<IActionResult> ConfirmUser([FromQuery] string param)
+        public async Task<IActionResult> Confirm([FromQuery] string param)
         {
             try
             {
@@ -61,6 +61,20 @@ namespace coop2._0.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest,
                     new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("forget-password")]
+        public async Task<IActionResult> Forget(ForgetPasswordModel model)
+        {
+            try
+            {
+                Response response = await _userService.ForgetPassword(model);
+                return Ok(response);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Data);
             }
         }
     }

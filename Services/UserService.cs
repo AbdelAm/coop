@@ -63,7 +63,7 @@ namespace coop2._0.Services
                 Subject = "Email Confirmation",
                 Body = user.Name + '-' + token + '-' + user.Email,
             };
-            await _mailService.SendEmail(mailModel);
+            await _mailService.SendConfirmMail(mailModel);
             
             return new Response
             {
@@ -115,7 +115,31 @@ namespace coop2._0.Services
                 Message =
                     "User is confirmed successfully"
             };
+        }
+        public async Task<Response> ForgetPassword(ForgetPasswordModel model)
+        {
+            var u = await _userRepository.GetUserByEmail(model.Email);
+            Exception e = new();
+            if (u == null)
+            {
+                e.Data.Add("email_error", "email does not existe, please verify your information");
+                throw e;
+            }
 
+            string token = await _userRepository.GenerateResetToken(u);
+            MailModel mailModel = new MailModel()
+            {
+                Email = model.Email,
+                Subject = "Reset Password",
+                Body = u.Name + '-' + token + '-' + u.Email,
+            };
+            await _mailService.SendForgetMail(mailModel);
+
+            return new Response
+            {
+                Status = "success",
+                Message = "Click on link sended to your email to reset your password, the link is valid for only 48 hours so you need make the operation before the end of its validity"
+            };
         }
 
         private async Task<JwtSecurityToken> CreateJwtToken(User user)

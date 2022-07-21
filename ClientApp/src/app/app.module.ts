@@ -23,6 +23,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RequestPopupComponent } from './request-popup/request-popup.component';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
     ProfileComponent,
     RequestPopupComponent,
     EmailConfirmationComponent,
+    ResetPasswordComponent,
   ],
   
   imports: [

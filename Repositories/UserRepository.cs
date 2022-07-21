@@ -62,6 +62,10 @@ namespace coop2._0.Repositories
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
+        public async Task<string> GenerateResetToken(User user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
         public async Task<IdentityResult> ConfirmEmail(User user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);

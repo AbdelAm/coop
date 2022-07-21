@@ -13,6 +13,7 @@ using System.Text;
 using coop2._0.Entities;
 using coop2._0.Services;
 using coop2._0.Repositories;
+using System;
 
 namespace coop2._0
 {
@@ -37,6 +38,10 @@ namespace coop2._0
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+                options.TokenLifespan = TimeSpan.FromDays(2)
+            );
 
             //Inject services 
             services.AddScoped<IUserService, UserService>();

@@ -5,6 +5,7 @@ namespace coop2._0.Services
 {
     public interface IMailService
     {
-        Task SendEmail(MailModel mailer);
+        Task SendConfirmMail(MailModel mailer);
+        Task SendForgetMail(MailModel mailer);
     }
 }
