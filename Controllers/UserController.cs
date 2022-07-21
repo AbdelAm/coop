@@ -72,9 +72,25 @@ namespace coop2._0.Controllers
             {
                 Response response = await _userService.ForgetPassword(model);
                 return Ok(response);
+
             } catch (Exception ex)
             {
                 return BadRequest(ex.Data);
+            }
+        }
+
+        [HttpPost]
+        [Route("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            try
+            {
+                Response response = await _userService.ResetPassword(model);
+                return Ok(response);
+
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

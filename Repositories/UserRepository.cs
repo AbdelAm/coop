@@ -70,6 +70,10 @@ namespace coop2._0.Repositories
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
+        public async Task<IdentityResult> ResetPassword(User user, string token, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, password);
+        }
         public async Task<ActionResult> RemoveUser(int id)
         {
             var user = await _context.Users.FindAsync(id);

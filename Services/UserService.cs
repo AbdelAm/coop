@@ -98,11 +98,11 @@ namespace coop2._0.Services
         {
             var values = param.Split('-');
             var user = await _userRepository.GetUserByEmail(values[1]);
-            if(user is not { EmailConfirmed: false, Status: Status.Progress })
+            if(user is not { EmailConfirmed: false })
             {
                 throw new Exception("The user is already confirmed");
             }
-            var token = values[0].Replace(' ', '+');
+            string token = values[0].Replace(' ', '+');
             IdentityResult res = await _userRepository.ConfirmEmail(user, token);
             if(!res.Succeeded)
             {
@@ -127,6 +127,7 @@ namespace coop2._0.Services
             }
 
             string token = await _userRepository.GenerateResetToken(u);
+            token = System.Web.HttpUtility.UrlEncode(token);
             MailModel mailModel = new MailModel()
             {
                 Email = model.Email,
@@ -141,6 +142,28 @@ namespace coop2._0.Services
                 Message = "Click on link sended to your email to reset your password, the link is valid for only 48 hours so you need make the operation before the end of its validity"
             };
         }
+
+        public async Task<Response> ResetPassword(ResetPasswordModel model)
+        {
+            var user = await _userRepository.GetUserByEmail(model.Email);
+            if (user is null)
+            {
+                throw new Exception("The user does not existe");
+            }
+            string token = System.Web.HttpUtility.UrlDecode(model.Token);
+            IdentityResult res = await _userRepository.ResetPassword(user, token, model.Password);
+            if (!res.Succeeded)
+            {
+                throw new Exception("the password doesn't change, please try again later");
+            }
+
+            return new Response
+            {
+                Status = "Success",
+                Message = "The password has been changed successfully"
+            };
+        }
+
 
         private async Task<JwtSecurityToken> CreateJwtToken(User user)
         {

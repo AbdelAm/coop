@@ -17,6 +17,7 @@ namespace coop2._0.Repositories
         Task<string> GenerateConfirmationToken(User user);
         Task<string> GenerateResetToken(User user);
         Task<IdentityResult> ConfirmEmail(User user, string token);
+        Task<IdentityResult> ResetPassword(User user, string token, string password);
         Task<ActionResult> RemoveUser(int id);
         Task<ActionResult<User>> RejectUser(int id);
         Task<ActionResult<User>> ValidateUser(int id);

@@ -11,5 +11,6 @@ namespace coop2._0.Services
         Task<TokenModel> Login(LoginModel model);
         Task<Response> ConfirmUser(string param);
         Task<Response> ForgetPassword(ForgetPasswordModel model);
+        Task<Response> ResetPassword(ResetPasswordModel model);
     }
 }
