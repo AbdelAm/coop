@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { JwtService } from '../shared/services/jwt.service';
 
 @Component({
   selector: 'app-header',
@@ -7,7 +10,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private jwt: JwtService, private router: Router) {
+  }
 
   ngOnInit(): void {
   }
@@ -16,5 +20,10 @@ export class HeaderComponent implements OnInit {
   }
   toggleMenu() {
     document.querySelector('.dropdown-menu').classList.toggle('show');
+  }
+  logout()
+  {
+    this.jwt.removeToken();
+    this.router.navigateByUrl('login');
   }
 }

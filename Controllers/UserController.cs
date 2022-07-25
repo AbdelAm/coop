@@ -44,8 +44,7 @@ namespace coop2._0.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = "Error", Message = ex.Message });
+                return NotFound(ex.Message);
             }
         }
 
@@ -59,8 +58,7 @@ namespace coop2._0.Controllers
                 return Ok(response);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = "Error", Message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 

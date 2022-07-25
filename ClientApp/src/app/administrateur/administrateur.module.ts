@@ -23,6 +23,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
     CommonModule,
     AdministrateurRoutingModule
   ],
+  exports: [HeaderComponent, SidebarComponent],
   bootstrap: [AdministrateurComponent]
 })
 export class AdministrateurModule { }

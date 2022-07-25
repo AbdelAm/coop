@@ -52,7 +52,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MatDialogModule,
     MatStepperModule
   ],
-  providers: [],
+  providers: [AdministrateurModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,10 +13,4 @@ export class TokenModel {
         this.token = result.token;
         this.validTo = result.validTo;
     }
-
-    save()
-    {
-        localStorage.setItem('auth', JSON.stringify(this));
-        console.log("done");
-    }
 }

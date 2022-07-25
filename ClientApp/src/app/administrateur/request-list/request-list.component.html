@@ -1,61 +1,27 @@
-<div id="layoutSidenav_content">
-  <main style="width: calc(100vw - 245px)">
-    <div class="container-fluid px-4">
-      <h1 class="mt-4">Peticiones</h1>
-      <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="../admin/global">Global</a></li>
-        <li class="breadcrumb-item active">Peticiones</li>
-      </ol>
-      <button style="margin-bottom:30px" type="button" class="btn btn-success" (click)="addRequest()">añadir petición </button>
-      <div class="card mb-4">
-        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-          <div class="card mb-4">
-            <div class="card-header">
-              <i class="fas fa-table me-1"></i>
-              Listas de Peticiones     <!-------------------transalate------------>
-            </div>
-            <div class="card-body">
+<div class="sb-nav-fixed">
+  <app-header></app-header>
+  <div id="layoutSidenav">
+      <app-sidebar></app-sidebar>
+      <div id="layoutSidenav_content">
+        <main style="width: calc(100vw - 245px)">
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Peticiones</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item"><a href="../admin/global">Global</a></li>
+              <li class="breadcrumb-item active">Peticiones</li>
+            </ol>
+            <button style="margin-bottom:30px" type="button" class="btn btn-success" (click)="addRequest()">añadir petición </button>
+            <div class="card mb-4">
               <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-                <div class="dataTable-top">
-                  <div class="dataTable-dropdown pt-2 d-none">
-                    <button class="border-0 bg-transparent align-middle">
-                      <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
-                    </button>
-                    <button class="border-0 bg-transparent align-middle">
-                      <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
-                    </button>
-                    <button class="border-0 bg-transparent align-middle">
-                      <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
-                    </button>
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Listas de Peticiones     <!-------------------transalate------------>
                   </div>
-                  <div class="dataTable-search">
-                    <input class="dataTable-input" placeholder="Búsqueda..." type="text">
-
-                  </div>
-                </div>
-                <div class="dataTable-container">
-                  <table id="datatablesSimple" class="dataTable-table">
-                    <thead>
-                      <tr>
-                        <th><input type="checkbox" (change)="selectAll($event)"></th>
-                        <th data-sortable="" style="width: 10%;">Usuario</th>
-                        <th data-sortable="" style="width: 10%;">Email</th>
-                        <th data-sortable="" style="width: 10%;">Número social</th>
-                        <th data-sortable="" style="width: 10%;">Fecha</th>
-                        <th data-sortable="" style="width: 10%;">Peticiones</th>
-                        <th data-sortable="" style="width: 30%;">Estado</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input (change)="setRequest(1, $event)" class="items" type="checkbox" value="1" /></td>
-                        <td>alex</td>
-                        <td>alex@hotmail.com</td>
-                        <td>1</td>
-                        <td>08/07/2022</td>
-                        <td>Subject 1</td>
-                        <td class="icons d-flex justify-content-center">
-                          <p>Status</p>
+                  <div class="card-body">
+                    <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                      <div class="dataTable-top">
+                        <div class="dataTable-dropdown pt-2 d-none">
                           <button class="border-0 bg-transparent align-middle">
                             <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
                           </button>
@@ -65,62 +31,102 @@
                           <button class="border-0 bg-transparent align-middle">
                             <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
                           </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><input (change)="setRequest(1, $event)" class="items" type="checkbox" value="1" /></td>
-                        <td>lora</td>
-                        <td>lora@hotmail.com</td>
-                        <td>2</td>
-                        <td>03/05/2022</td>
-                        <td>Subject 2</td>
-                        <td class="icons d-flex justify-content-center">
-                          <p>Status</p>
-                          <button class="border-0 bg-transparent align-middle">
-                            <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
-                          </button>
-                          <button class="border-0 bg-transparent align-middle">
-                            <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
-                          </button>
-                          <button class="border-0 bg-transparent align-middle">
-                            <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="dataTable-bottom">
-                  <nav class="dataTable-pagination">
-                    <ul class="dataTable-pagination-list">
-                      <li class="active"><a href="#" data-page="1">1</a></li>
-                      <li class=""><a href="#" data-page="2">2</a></li>
-                      <li class=""><a href="#" data-page="3">3</a></li>
-                      <li class=""><a href="#" data-page="4">4</a></li>
-                      <li class=""><a href="#" data-page="5">5</a></li>
-                      <li class=""><a href="#" data-page="6">6</a></li>
-                      <li class="pager"><a href="#" data-page="2">›</a></li>
-                    </ul>
-                  </nav>
+                        </div>
+                        <div class="dataTable-search">
+                          <input class="dataTable-input" placeholder="Búsqueda..." type="text">
+      
+                        </div>
+                      </div>
+                      <div class="dataTable-container">
+                        <table id="datatablesSimple" class="dataTable-table">
+                          <thead>
+                            <tr>
+                              <th><input type="checkbox" (change)="selectAll($event)"></th>
+                              <th data-sortable="" style="width: 10%;">Usuario</th>
+                              <th data-sortable="" style="width: 10%;">Email</th>
+                              <th data-sortable="" style="width: 10%;">Número social</th>
+                              <th data-sortable="" style="width: 10%;">Fecha</th>
+                              <th data-sortable="" style="width: 10%;">Peticiones</th>
+                              <th data-sortable="" style="width: 30%;">Estado</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><input (change)="setRequest(1, $event)" class="items" type="checkbox" value="1" /></td>
+                              <td>alex</td>
+                              <td>alex@hotmail.com</td>
+                              <td>1</td>
+                              <td>08/07/2022</td>
+                              <td>Subject 1</td>
+                              <td class="icons d-flex justify-content-center">
+                                <p>Status</p>
+                                <button class="border-0 bg-transparent align-middle">
+                                  <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                                </button>
+                                <button class="border-0 bg-transparent align-middle">
+                                  <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                                </button>
+                                <button class="border-0 bg-transparent align-middle">
+                                  <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                                </button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td><input (change)="setRequest(1, $event)" class="items" type="checkbox" value="1" /></td>
+                              <td>lora</td>
+                              <td>lora@hotmail.com</td>
+                              <td>2</td>
+                              <td>03/05/2022</td>
+                              <td>Subject 2</td>
+                              <td class="icons d-flex justify-content-center">
+                                <p>Status</p>
+                                <button class="border-0 bg-transparent align-middle">
+                                  <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                                </button>
+                                <button class="border-0 bg-transparent align-middle">
+                                  <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                                </button>
+                                <button class="border-0 bg-transparent align-middle">
+                                  <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="dataTable-bottom">
+                        <nav class="dataTable-pagination">
+                          <ul class="dataTable-pagination-list">
+                            <li class="active"><a href="#" data-page="1">1</a></li>
+                            <li class=""><a href="#" data-page="2">2</a></li>
+                            <li class=""><a href="#" data-page="3">3</a></li>
+                            <li class=""><a href="#" data-page="4">4</a></li>
+                            <li class=""><a href="#" data-page="5">5</a></li>
+                            <li class=""><a href="#" data-page="6">6</a></li>
+                            <li class="pager"><a href="#" data-page="2">›</a></li>
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+      
                 </div>
               </div>
             </div>
-
           </div>
-        </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+              <div class="text-muted">derechos de autor &copy; CoopHalal</div>
+              <div>
+                <a href="#">Política de privacidad</a>
+                &middot;
+                <a href="#">Términos &amp; Condiciones</a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
-    </div>
-  </main>
-  <footer class="py-4 bg-light mt-auto">
-    <div class="container-fluid px-4">
-      <div class="d-flex align-items-center justify-content-between small">
-        <div class="text-muted">derechos de autor &copy; CoopHalal</div>
-        <div>
-          <a href="#">Política de privacidad</a>
-          &middot;
-          <a href="#">Términos &amp; Condiciones</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+  </div>
 </div>

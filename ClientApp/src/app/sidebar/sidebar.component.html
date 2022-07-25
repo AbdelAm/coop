@@ -4,7 +4,7 @@
             <div class="nav">
 
                 <div class="sb-sidenav-menu-heading">Interfaces</div>
-                <a class="nav-link collapsed active" routerLink="users" (click)="setActiveClass($event)">
+                <a routerLink="../users" id="users" class="nav-link collapsed" (click)="setActiveClass($event)">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                     Usuarios
                     <!--<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
@@ -15,28 +15,28 @@
                         <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                     </nav>
                 </div>-->
-                <a class="nav-link collapsed" routerLink="global" (click)="setActiveClass($event)">
+                <a routerLink="/global" id="global" class="nav-link collapsed" *ngIf="this.linkShown()" (click)="setActiveClass($event)">
                     <div class="sb-nav-link-icon"><i class="fa fa-eur" aria-hidden="true"></i>
                     </div>
                     global
                     <!--<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
                 </a>
-                <a class="nav-link collapsed" routerLink="transactions" (click)="setActiveClass($event)">
+                <a routerLink="../transactions" id="transactions" class="nav-link collapsed" (click)="setActiveClass($event)">
                     <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                     Actas
                     <!--<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
                 </a>
-                <a class="nav-link collapsed" routerLink="requests" (click)="setActiveClass($event)">
+                <a routerLink="../requests" id="requests" class="nav-link collapsed" (click)="setActiveClass($event)">
                     <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                     Peticiones
                     <!--<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
                 </a>
 
-                <a class="nav-link collapsed" routerLink="profil" (click)="setActiveClass($event)">
+                <!--<a class="nav-link collapsed" routerLink="/profil" (click)="setActiveClass($event)">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
                     perfil
-                    <!--<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
-                </a>
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>-->
                 <!--<div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">

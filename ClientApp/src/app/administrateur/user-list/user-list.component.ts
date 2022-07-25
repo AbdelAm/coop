@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { JwtService } from 'src/app/shared/services/jwt.service';
 import { TransactionPopupComponent } from 'src/app/transaction-popup/transaction-popup.component';
 
 @Component({
@@ -9,8 +11,10 @@ import { TransactionPopupComponent } from 'src/app/transaction-popup/transaction
 })
 export class UserListComponent implements OnInit {
 
-  listUser: Array<number>
-  constructor(public dialog:MatDialog) {
+  listUser: Array<number>;
+  
+  constructor(public dialog:MatDialog, private jwt:JwtService, private router: Router) {
+    (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('users') : this.router.navigateByUrl('admin/users');
     this.listUser = new Array<number>();
   }
 
