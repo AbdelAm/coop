@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -18,12 +19,14 @@ namespace coop2._0.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IJwtService _jwtService;
         private readonly IConfiguration _configuration;
         private readonly IMailService _mailService;
 
-        public UserService(IUserRepository userRepository, IConfiguration configuration, IMailService mailService)
+        public UserService(IUserRepository userRepository, IJwtService jwtService, IConfiguration configuration, IMailService mailService)
         {
             _userRepository = userRepository;
+            _jwtService = jwtService;
             _configuration = configuration;
             _mailService = mailService;
         }
@@ -37,13 +40,13 @@ namespace coop2._0.Services
                 e.Data.Add("email_error", "email is already existe");
                 throw e;
             }
-            
+
 
             User user = new()
             {
                 Name = model.Name,
                 Email = model.Email,
-                UserName =  Regex.Replace(model.Name.ToLower(), @"\s+", ""),
+                UserName = Regex.Replace(model.Name.ToLower(), @"\s+", ""),
                 PhoneNumber = model.Phone,
                 SocialNumber = model.SocialNumber,
                 DateCreated = DateTime.Now,
@@ -64,7 +67,7 @@ namespace coop2._0.Services
                 Body = user.Name + '-' + token + '-' + user.Email,
             };
             await _mailService.SendConfirmMail(mailModel);
-            
+
             return new Response
             {
                 Status = "success",
@@ -82,7 +85,7 @@ namespace coop2._0.Services
             if (user is not { Status: Status.Approuved })
                 throw new Exception("The user has not been approved yet");
 
-            var jwtSecurityToken = await CreateJwtToken(user);
+            var jwtSecurityToken = await _jwtService.GenerateJwtToken(user);
 
             return new TokenModel
             {
@@ -98,13 +101,13 @@ namespace coop2._0.Services
         {
             var values = param.Split('-');
             var user = await _userRepository.GetUserByEmail(values[1]);
-            if(user is not { EmailConfirmed: false })
+            if (user is not { EmailConfirmed: false })
             {
                 throw new Exception("The user is already confirmed");
             }
             string token = values[0].Replace(' ', '+');
             IdentityResult res = await _userRepository.ConfirmEmail(user, token);
-            if(!res.Succeeded)
+            if (!res.Succeeded)
             {
                 throw new Exception("the email hasn't been confirmed, please try again");
             }
@@ -164,32 +167,64 @@ namespace coop2._0.Services
             };
         }
 
-
-        private async Task<JwtSecurityToken> CreateJwtToken(User user)
+        public async Task<IEnumerable<UserItemModel>> GetAll(int page)
         {
-            var roles = await _userRepository.GetUserRoles(user);
-            var roleClaims = roles.Select(role => new Claim("roles", role)).ToList();
+            IEnumerable<UserItemModel> users = await _userRepository.FindAll(page - 1);
+            if (users == null)
+            {
+                throw new Exception("There is no users existe");
+            }
+            return users;
+        }
 
-            var claims = new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Name),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim("Cif", user.Id)
-                }
-                .Union(roleClaims);
+        public async Task<bool> Validate(List<string> users, int page)
+        {
+            bool temoin = true;
+            foreach(string id in users)
+            {
+                var user = await _userRepository.GetUserById(id);
+                user.Status = Status.Approuved;
+                var result = await _userRepository.UpdateUser(user);
+                if(!result.Succeeded) temoin = false;
+            }
+            if(!temoin)
+            {
+                throw new Exception("some users doesn't approuved, please try again later");
+            }
+            return temoin;
+        }
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+        public async Task<bool> Reject(List<string> users, int page)
+        {
+            bool temoin = true;
+            foreach (string id in users)
+            {
+                var user = await _userRepository.GetUserById(id);
+                user.Status = Status.Rejected;
+                var result = await _userRepository.UpdateUser(user);
+                if (!result.Succeeded) temoin = false;
+            }
+            if (!temoin)
+            {
+                throw new Exception("some users doesn't rejected, please try again later");
+            }
+            return temoin;
+        }
 
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: _configuration["JWT:Issuer"],
-                audience: _configuration["JWT:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JWT:DurationInMinutes"])),
-                signingCredentials: signingCredentials);
-
-            return jwtSecurityToken;
+        public async Task<bool> Delete(List<string> users, int page)
+        {
+            bool temoin = true;
+            foreach (string id in users)
+            {
+                var user = await _userRepository.GetUserById(id);
+                var result = await _userRepository.DeleteUser(user);
+                if (!result.Succeeded) temoin = false;
+            }
+            if (!temoin)
+            {
+                throw new Exception("some users doesn't deleted, please try again later");
+            }
+            return temoin;
         }
     }
 }

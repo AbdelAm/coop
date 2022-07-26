@@ -3,6 +3,7 @@ using coop2._0.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace coop2._0.Controllers
@@ -87,6 +88,65 @@ namespace coop2._0.Controllers
                 return Ok(response);
 
             } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("list/{page}")]
+        public async Task<ActionResult<IEnumerable<UserItemModel>>> GetUsers(int page)
+        {
+            try
+            {
+                IEnumerable<UserItemModel> users = await _userService.GetAll(page);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("validate/{page}")]
+        public async Task<ActionResult> ValidateUsers([FromBody] List<string> users, int page)
+        {
+            try
+            {
+                await _userService.Validate(users, page);
+                return Ok();
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("reject/{page}")]
+        public async Task<ActionResult> RejectUsers([FromBody] List<string> users, int page)
+        {
+            try
+            {
+                await _userService.Reject(users, page);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("delete/{page}")]
+        public async Task<ActionResult> DeleteUsers([FromBody] List<string> users, int page)
+        {
+            try
+            {
+                await _userService.Delete(users, page);
+                return Ok();
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

@@ -15,7 +15,8 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     let url = this.router.url.replace(/^\/+/, '');
     url = url.substring(url.indexOf('/')+1);
-    document.getElementById(url).classList.add('active');
+    console.log(url);
+    /*document.getElementById(url).classList.add('active');*/
   }
   setActiveClass(e: Event)
   {
@@ -26,5 +27,9 @@ export class SidebarComponent implements OnInit {
   linkShown()
   {
     return !this.jwt.isAdmin() || (this.jwt.isAdmin() && !this.jwt.switchBtn);
+  }
+  linkAdminShown()
+  {
+    return (this.jwt.isAdmin() && this.jwt.switchBtn);
   }
 }

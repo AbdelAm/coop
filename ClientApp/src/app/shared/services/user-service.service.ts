@@ -7,7 +7,7 @@ import { LoginModel } from '../models/login-model';
 import { RegisterModel } from '../models/register-model';
 import { ResetPasswordModel } from '../models/reset-password-model';
 import { TokenModel } from '../models/token-model';
-import { UserModel } from '../models/user-model';
+import { UserItemModel } from '../models/user-item-model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,8 @@ import { UserModel } from '../models/user-model';
 export class UserService {
 
   readonly baseUrl = environment.apiUrl;
-  user: UserModel;
 
   constructor(private http: HttpClient) {
-    this.user = new UserModel();
   }
 
   register(registerModel: RegisterModel): Observable<Response> {
@@ -39,13 +37,16 @@ export class UserService {
   {
     return this.http.post<Response>(this.baseUrl + 'user/reset-password', resetModel);
   }
-  getUsers(page: number = 1): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(this.baseUrl + `user/list/${page}`);
+  getUsers(page: number = 1): Observable<UserItemModel[]> {
+    return this.http.get<UserItemModel[]>(this.baseUrl + `user/list/${page}`);
   }
-  validateUsers(userList: Array<number>): Observable<UserModel[]> {
-    return this.http.post<UserModel[]>(this.baseUrl + 'user/validate', userList);
+  validateUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
+    return this.http.post<UserItemModel[]>(this.baseUrl + `user/validate/${page}`, userList);
   }
-  deleteUsers(userList: Array<number>): Observable<UserModel[]> {
-    return this.http.post<UserModel[]>(this.baseUrl + 'user/delete', userList);
+  rejectUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
+    return this.http.post<UserItemModel[]>(this.baseUrl + `user/reject/${page}`, userList);
+  }
+  deleteUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
+    return this.http.post<UserItemModel[]>(this.baseUrl + `user/delete/${page}`, userList);
   }
 }

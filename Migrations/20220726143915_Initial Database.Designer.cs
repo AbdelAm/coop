@@ -9,7 +9,7 @@ using coop2._0.Entities;
 namespace coop2._0.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220719151547_Initial Database")]
+    [Migration("20220726143915_Initial Database")]
     partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -218,12 +218,7 @@ namespace coop2._0.Migrations
             modelBuilder.Entity("coop2._0.Entities.Transaction", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SenderBankAccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReceiverBankAccountId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<double>("Amount")
@@ -232,11 +227,17 @@ namespace coop2._0.Migrations
                     b.Property<DateTime>("DateTransaction")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ReceiverBankAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderBankAccountId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id", "SenderBankAccountId", "ReceiverBankAccountId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ReceiverBankAccountId");
 
@@ -379,7 +380,7 @@ namespace coop2._0.Migrations
             modelBuilder.Entity("coop2._0.Entities.BankAccount", b =>
                 {
                     b.HasOne("coop2._0.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("BankAccounts")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -409,6 +410,11 @@ namespace coop2._0.Migrations
                     b.Navigation("TransactionsReceived");
 
                     b.Navigation("TransactionsSended");
+                });
+
+            modelBuilder.Entity("coop2._0.Entities.User", b =>
+                {
+                    b.Navigation("BankAccounts");
                 });
 #pragma warning restore 612, 618
         }

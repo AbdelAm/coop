@@ -23,8 +23,6 @@ namespace coop2._0.Entities
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Transaction>()
-                .HasKey(ds => new { ds.Id, ds.SenderBankAccountId, ds.ReceiverBankAccountId });
-            builder.Entity<Transaction>()
                 .HasOne(d => d.SenderBankAccount)
                 .WithMany(ds => ds.TransactionsSended)
                 .HasForeignKey(ds => ds.SenderBankAccountId);

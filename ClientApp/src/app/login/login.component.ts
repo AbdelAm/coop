@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       res => {
         let tokenModel = new TokenModel(res);
         this.jwt.saveToken(tokenModel);
-        (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigate(['/admin']) : this.router.navigate(['/users']);
+        (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigate(['/admin']) : this.router.navigate(['/global']);
       },
       err => {
         Swal.fire({

@@ -248,16 +248,17 @@ namespace coop2._0.Migrations
                 name: "Transactions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Amount = table.Column<double>(type: "double", nullable: false),
                     SenderBankAccountId = table.Column<int>(type: "int", nullable: false),
                     ReceiverBankAccountId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<double>(type: "double", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     DateTransaction = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transactions", x => new { x.Id, x.SenderBankAccountId, x.ReceiverBankAccountId });
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Transactions_BankAccounts_ReceiverBankAccountId",
                         column: x => x.ReceiverBankAccountId,

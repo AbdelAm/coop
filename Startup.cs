@@ -45,6 +45,7 @@ namespace coop2._0
 
             //Inject services 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IRequestService, RequestService>();

@@ -2,14 +2,18 @@
 using coop2._0.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace coop2._0.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        private const int PageSize = 5;
+
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
@@ -74,6 +78,24 @@ namespace coop2._0.Repositories
         {
             return await _userManager.ResetPasswordAsync(user, token, password);
         }
+
+        public async Task<IEnumerable<UserItemModel>> FindAll(int page)
+        {
+            return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
+                                           .Skip(page*PageSize)
+                                           .Take(PageSize)
+                                           .Select(u => new UserItemModel(u))
+                                           .ToListAsync();
+        }
+
+        public async Task<IdentityResult> UpdateUser(User user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
+        public async Task<IdentityResult> DeleteUser(User user)
+        {
+            return await _userManager.DeleteAsync(user);
+        }
         public async Task<ActionResult> RemoveUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -93,21 +115,6 @@ namespace coop2._0.Repositories
             if (user is not { Status: Status.Progress }) return null;
             user.Status = Status.Rejected;
             _context.Update(user);
-            await _context.SaveChangesAsync();
-            return user;
-        }
-        public async Task<ActionResult<User>> AddUser(UserModel model)
-        {
-
-            var user = new User()
-            {
-                SocialNumber = model.SocialNumber,
-                //CifNumber = model.CifNumber,
-                IsAdmin=model.IsAdmin,
-                DateCreated = DateTime.Now,
-                Status = model.Status
-            };
-            _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user;
         }

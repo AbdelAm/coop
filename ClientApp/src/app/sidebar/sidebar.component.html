@@ -4,7 +4,7 @@
             <div class="nav">
 
                 <div class="sb-sidenav-menu-heading">Interfaces</div>
-                <a routerLink="../users" id="users" class="nav-link collapsed" (click)="setActiveClass($event)">
+                <a routerLink="/users" id="users" class="nav-link collapsed" *ngIf="this.linkAdminShown()" (click)="setActiveClass($event)">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                     Usuarios
                     <!--<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->

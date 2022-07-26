@@ -18,9 +18,8 @@ namespace coop2._0.Repositories
         Task<string> GenerateResetToken(User user);
         Task<IdentityResult> ConfirmEmail(User user, string token);
         Task<IdentityResult> ResetPassword(User user, string token, string password);
-        Task<ActionResult> RemoveUser(int id);
-        Task<ActionResult<User>> RejectUser(int id);
-        Task<ActionResult<User>> ValidateUser(int id);
-        Task<ActionResult<User>> AddUser(UserModel model);
+        Task<IEnumerable<UserItemModel>> FindAll(int page);
+        Task<IdentityResult> UpdateUser(User user);
+        Task<IdentityResult> DeleteUser(User user);
     }
 }
