@@ -1,11 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace coop2._0.Entities
 {
     public class Transaction
     {
+        // [Key]
+        // [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public double Amount { get; set; }
         public int SenderBankAccountId { get; set; }

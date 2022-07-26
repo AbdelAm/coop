@@ -29,7 +29,7 @@ namespace coop2._0.Services
 
         public Task<ActionResult> RemoveTransaction(int id)
         {
-           return _transactionRepository.RemoveTransaction(id);
+            return _transactionRepository.RemoveTransaction(id);
         }
 
         public async Task<ActionResult<Transaction>> RejectTransaction(int id)
@@ -47,6 +47,9 @@ namespace coop2._0.Services
             return await _transactionRepository.ValidateTransaction(id);
         }
 
-        
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByUser(int userId)
+        {
+            return await _transactionRepository.GetTransactionsByUser(userId);
+        }
     }
 }

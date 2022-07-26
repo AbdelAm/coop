@@ -17,7 +17,6 @@ import { RequestListComponent } from './administrateur/request-list/request-list
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'email-confirmation', component: EmailConfirmationComponent},

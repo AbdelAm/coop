@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { JwtService } from 'src/app/shared/services/jwt.service';
 import { TransactionPopupComponent } from '../../transaction-popup/transaction-popup.component';
 
 @Component({
@@ -10,38 +8,41 @@ import { TransactionPopupComponent } from '../../transaction-popup/transaction-p
   styleUrls: ['./transaction-list.component.css']
 })
 export class TransactionListComponent implements OnInit {
-  listTransaction: Array<number>;
+  listTransaction: number[];
+  transactions: TransactionModel[];
   constructor(public dialog:MatDialog, private jwt: JwtService, private router: Router) {
     (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('transactions') : this.router.navigateByUrl('admin/transactions');
-    this.listTransaction = new Array<number>();
+    this.transactions = [];
+    this.listTransaction = [];
   }
 
-  addTransaction() : void {
+  addTransaction(): void {
     this.dialog.open(TransactionPopupComponent, {
       width: '60%',
-      data: "right click"
-    })
+      data: 'right click'
+    });
   }
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
+    this.getTransactions();
   }
-  selectAll(e: Event)
-  {
-    let items = document.querySelectorAll('.items');
-    for(let i = 0; i < items.length; i++)
-    {
-      (<HTMLInputElement> items[i]).checked = (<HTMLInputElement> e.target).checked;
-      let id = parseInt((<HTMLInputElement> items[i]).value);
-      this.toggleItem(id, (<HTMLInputElement> e.target).checked);
+
+  selectAll(e: Event) {
+    const items = document.querySelectorAll('.items');
+    for (let i = 0; i < items.length; i++) {
+      (<HTMLInputElement>items[i]).checked = (<HTMLInputElement>e.target).checked;
+      const id = parseInt((<HTMLInputElement>items[i]).value);
+      this.toggleItem(id, (<HTMLInputElement>e.target).checked);
     }
 
   }
-  setTransaction(id: number, e:Event) {
-    this.toggleItem(id, (<HTMLInputElement> e.target).checked);
+
+  setTransaction(id: number, e: Event) {
+    this.toggleItem(id, (<HTMLInputElement>e.target).checked);
   }
-  toggleItem(id: number, isChecked: boolean)
-  {
+
+  toggleItem(id: number, isChecked: boolean) {
     let elt = document.querySelector('.dataTable-dropdown');
     if (isChecked) {
       this.listTransaction.push(id);
@@ -49,11 +50,49 @@ export class TransactionListComponent implements OnInit {
       let index = this.listTransaction.indexOf(id);
       this.listTransaction.splice(index, 1);
     }
-    if(this.listTransaction.length != 0)
-    {
-      elt.classList.remove("d-none");
+    if (this.listTransaction.length != 0) {
+      elt.classList.remove('d-none');
     } else {
-      elt.classList.add("d-none");
+      elt.classList.add('d-none');
     }
+  }
+
+
+  getTransactions() {
+    this.transactionService.getTransactions().subscribe(
+      data => this.transactions = data
+    );
+  }
+
+
+  validateTransaction(transactionId: number) {
+    this.transactionService.validateTransaction(transactionId).subscribe();
+  }
+
+  rejectTransaction(transactionId: number) {
+    this.transactionService.rejectTransaction(transactionId).subscribe();
+
+  }
+
+  removeTransaction(transactionId: number) {
+    this.transactionService.removeTransaction(transactionId).subscribe();
+
+  }
+
+  updateTransaction() {
+    this.transactionService.updateTransaction();
+  }
+
+  validateAllTransactions(listTransaction: Array<number>) {
+    this.transactionService.validateAllTransaction(listTransaction).subscribe();
+
+  }
+
+  rejectAllTransactions(listTransaction: Array<number>) {
+    this.transactionService.rejectAllTransaction(listTransaction).subscribe();
+  }
+
+  removeAllTransactions(listTransaction: Array<number>) {
+    this.transactionService.removeAllTransaction(listTransaction).subscribe();
   }
 }

@@ -1,4 +1,5 @@
-import { BankAccountModel } from "./bankAccount-model";
+import {BankAccountModel} from './bankAccount-model';
+
 
 export class TransactionModel {
     id!: number;
@@ -7,6 +8,6 @@ export class TransactionModel {
     senderAccountId!: number;
     receiverAccountId: number;
     senderAccount!: BankAccountModel;
-    receiverAccount!: BankAccountModel; 
+    receiverAccount!: BankAccountModel;
     status: string;
 }

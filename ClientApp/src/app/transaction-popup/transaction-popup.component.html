@@ -1,82 +1,94 @@
 <h4>información de la transacción</h4>
-<mat-stepper linear #stepper>
-  <mat-step label="cuentas de origen">
-    <div class="form-check" style="margin-top:40px;">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-      <label class="form-check-label" for="flexRadioDefault1">
-        Mi cuenta CoopHalal
-      </label>
-    </div>
-    <div class="form-check" style="margin-top:20px;">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-      <label class="form-check-label" for="flexRadioDefault2">
-        Mi cuenta en otra entidad
-      </label>
-      <input type="text" class="form-control" style="margin-top:10px;">
-    </div>
-    <button mat-button matStepperNext type="button" class="btn btn-success" style="margin-top:10px">Siguiente</button>
-
-
-  </mat-step>
-
-  <mat-step label="cuenta de destino">
-
-    <div class="form-check" style="margin-top:10px;">
-      <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1.1">
-      <label class="form-check-label" for="flexRadioDefault1.1">
-        a una de mis historias de CoopHalal
-      </label>
-    </div>
-    <div class="form-check" style="margin-top:25px;">
-      <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault2.1" checked>
-      <label class="form-check-label" for="flexRadioDefault2.1">
-        a otra cuenta CoopHalal
-      </label>
-      <input type="text" class="form-control" style="margin-top:5px;">
-    </div>
-    <div class="form-check" style="margin-top:25px;">
-      <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault2.2" checked>
-      <label class="form-check-label" for="flexRadioDefault2.2">
-        a otra cuenta de otra entidad
-      </label>
-      <input type="text" class="form-control" style="margin-top:5px;">
-    </div>
-    <button mat-button matStepperPrevious style="margin-top:10px" type="button" class="btn btn-light">espalda</button>
-    <button mat-button matStepperNext style="margin-top:10px;margin-left:10px" type="button" class="btn btn-success">Siguiente</button>
-
-  </mat-step>
-
-  <mat-step label="Monto">
-    <div class="input-group" style="margin-top:50px;">
-      <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-      <div class="input-group-append">
-        <span class="input-group-text">Euros</span>
+<mat-stepper #stepper>
+  <form [formGroup]="firstFormGroup">
+    <mat-step [stepControl]="firstFormGroup" >
+      <ng-template matStepLabel>cuentas de origen</ng-template>
+      <div class="form-check" style="margin-top:40px;">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+        <label class="form-check-label" for="flexRadioDefault1">
+          Mi cuenta CoopHalal
+        </label>
       </div>
-    </div>
-    <button mat-button matStepperPrevious style="margin-top:10px" type="button" class="btn btn-light">espalda</button>
-    <button mat-button matStepperNext style="margin-top:10px;margin-left:10px" type="button" class="btn btn-success">Siguiente</button>
-  </mat-step>
+      <div class="form-check" style="margin-top:20px;">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+        <label class="form-check-label" for="flexRadioDefault2">
+          Mi cuenta en otra entidad
+        </label>
+        <input  type="text" class="form-control" style="margin-top:10px;" formControlName="originalAccount">
+      </div>
 
-  <mat-step label="Datos adicionales">
+      <button mat-button matStepperNext type="button" class="btn btn-success" style="margin-top:10px">Siguiente</button>
+    </mat-step>
 
-    <div class="form-group"  style="margin-bottom:10px;">
-      <label for="nomdest">Nombre del destinatario</label>
-      <input type="text" class="form-control" id="nomdest">
-    </div>
+    <mat-step [stepControl]="firstFormGroup" >
 
-    <div class="form-group" style="margin-bottom:10px;">
-      <label for="concept">Concepto</label>
-      <input class="form-control" id="concept">
-    </div>
+      <ng-template matStepLabel>cuenta de destino</ng-template>
+      <div class="form-check" style="margin-top:10px;">
+        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1.1">
+        <label class="form-check-label" for="flexRadioDefault1.1">
+          a una de mis historias de CoopHalal
+        </label>
+      </div>
+      <div class="form-check" style="margin-top:25px;">
+        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault2.1" checked>
+        <label class="form-check-label" for="flexRadioDefault2.1">
+          a otra cuenta CoopHalal
+        </label>
+        <input  type="text" class="form-control" style="margin-top:5px;">
+      </div>
+      <div class="form-check" style="margin-top:25px;">
+        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault2.2" checked>
+        <label class="form-check-label" for="flexRadioDefault2.2">
+          a otra cuenta de otra entidad
+        </label>
+        <input  type="text" class="form-control" style="margin-top:5px;">
+      </div>
 
-    <div class="form-group" style="margin-bottom:10px;">
-      <label for="fetcha">Fetcha</label>
-      <input type="text" class="form-control" id="fetcha">
-    </div>
-    <div class="form-group">
-      <button type="button" class="btn btn-danger">Anular</button>
-      <button mat-button matStepperPrevious style="margin-left:10px" type="button" class="btn btn-light">espalda</button>
-      <button type="button" class="btn btn-success" style="float:right;">Enviar</button>
-    </div>
-  </mat-step>
+      <button mat-button matStepperPrevious style="margin-top:10px" type="button" class="btn btn-light">espalda</button>
+      <button mat-button matStepperNext style="margin-top:10px;margin-left:10px" type="button" class="btn btn-success">
+        Siguiente
+      </button>
+
+    </mat-step>
+
+    <mat-step [stepControl]="firstFormGroup" >
+      <ng-template matStepLabel>monto</ng-template>
+      <div class="input-group" style="margin-top:50px;">
+        <input  type="number" step="any" min="0" class="form-control" formControlName="amount"
+               aria-label="Amount (to the nearest dollar)" required>
+        <div class="input-group-append">
+          <span class="input-group-text">Euros</span>
+        </div>
+      </div>
+      <button mat-button matStepperPrevious style="margin-top:10px" type="button" class="btn btn-light">espalda</button>
+      <button mat-button matStepperNext style="margin-top:10px;margin-left:10px" type="button" class="btn btn-success">
+        Siguiente
+      </button>
+    </mat-step>
+
+    <mat-step [stepControl]="firstFormGroup" >
+      <ng-template matStepLabel>atos adicionales</ng-template>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label for="nomdest">Nombre del destinatario</label>
+        <input  type="text" class="form-control" id="nomdest" formControlName="destinationName" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:10px;">
+        <label for="concept">Concepto</label>
+        <input  class="form-control" id="concept" type="text" formControlName="concept" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:10px;">
+        <label for="fetcha">Fetcha</label>
+        <input  type="datetime-local" class="form-control" id="fetcha" formControlName="transactionTimestamp" required>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-danger">Anular</button>
+        <button mat-button matStepperPrevious style="margin-left:10px" type="button" class="btn btn-light">espalda
+        </button>
+      </div>
+
+      <button class="btn btn-success" style="float:right;" (click)="submitTransaction()">Enviar</button>
+    </mat-step>
+  </form>
 </mat-stepper>

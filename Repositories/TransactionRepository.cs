@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using coop2._0.Model;
 
@@ -29,6 +30,12 @@ namespace coop2._0.Repositories
             return await _context.Transactions.FindAsync(id);
         }
 
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByUser(int userId)
+        {
+            return await _context.Transactions
+                .Where(u => u.SenderBankAccountId == userId || u.ReceiverBankAccountId == userId).ToListAsync();
+        }
+
         public async Task<ActionResult> RemoveTransaction(int id)
         {
             var transaction = await _context.Transactions.FindAsync(id);
@@ -47,8 +54,10 @@ namespace coop2._0.Repositories
             var transaction = await _context.Transactions.FindAsync(id);
 
             if (transaction is not { Status: Status.Progress }) return null;
+
             transaction.Status = Status.Rejected;
-            _context.Update(transaction);
+
+            _context.Entry(transaction).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return transaction;
         }
@@ -83,7 +92,9 @@ namespace coop2._0.Repositories
             transaction.SenderBankAccount.Balance -= transaction.Amount;
             transaction.ReceiverBankAccount.Balance += transaction.Amount;
             transaction.Status = Status.Approuved;
-            _context.Update(transaction);
+
+
+            _context.Entry(transaction).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return transaction;
         }

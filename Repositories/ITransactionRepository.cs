@@ -14,5 +14,6 @@ namespace coop2._0.Repositories
         Task<ActionResult<Transaction>> RejectTransaction(int id);
         Task<ActionResult<Transaction>> AddTransaction(TransactionModel model);
         Task<ActionResult<Transaction>> ValidateTransaction(int id);
+        Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByUser(int userId);
     }
 }
