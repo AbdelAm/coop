@@ -7,5 +7,6 @@ namespace coop2._0.Services
     {
         Task SendConfirmMail(MailModel mailer);
         Task SendForgetMail(MailModel mailer);
+        Task SendValidationMail(MailModel mailer);
     }
 }

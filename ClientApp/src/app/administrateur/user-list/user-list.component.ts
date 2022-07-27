@@ -23,7 +23,9 @@ export class UserListComponent implements OnInit {
   ]
   
   constructor(public dialog:MatDialog, private jwt:JwtService, private router: Router, private userService: UserService) {
-    (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('users') : this.router.navigateByUrl('admin/users');
+    if(!this.jwt.isAdmin() || !this.jwt.switchBtn) {
+      this.router.navigate(['global']);
+    }
     this.listUser = new Array<string>();
     this.users = new Array<UserItemModel>();
   }
@@ -33,7 +35,9 @@ export class UserListComponent implements OnInit {
       res => {
         this.users.push(...res);
       },
-      err => console.log(err)
+      err => {
+        this.router.navigate(['global']);
+      }
     );
     window.scrollTo(0, 0);
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RegisterModel } from '../shared/models/register-model';
-import { UserService } from '../shared/services/user-service.service';
+import { AuthentificationService } from '../shared/services/authentification.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,7 +12,7 @@ export class SignupComponent implements OnInit {
 
   registerModel: RegisterModel;
 
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthentificationService) {
     this.registerModel = new RegisterModel();
   }
 
@@ -22,7 +22,7 @@ export class SignupComponent implements OnInit {
   onSubmit()
   {
     if(this.registerModel.password == this.registerModel.confirmPassword) {
-      this.userService.register(this.registerModel).subscribe(
+      this.authService.register(this.registerModel).subscribe(
         res => {
           Swal.fire({
             title: "User created successfully!!!",

@@ -1,6 +1,4 @@
-import {HttpEvent, HttpHandler, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
 import {TokenModel} from '../models/token-model';
 
 @Injectable({
@@ -19,18 +17,10 @@ export class JwtService {
     this.switchBtn = true;
   }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.jwt) {
-      req = req.clone({
-        headers: req.headers.set('Authorisation', `${this.jwt.token}`)
-      });
-    }
-    return next.handle(req);
-  }
-
   saveToken(tokenModel: TokenModel) {
-    localStorage.setItem('auth', JSON.stringify(tokenModel));
     this.jwt = tokenModel;
+    localStorage.setItem('auth', JSON.stringify(tokenModel));
+    return true;
   }
 
   isConnected() {

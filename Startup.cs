@@ -44,6 +44,7 @@ namespace coop2._0
             );
 
             //Inject services 
+            services.AddScoped<IAuthentificationService, AuthentificationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IMailService, MailService>();
@@ -104,6 +105,10 @@ namespace coop2._0
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

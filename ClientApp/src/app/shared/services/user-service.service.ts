@@ -18,25 +18,6 @@ export class UserService {
 
   constructor(private http: HttpClient) {
   }
-
-  register(registerModel: RegisterModel): Observable<Response> {
-    return this.http.post<Response>(this.baseUrl + 'user/register', registerModel);
-  }
-  confirmEmail(url: string): Observable<Response>
-  {
-    return this.http.get<Response>(this.baseUrl + `user${url}`);
-  }
-  login(loginModel: LoginModel): Observable<TokenModel> {
-    return this.http.post<TokenModel>(this.baseUrl + 'user/login', loginModel);
-  }
-  forgetPassword(forgetModel: ForgetPasswordModel): Observable<Response>
-  {
-    return this.http.post<Response>(this.baseUrl + 'user/forget-password', forgetModel);
-  }
-  resetPassword(resetModel: ResetPasswordModel): Observable<Response>
-  {
-    return this.http.post<Response>(this.baseUrl + 'user/reset-password', resetModel);
-  }
   getUsers(page: number = 1): Observable<UserItemModel[]> {
     return this.http.get<UserItemModel[]>(this.baseUrl + `user/list/${page}`);
   }

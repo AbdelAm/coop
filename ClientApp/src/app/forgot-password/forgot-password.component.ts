@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { ForgetPasswordModel } from '../shared/models/forget-password-model';
-import { UserService } from '../shared/services/user-service.service';
+import { AuthentificationService } from '../shared/services/authentification.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -12,7 +12,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   forgetModel: ForgetPasswordModel;
 
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthentificationService) {
     this.forgetModel = new ForgetPasswordModel();
   }
 
@@ -21,7 +21,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit()
   {
-    this.userService.forgetPassword(this.forgetModel).subscribe(
+    this.authService.forgetPassword(this.forgetModel).subscribe(
       res => {
         Swal.fire({
           title: "Email has been sent successfully!!!",

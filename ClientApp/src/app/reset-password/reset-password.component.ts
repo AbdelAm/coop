@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ResetPasswordModel } from '../shared/models/reset-password-model';
-import { UserService } from '../shared/services/user-service.service';
+import { AuthentificationService } from '../shared/services/authentification.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -12,7 +12,7 @@ import { UserService } from '../shared/services/user-service.service';
 export class ResetPasswordComponent implements OnInit {
 
   resetModel: ResetPasswordModel;
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private authService: AuthentificationService, private router: Router) {
     this.resetModel = new ResetPasswordModel();
     let params = this.router.url.split("param=")[1].split("-");
     this.resetModel.email = params[1];
@@ -26,7 +26,7 @@ export class ResetPasswordComponent implements OnInit {
   onSubmit()
   {
     if(this.resetModel.password === this.resetModel.confirmPassword) {
-      this.userService.resetPassword(this.resetModel).subscribe(
+      this.authService.resetPassword(this.resetModel).subscribe(
         res => {
           Swal.fire({
             title: "Password has been changed successfully",

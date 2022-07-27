@@ -8,11 +8,6 @@ namespace coop2._0.Services
 {
     public interface IUserService
     {
-        Task<Response> Register(RegisterModel model);
-        Task<TokenModel> Login(LoginModel model);
-        Task<Response> ConfirmUser(string param);
-        Task<Response> ForgetPassword(ForgetPasswordModel model);
-        Task<Response> ResetPassword(ResetPasswordModel model);
         Task<IEnumerable<UserItemModel>> GetAll(int page);
         Task<bool> Validate(List<string> users, int page);
         Task<bool> Reject(List<string> users, int page);

@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {NavMenuComponent} from './nav-menu/nav-menu.component';
 import {HomeComponent} from './home/home.component';
@@ -24,6 +24,8 @@ import {ResetPasswordComponent} from './reset-password/reset-password.component'
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import { JwtService } from './shared/services/jwt.service';
+import { TokenInterceptorService } from './shared/services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,10 @@ import {MatInputModule} from '@angular/material/input';
     MatFormFieldModule,
     MatInputModule
   ],
-  providers: [AdministrateurModule],
+  providers: [
+    AdministrateurModule,
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

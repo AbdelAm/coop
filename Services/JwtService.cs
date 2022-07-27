@@ -42,7 +42,7 @@ namespace coop2._0.Services
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JWT:DurationInMinutes"])),
+                expires: DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"])),
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;

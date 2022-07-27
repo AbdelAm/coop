@@ -8,6 +8,9 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 import { RequestListComponent } from './request-list/request-list.component';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtService } from '../shared/services/jwt.service';
+import { TokenInterceptorService } from '../shared/services/token-interceptor.service';
 
 
 @NgModule({
