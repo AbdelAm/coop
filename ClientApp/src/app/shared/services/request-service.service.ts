@@ -26,6 +26,10 @@ export class RequestServiceService {
   validateRequests(requestList: Array<number>): Observable<RequestModel[]> {
     return this.http.post<RequestModel[]>(this.baseUrl + '/admin/requests/validate', requestList);
   }
+
+  rejectRequests(requestList: Array<number>, page: number = 1): Observable<RequestModel[]> {
+    return this.http.post<RequestModel[]>(this.baseUrl + `/admin/requests/reject`, requestList);
+  }
   deleteRequests(requestList: Array<number>): Observable<RequestModel[]> {
     return this.http.post<RequestModel[]>(this.baseUrl + '/admin/requests/delete', requestList);
   }
