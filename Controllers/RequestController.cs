@@ -25,7 +25,8 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        [Route("list/{page}")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequests(int page)
         {
             return await _requestService.GetRequests();
         }
@@ -33,10 +34,10 @@ namespace coop2._0.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
-            var transaction = await _requestService.GetRequest(id);
-            if (transaction == null)
+            var request = await _requestService.GetRequest(id);
+            if (request == null)
                 return NotFound();
-            return Ok(transaction);
+            return Ok(request);
         }
 
         [HttpDelete("{id}")]
