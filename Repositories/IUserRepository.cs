@@ -19,6 +19,7 @@ namespace coop2._0.Repositories
         Task<IdentityResult> ConfirmEmail(User user, string token);
         Task<IdentityResult> ResetPassword(User user, string token, string password);
         Task<IEnumerable<UserItemModel>> FindAll(int page);
+        Task<int> GetCount();
         Task<IdentityResult> UpdateUser(User user);
         Task<IdentityResult> DeleteUser(User user);
     }

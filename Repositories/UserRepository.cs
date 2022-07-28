@@ -12,7 +12,7 @@ namespace coop2._0.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private const int PageSize = 5;
+        private const int PageSize = 1;
 
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -88,6 +88,11 @@ namespace coop2._0.Repositories
                                            .ToListAsync();
         }
 
+        public async Task<int> GetCount()
+        {
+            return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
+                                           .CountAsync();
+        }
         public async Task<IdentityResult> UpdateUser(User user)
         {
             return await _userManager.UpdateAsync(user);

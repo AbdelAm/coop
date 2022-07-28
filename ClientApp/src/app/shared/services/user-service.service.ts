@@ -18,7 +18,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {
   }
-  getUsers(page: number = 1): Observable<UserItemModel[]> {
+  getUsers(page: number = 0): Observable<UserItemModel[]> {
     return this.http.get<UserItemModel[]>(this.baseUrl + `user/list/${page}`);
   }
   validateUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
