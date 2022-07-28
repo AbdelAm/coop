@@ -47,17 +47,18 @@
                               <th data-sortable="" style="width: 10%;">Message</th>
                               <th data-sortable="" style="width: 10%;">DateRequest</th>
                               <th data-sortable="" style="width: 10%;">Status</th>
+                              <th data-sortable="" style="width: 10%;">Action</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr *ngFor="let request of requests">
-                              <td><input (change)="setRequest(request.Id, $event)" class="items" type="checkbox" value="{{request.Id}}" /></td>
-                              <td>{{request.Id}}</td>
-                              <td>{{request.Type}}</td>
-                              <td>{{request.Message}}</td>
-                              <td>{{request.DateRequest}}</td>
-                              <td class="icons d-flex justify-content-center">
-                                <p>{{request.Status}}</p>
+                              <td><input (change)="setRequest(request.Id, $event)" class="items" type="checkbox" value="{{request.id}}" /></td>
+                              <td>{{request.id}}</td>
+                              <td>{{request.type}}</td>
+                              <td>{{request.message}}</td>
+                              <td>{{request.dateRequest}}</td>
+                              <td [innerHTML]="this.status[request.status]"></td>
+                              <td class="icons d-flex justify-i-center align-items-center h-100" >
                                 <button class="border-0 bg-transparent align-middle">
                                   <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
                                 </button>

@@ -17,6 +17,11 @@ import Swal from 'sweetalert2';
 export class RequestListComponent implements OnInit {
   listRequest: Array<number>
   requests: RequestModel[];
+  status = [
+    '<strong>In Progress</strong>',
+    '<strong class="text-success">Approuved</strong>',
+    '<strong class="text-danger text-capitalize">Rejected</strong>'
+  ]
 
 
 
@@ -34,6 +39,7 @@ export class RequestListComponent implements OnInit {
       },
       err => console.log(err)
     );
+    console.log(this.requests);
     window.scrollTo(0, 0);
   }
 
@@ -101,7 +107,7 @@ export class RequestListComponent implements OnInit {
     this.requestService.validateRequests(this.listRequest).subscribe(
       res => {
         this.requests = this.requests.filter(u => {
-          return !this.listRequest.includes(u.Id);
+          return !this.listRequest.includes(u.id);
         });
         this.listRequest.length = 0;
         Swal.fire({
@@ -117,7 +123,7 @@ export class RequestListComponent implements OnInit {
     this.requestService.rejectRequests(this.listRequest).subscribe(
       res => {
         this.requests.forEach(u => {
-          if (this.listRequest.includes(u.Id)) {
+          if (this.listRequest.includes(u.id)) {
             u.status = StatusModel.Rejected;
           }
         })
@@ -134,7 +140,7 @@ export class RequestListComponent implements OnInit {
     this.requestService.deleteRequests(this.listRequest).subscribe(
       res => {
         this.requests = this.requests.filter(u => {
-          return !this.listRequest.includes(u.Id);
+          return !this.listRequest.includes(u.id);
         });
         this.listRequest.length = 0;
         Swal.fire({

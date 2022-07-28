@@ -15,22 +15,22 @@ export class RequestServiceService {
     this.request = new RequestModel();
   }
   setRequest(): Observable<RequestModel> {
-    return this.http.post<RequestModel>(this.baseUrl + '/requests/add', this.request);
+    return this.http.post<RequestModel>(this.baseUrl + 'request/add', this.request);
   }
   getRequests(page: number = 1): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(this.baseUrl + `/admin/requests/list/${page}`);
+    return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${page}`);
   }
   getRequestsByUser(userId: string, page: number = 1): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(this.baseUrl + `/requests/list/${userId}/${page}`);
+    return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${userId}/${page}`);
   }
   validateRequests(requestList: Array<number>): Observable<RequestModel[]> {
-    return this.http.post<RequestModel[]>(this.baseUrl + '/admin/requests/validate', requestList);
+    return this.http.post<RequestModel[]>(this.baseUrl + 'request/validate', requestList);
   }
 
   rejectRequests(requestList: Array<number>, page: number = 1): Observable<RequestModel[]> {
-    return this.http.post<RequestModel[]>(this.baseUrl + `/admin/requests/reject`, requestList);
+    return this.http.post<RequestModel[]>(this.baseUrl + `request/reject`, requestList);
   }
   deleteRequests(requestList: Array<number>): Observable<RequestModel[]> {
-    return this.http.post<RequestModel[]>(this.baseUrl + '/admin/requests/delete', requestList);
+    return this.http.post<RequestModel[]>(this.baseUrl + 'request/delete', requestList);
   }
 }
