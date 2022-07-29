@@ -23,11 +23,11 @@ namespace coop2._0.Controllers
 
         [HttpGet]
         [Route("list/{page}")]
-        public async Task<ActionResult<UserItems>> GetUsers(int page)
+        public async Task<ActionResult<ItemsModel<UserItemModel>>> GetUsers(int page)
         {
             try
             {
-                UserItems users = await _userService.GetAll(page);
+                ItemsModel<UserItemModel> users = await _userService.GetAll(page);
                 return Ok(users);
             }
             catch (Exception ex)

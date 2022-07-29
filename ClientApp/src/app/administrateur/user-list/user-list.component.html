@@ -51,7 +51,7 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr *ngFor="let user of userItems.users">
+                                    <tr *ngFor="let user of userItems.items">
                                       <td><input (change)="setUser(user.cif, $event)" class="items" type="checkbox" value="{{user.cif}}" /></td>
                                       <td>{{user.cif}}</td>
                                       <td>{{user.name}}</td>

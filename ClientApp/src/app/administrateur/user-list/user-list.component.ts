@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UserItemModel } from 'src/app/shared/models/user-item-model';
-import { UserItems } from 'src/app/shared/models/user-items';
+import { ItemsModel } from 'src/app/shared/models/items-model';
 import { JwtService } from 'src/app/shared/services/jwt.service';
 import { UserService } from 'src/app/shared/services/user-service.service';
 import { TransactionPopupComponent } from 'src/app/transaction-popup/transaction-popup.component';
@@ -15,8 +15,9 @@ import Swal from 'sweetalert2';
 })
 export class UserListComponent implements OnInit {
 
+  readonly pageSize = 1;
   listUser: Array<string>;
-  userItems: UserItems;
+  userItems: ItemsModel<UserItemModel>;
   pageNumber: Array<number>;
   status = [
     '<strong>In Progress</strong>',
@@ -29,12 +30,39 @@ export class UserListComponent implements OnInit {
       this.router.navigate(['global']);
     }
     this.listUser = new Array<string>();
-    this.userItems = new UserItems();
+    this.userItems = new ItemsModel<UserItemModel>();
     this.pageNumber = [];
   }
 
   ngOnInit(): void {
     this.getItems(0);
+  }
+
+  getItems(num: number)
+  {
+    this.userService.getUsers(num).subscribe(
+      res => {
+        console.log(res);
+        Object.assign(this.userItems, res);
+        let result = Math.trunc(this.userItems.itemsNumber / this.pageSize);
+        if(this.userItems.itemsNumber % this.pageSize != 0) {
+          result++;
+        }
+        this.pageNumber = Array.from(Array(result).keys());
+      },
+      err => {
+        if([401,403].includes(err["status"])) {
+            this.router.navigate(['global']);
+        } else {
+          Swal.fire({
+            title: "There is a Problem!!!",
+            text: err["error"],
+            icon: "error"
+          })
+        }
+      }
+    );
+    window.scrollTo(0, 0);
   }
   selectAll(e: Event)
   {
@@ -100,7 +128,7 @@ export class UserListComponent implements OnInit {
   {
     this.userService.validateUsers(this.listUser).subscribe(
       res => {
-        this.userItems.users = this.userItems.users.filter(u => {
+        this.userItems.items = this.userItems.items.filter(u => {
           return !this.listUser.includes(u.cif);
         });
         this.listUser.length = 0;
@@ -116,7 +144,7 @@ export class UserListComponent implements OnInit {
   {
     this.userService.rejectUsers(this.listUser).subscribe(
       res => {
-        this.userItems.users.forEach(u => {
+        this.userItems.items.forEach(u => {
           if(this.listUser.includes(u.cif)) {
             u.status = '2';
           }
@@ -134,7 +162,7 @@ export class UserListComponent implements OnInit {
   {
     this.userService.deleteUsers(this.listUser).subscribe(
       res => {
-        this.userItems.users = this.userItems.users.filter(u => {
+        this.userItems.items = this.userItems.items.filter(u => {
           return !this.listUser.includes(u.cif);
         });
         this.listUser.length = 0;
@@ -145,32 +173,6 @@ export class UserListComponent implements OnInit {
       },
       err => console.log(err)
     )
-  }
-
-  getItems(num: number)
-  {
-    this.userService.getUsers(num).subscribe(
-      res => {
-        Object.assign(this.userItems, res);
-        let result = Math.trunc(this.userItems.userNumber / 1);
-        if(this.userItems.userNumber % 1 != 0) {
-          result++;
-        }
-        this.pageNumber = Array.from(Array(result).keys());
-      },
-      err => {
-        if([401,403].includes(err["status"])) {
-            this.router.navigate(['global']);
-        } else {
-          Swal.fire({
-            title: "There is a Problem!!!",
-            text: err["error"],
-            icon: "error"
-          })
-        }
-      }
-    );
-    window.scrollTo(0, 0);
   }
 
   setActiveClass(i: number)

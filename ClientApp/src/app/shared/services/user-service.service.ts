@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ForgetPasswordModel } from '../models/forget-password-model';
+import { ItemsModel } from '../models/items-model';
 import { LoginModel } from '../models/login-model';
 import { RegisterModel } from '../models/register-model';
 import { ResetPasswordModel } from '../models/reset-password-model';
@@ -18,8 +19,8 @@ export class UserService {
 
   constructor(private http: HttpClient) {
   }
-  getUsers(page: number = 0): Observable<UserItemModel[]> {
-    return this.http.get<UserItemModel[]>(this.baseUrl + `user/list/${page}`);
+  getUsers(page: number = 0): Observable<ItemsModel<UserItemModel>> {
+    return this.http.get<ItemsModel<UserItemModel>>(this.baseUrl + `user/list/${page}`);
   }
   validateUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
     return this.http.post<UserItemModel[]>(this.baseUrl + `user/validate/${page}`, userList);
