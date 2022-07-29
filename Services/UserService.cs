@@ -34,6 +34,16 @@ namespace coop2._0.Services
             };
         }
 
+        public async Task<IEnumerable<UserItemModel>> SearchBy(string value)
+        {
+            IEnumerable<UserItemModel> users = await _userRepository.FindBy(value);
+            if(users == null)
+            {
+                throw new Exception("There is no users existe with this value");
+            }
+            return users;
+        }
+
         public async Task<bool> Validate(List<string> users, int page)
         {
             bool temoin = true;

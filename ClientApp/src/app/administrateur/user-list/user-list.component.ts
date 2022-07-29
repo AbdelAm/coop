@@ -42,7 +42,6 @@ export class UserListComponent implements OnInit {
   {
     this.userService.getUsers(num).subscribe(
       res => {
-        console.log(res);
         Object.assign(this.userItems, res);
         let result = Math.trunc(this.userItems.itemsNumber / this.pageSize);
         if(this.userItems.itemsNumber % this.pageSize != 0) {
@@ -180,6 +179,15 @@ export class UserListComponent implements OnInit {
     let current = document.querySelector(".pagination-items.active");
     current.classList.remove("active");
     document.querySelectorAll('.pagination-items')[i].classList.add("active");
+  }
+
+  searchItem(e: Event)
+  {
+    let value = (<HTMLInputElement> e.target).value;
+    this.userService.searchUser(value).subscribe(
+      res => console.log(res),
+      err => console.log(err)
+    )
   }
 
 }

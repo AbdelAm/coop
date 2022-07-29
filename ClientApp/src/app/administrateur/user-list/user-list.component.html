@@ -33,7 +33,7 @@
                                       <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
                                     </button>
                                   </div>
-                                  <div class="dataTable-search"><input class="dataTable-input" placeholder="Búsqueda..." type="text"></div>
+                                  <div class="dataTable-search"><input class="dataTable-input" (keyup)="searchItem($event)" placeholder="Búsqueda..." type="text"></div>
                               </div>
                             </div>
                               <div class="dataTable-container">

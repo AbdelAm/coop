@@ -93,6 +93,13 @@ namespace coop2._0.Repositories
             return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
                                            .CountAsync();
         }
+
+        public async Task<IEnumerable<UserItemModel>> FindBy(string value)
+        {
+            return await _userManager.Users.Where(u => !u.IsAdmin && (u.Id.Contains(value) || u.Name.Contains(value) || u.Email.Contains(value)))
+                                           .Select(u => new UserItemModel(u))
+                                           .ToListAsync();
+        }
         public async Task<IdentityResult> UpdateUser(User user)
         {
             return await _userManager.UpdateAsync(user);

@@ -36,6 +36,21 @@ namespace coop2._0.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{value}")]
+        public async Task<ActionResult<IEnumerable<UserItemModel>>> GetBy(string value)
+        {
+            try
+            {
+                IEnumerable<UserItemModel> users = await _userService.SearchBy(value);
+                return Ok(users);
+
+            } catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("validate/{page}")]
         public async Task<ActionResult> ValidateUsers([FromBody] List<string> users, int page)
