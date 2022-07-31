@@ -8,13 +8,13 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
-  {path: 'admin', component: AdministrateurComponent, 
+  {path: 'admin', component: AdministrateurComponent,
   children: [
-    {path: '', redirectTo: 'users', pathMatch: 'full'},
     {path: 'users', component: UserListComponent},
-    {path: 'transactions', component: TransactionListComponent},
+    {path: 'transaction', component: TransactionListComponent},
     {path: 'requests', component: RequestListComponent},
-    {path: 'profil', component: ProfileComponent}
+    {path: 'profil', component: ProfileComponent},
+    {path: '', redirectTo: 'users', pathMatch: 'full'}
 
   ]}
 ];

@@ -1,11 +1,10 @@
 ﻿using coop2._0.Entities;
+using coop2._0.Model;
+using coop2._0.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using coop2._0.Model;
-using coop2._0.Services;
 
 namespace coop2._0.Controllers
 {
@@ -40,7 +39,7 @@ namespace coop2._0.Controllers
         {
             return await _transactionService.GetTransactionsByUser(userId);
         }
-    
+
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> RemoveTransaction(int id)

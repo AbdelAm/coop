@@ -15,8 +15,13 @@ export class TransactionListComponent implements OnInit {
   listTransaction: number[];
   transactions: TransactionModel[];
 
+  pageNumber: number = 1;
+  pageSize: number = 10;
+  totalElements: number = 100;
+  maxSize: number = 5;
+
   constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private transactionService: TransactionService) {
-    (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('transactions') : this.router.navigateByUrl('admin/transactions');
+    (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('transaction') : this.router.navigateByUrl('admin/transaction');
     this.transactions = [];
     this.listTransaction = [];
   }
@@ -30,7 +35,7 @@ export class TransactionListComponent implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
-    this.getTransactions();
+    this.getTransactionsByUser();
   }
 
   selectAll(e: Event) {
@@ -63,10 +68,13 @@ export class TransactionListComponent implements OnInit {
   }
 
 
-  getTransactions() {
-    this.transactionService.getTransactions().subscribe(
-      data => this.transactions = data
-    );
+  getTransactionsByUser() {
+    const connectedUserId = this.jwt.getConnectedUserId();
+    if (connectedUserId !== undefined) {
+      this.transactionService.getTransactionsByUser(connectedUserId).subscribe(
+        data => this.transactions = data
+      );
+    }
   }
 
 

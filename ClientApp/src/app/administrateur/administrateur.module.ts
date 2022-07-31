@@ -11,6 +11,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtService } from '../shared/services/jwt.service';
 import { TokenInterceptorService } from '../shared/services/token-interceptor.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({

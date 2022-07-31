@@ -39,4 +39,8 @@ export class JwtService {
     this.jwt = null;
     localStorage.removeItem('auth');
   }
+
+  getConnectedUserId() {
+    return this.jwt.cif;
+  }
 }

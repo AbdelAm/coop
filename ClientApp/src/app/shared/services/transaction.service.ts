@@ -17,7 +17,7 @@ export class TransactionService {
   }
 
   getTransactionsByUser(userBankAccountId): Observable<TransactionModel[]> {
-    return this.httpClient.get<TransactionModel[]>(this.baseUrl + '/user/' + userBankAccountId);
+    return this.httpClient.post<TransactionModel[]>(this.baseUrl + '/user' , userBankAccountId);
   }
 
   getTransactions(): Observable<TransactionModel[]> {
