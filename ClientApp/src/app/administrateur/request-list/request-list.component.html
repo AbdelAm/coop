@@ -22,13 +22,13 @@
                     <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
                       <div class="dataTable-top">
                         <div class="dataTable-dropdown pt-2 d-none">
-                          <button class="border-0 bg-transparent align-middle">
+                          <button class="border-0 bg-transparent align-middle" (click)="validateAll()">
                             <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
                           </button>
-                          <button class="border-0 bg-transparent align-middle">
+                          <button class="border-0 bg-transparent align-middle" (click)="rejectAll()">
                             <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
                           </button>
-                          <button class="border-0 bg-transparent align-middle">
+                          <button class="border-0 bg-transparent align-middle" (click)="deleteAll()">
                             <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
                           </button>
                         </div>
@@ -42,24 +42,23 @@
                           <thead>
                             <tr>
                               <th><input type="checkbox" (change)="selectAll($event)"></th>
-                              <th data-sortable="" style="width: 10%;">Usuario</th>
-                              <th data-sortable="" style="width: 10%;">Email</th>
-                              <th data-sortable="" style="width: 10%;">Número social</th>
-                              <th data-sortable="" style="width: 10%;">Fecha</th>
-                              <th data-sortable="" style="width: 10%;">Peticiones</th>
-                              <th data-sortable="" style="width: 30%;">Estado</th>
+                              <th data-sortable="" style="width: 10%;">Id</th>
+                              <th data-sortable="" style="width: 10%;">Type</th>
+                              <th data-sortable="" style="width: 10%;">Message</th>
+                              <th data-sortable="" style="width: 10%;">DateRequest</th>
+                              <th data-sortable="" style="width: 10%;">Status</th>
+                              <th data-sortable="" style="width: 10%;">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td><input (change)="setRequest(1, $event)" class="items" type="checkbox" value="1" /></td>
-                              <td>alex</td>
-                              <td>alex@hotmail.com</td>
-                              <td>1</td>
-                              <td>08/07/2022</td>
-                              <td>Subject 1</td>
-                              <td class="icons d-flex justify-content-center">
-                                <p>Status</p>
+                            <tr *ngFor="let request of requests">
+                              <td><input (change)="setRequest(request.Id, $event)" class="items" type="checkbox" value="{{request.id}}" /></td>
+                              <td>{{request.id}}</td>
+                              <td>{{request.type}}</td>
+                              <td>{{request.message}}</td>
+                              <td>{{request.dateRequest}}</td>
+                              <td [innerHTML]="this.status[request.status]"></td>
+                              <td class="icons d-flex justify-i-center align-items-center h-100" >
                                 <button class="border-0 bg-transparent align-middle">
                                   <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
                                 </button>
@@ -71,26 +70,7 @@
                                 </button>
                               </td>
                             </tr>
-                            <tr>
-                              <td><input (change)="setRequest(1, $event)" class="items" type="checkbox" value="1" /></td>
-                              <td>lora</td>
-                              <td>lora@hotmail.com</td>
-                              <td>2</td>
-                              <td>03/05/2022</td>
-                              <td>Subject 2</td>
-                              <td class="icons d-flex justify-content-center">
-                                <p>Status</p>
-                                <button class="border-0 bg-transparent align-middle">
-                                  <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
-                                </button>
-                                <button class="border-0 bg-transparent align-middle">
-                                  <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
-                                </button>
-                                <button class="border-0 bg-transparent align-middle">
-                                  <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
-                                </button>
-                              </td>
-                            </tr>
+                            
                           </tbody>
                         </table>
                       </div>

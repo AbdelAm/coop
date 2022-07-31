@@ -19,12 +19,27 @@ namespace coop2._0.Services
             _mailService = mailService;
         }
 
-        public async Task<IEnumerable<UserItemModel>> GetAll(int page)
+        public async Task<ItemsModel<UserItemModel>> GetAll(int page)
         {
-            IEnumerable<UserItemModel> users = await _userRepository.FindAll(page - 1);
+            IEnumerable<UserItemModel> users = await _userRepository.FindAll(page);
+            int itemNum = await _userRepository.GetCount();
             if (users == null)
             {
                 throw new Exception("There is no users existe");
+            }
+            return new ItemsModel<UserItemModel>
+            {
+                Items = users,
+                ItemsNumber = itemNum
+            };
+        }
+
+        public async Task<IEnumerable<UserItemModel>> SearchBy(string value)
+        {
+            IEnumerable<UserItemModel> users = await _userRepository.FindBy(value);
+            if(users == null)
+            {
+                throw new Exception("There is no users existe with this value");
             }
             return users;
         }

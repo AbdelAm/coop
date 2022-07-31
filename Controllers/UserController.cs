@@ -23,14 +23,29 @@ namespace coop2._0.Controllers
 
         [HttpGet]
         [Route("list/{page}")]
-        public async Task<ActionResult<IEnumerable<UserItemModel>>> GetUsers(int page)
+        public async Task<ActionResult<ItemsModel<UserItemModel>>> GetUsers(int page)
         {
             try
             {
-                IEnumerable<UserItemModel> users = await _userService.GetAll(page);
+                ItemsModel<UserItemModel> users = await _userService.GetAll(page);
                 return Ok(users);
             }
             catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{value}")]
+        public async Task<ActionResult<IEnumerable<UserItemModel>>> GetBy(string value)
+        {
+            try
+            {
+                IEnumerable<UserItemModel> users = await _userService.SearchBy(value);
+                return Ok(users);
+
+            } catch(Exception ex)
             {
                 return NotFound(ex.Message);
             }

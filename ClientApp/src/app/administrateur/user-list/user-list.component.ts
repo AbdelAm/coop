@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UserItemModel } from 'src/app/shared/models/user-item-model';
+import { ItemsModel } from 'src/app/shared/models/items-model';
 import { JwtService } from 'src/app/shared/services/jwt.service';
 import { UserService } from 'src/app/shared/services/user-service.service';
 import { TransactionPopupComponent } from 'src/app/transaction-popup/transaction-popup.component';
@@ -14,8 +15,10 @@ import Swal from 'sweetalert2';
 })
 export class UserListComponent implements OnInit {
 
+  readonly pageSize = 1;
   listUser: Array<string>;
-  users: UserItemModel[];
+  userItems: ItemsModel<UserItemModel>;
+  pageNumber: Array<number>;
   status = [
     '<strong>In Progress</strong>',
     '<strong class="text-success">Approuved</strong>',
@@ -27,16 +30,35 @@ export class UserListComponent implements OnInit {
       this.router.navigate(['global']);
     }
     this.listUser = new Array<string>();
-    this.users = new Array<UserItemModel>();
+    this.userItems = new ItemsModel<UserItemModel>();
+    this.pageNumber = [];
   }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(
+    this.getItems(0);
+  }
+
+  getItems(num: number)
+  {
+    this.userService.getUsers(num).subscribe(
       res => {
-        this.users.push(...res);
+        Object.assign(this.userItems, res);
+        let result = Math.trunc(this.userItems.itemsNumber / this.pageSize);
+        if(this.userItems.itemsNumber % this.pageSize != 0) {
+          result++;
+        }
+        this.pageNumber = Array.from(Array(result).keys());
       },
       err => {
-        this.router.navigate(['global']);
+        if([401,403].includes(err["status"])) {
+            this.router.navigate(['global']);
+        } else {
+          Swal.fire({
+            title: "There is a Problem!!!",
+            text: err["error"],
+            icon: "error"
+          })
+        }
       }
     );
     window.scrollTo(0, 0);
@@ -105,7 +127,7 @@ export class UserListComponent implements OnInit {
   {
     this.userService.validateUsers(this.listUser).subscribe(
       res => {
-        this.users = this.users.filter(u => {
+        this.userItems.items = this.userItems.items.filter(u => {
           return !this.listUser.includes(u.cif);
         });
         this.listUser.length = 0;
@@ -121,7 +143,7 @@ export class UserListComponent implements OnInit {
   {
     this.userService.rejectUsers(this.listUser).subscribe(
       res => {
-        this.users.forEach(u => {
+        this.userItems.items.forEach(u => {
           if(this.listUser.includes(u.cif)) {
             u.status = '2';
           }
@@ -139,7 +161,7 @@ export class UserListComponent implements OnInit {
   {
     this.userService.deleteUsers(this.listUser).subscribe(
       res => {
-        this.users = this.users.filter(u => {
+        this.userItems.items = this.userItems.items.filter(u => {
           return !this.listUser.includes(u.cif);
         });
         this.listUser.length = 0;
@@ -148,6 +170,22 @@ export class UserListComponent implements OnInit {
           icon: "success",
         });
       },
+      err => console.log(err)
+    )
+  }
+
+  setActiveClass(i: number)
+  {
+    let current = document.querySelector(".pagination-items.active");
+    current.classList.remove("active");
+    document.querySelectorAll('.pagination-items')[i].classList.add("active");
+  }
+
+  searchItem(e: Event)
+  {
+    let value = (<HTMLInputElement> e.target).value;
+    this.userService.searchUser(value).subscribe(
+      res => console.log(res),
       err => console.log(err)
     )
   }

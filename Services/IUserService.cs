@@ -8,7 +8,8 @@ namespace coop2._0.Services
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserItemModel>> GetAll(int page);
+        Task<ItemsModel<UserItemModel>> GetAll(int page);
+        Task<IEnumerable<UserItemModel>> SearchBy(string value);
         Task<bool> Validate(List<string> users, int page);
         Task<bool> Reject(List<string> users, int page);
         Task<bool> Delete(List<string> users, int page);
