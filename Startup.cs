@@ -55,6 +55,7 @@ namespace coop2._0
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 
             // Adding Authentication
             services.AddAuthentication(options =>

@@ -12,17 +12,19 @@ namespace coop2._0.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMailService _mailService;
+        private readonly IBankAccountRepository _bankRepository;
 
-        public UserService(IUserRepository userRepository, IMailService mailService)
+        public UserService(IUserRepository userRepository, IMailService mailService, IBankAccountRepository bankAccount)
         {
             _userRepository = userRepository;
             _mailService = mailService;
+            _bankRepository = bankAccount;
         }
 
-        public async Task<ItemsModel<UserItemModel>> GetAll(int page)
+        public async Task<ItemsModel<UserItemModel>> FindUsers(int page)
         {
-            IEnumerable<UserItemModel> users = await _userRepository.FindAll(page);
-            int itemNum = await _userRepository.GetCount();
+            IEnumerable<UserItemModel> users = await _userRepository.SelectAll(page);
+            int itemNum = await _userRepository.SelectCount();
             if (users == null)
             {
                 throw new Exception("There is no users existe");
@@ -34,9 +36,9 @@ namespace coop2._0.Services
             };
         }
 
-        public async Task<IEnumerable<UserItemModel>> SearchBy(string value)
+        public async Task<IEnumerable<UserItemModel>> FindBy(string value)
         {
-            IEnumerable<UserItemModel> users = await _userRepository.FindBy(value);
+            IEnumerable<UserItemModel> users = await _userRepository.SelectBy(value);
             if(users == null)
             {
                 throw new Exception("There is no users existe with this value");
@@ -49,7 +51,7 @@ namespace coop2._0.Services
             bool temoin = true;
             foreach(string id in users)
             {
-                var user = await _userRepository.GetUserById(id);
+                var user = await _userRepository.SelectById(id);
                 user.Status = Status.Approuved;
                 var result = await _userRepository.UpdateUser(user);
                 if (result.Succeeded) 
@@ -62,6 +64,14 @@ namespace coop2._0.Services
                         Body = user.Name + '-' + message,
                     };
                     await _mailService.SendValidationMail(mailModel);
+                    BankAccount account = new BankAccount()
+                    {
+                        AccountNumber = Guid.NewGuid().ToString("D"),
+                        Balance = 350.0,
+                        DateCreated = DateTime.Now,
+                        UserId = user.Id
+                    };
+                    await _bankRepository.InsertBankAccount(account);
                 } else
                 {
                     temoin = false;
@@ -79,7 +89,7 @@ namespace coop2._0.Services
             bool temoin = true;
             foreach (string id in users)
             {
-                var user = await _userRepository.GetUserById(id);
+                var user = await _userRepository.SelectById(id);
                 user.Status = Status.Rejected;
                 var result = await _userRepository.UpdateUser(user);
                 if (result.Succeeded)
@@ -110,7 +120,7 @@ namespace coop2._0.Services
             bool temoin = true;
             foreach (string id in users)
             {
-                var user = await _userRepository.GetUserById(id);
+                var user = await _userRepository.SelectById(id);
                 var result = await _userRepository.DeleteUser(user);
                 if (!result.Succeeded) temoin = false;
             }

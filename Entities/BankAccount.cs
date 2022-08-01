@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace coop2._0.Entities
 {
@@ -13,6 +15,8 @@ namespace coop2._0.Entities
         public virtual User User { get; set; }
         public virtual ICollection<Transaction> TransactionsSended { get; set; }
         public virtual ICollection<Transaction> TransactionsReceived { get; set; }
-        public bool IsValid { get; set; }
+        [Column(TypeName = "nvarchar(50)")]
+        [DefaultValue(Status.Progress)]
+        public Status Status { get; set; }
     }
 }

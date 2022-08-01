@@ -4,7 +4,6 @@ using coop2._0.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -27,14 +26,19 @@ namespace coop2._0.Services
         }
         public async Task<Response> Register(RegisterModel model)
         {
-            var u = await _userRepository.GetUserByEmail(model.Email);
             Exception e = new();
+            var u = await _userRepository.SelectByEmail(model.Email);
             if (u != null)
             {
                 e.Data.Add("email_error", "email is already existe");
                 throw e;
             }
-
+            u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
+            if (u != null)
+            {
+                e.Data.Add("socialNumber_error", "Social Number is already existe");
+                throw e;
+            }
 
             User user = new()
             {
@@ -46,7 +50,7 @@ namespace coop2._0.Services
                 DateCreated = DateTime.Now,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
-            var result = await _userRepository.SetUser(user, model.Password);
+            var result = await _userRepository.InsertUser(user, model.Password);
             if (result == null)
             {
                 e.Data.Add("user", "There is problem with registering user, please try again");
@@ -71,7 +75,7 @@ namespace coop2._0.Services
 
         public async Task<TokenModel> Login(LoginModel model)
         {
-            var user = await _userRepository.GetUser(model);
+            var user = await _userRepository.SelectUser(model);
             if (user is null)
                 throw new Exception("The user doesn't exist");
             if (user is not { EmailConfirmed: true })
@@ -81,20 +85,13 @@ namespace coop2._0.Services
 
             var jwtSecurityToken = await _jwtService.GenerateJwtToken(user);
 
-            return new TokenModel
-            {
-                Cif = user.Id,
-                Name = user.Name,
-                IsAdmin = user.IsAdmin,
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                ValidTo = jwtSecurityToken.ValidTo
-            };
+            return await _jwtService.GenerateJwtToken(user);
         }
 
         public async Task<Response> ConfirmUser(string param)
         {
             var values = param.Split('-');
-            var user = await _userRepository.GetUserByEmail(values[1]);
+            var user = await _userRepository.SelectByEmail(values[1]);
             if (user is not { EmailConfirmed: false })
             {
                 throw new Exception("The user is already confirmed");
@@ -115,7 +112,7 @@ namespace coop2._0.Services
         }
         public async Task<Response> ForgetPassword(ForgetPasswordModel model)
         {
-            var u = await _userRepository.GetUserByEmail(model.Email);
+            var u = await _userRepository.SelectByEmail(model.Email);
             Exception e = new();
             if (u == null)
             {
@@ -142,7 +139,7 @@ namespace coop2._0.Services
 
         public async Task<Response> ResetPassword(ResetPasswordModel model)
         {
-            var user = await _userRepository.GetUserByEmail(model.Email);
+            var user = await _userRepository.SelectByEmail(model.Email);
             if (user is null)
             {
                 throw new Exception("The user does not existe");

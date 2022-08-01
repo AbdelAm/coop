@@ -11,14 +11,14 @@ namespace coop2._0.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -27,7 +27,7 @@ namespace coop2._0.Controllers
         {
             try
             {
-                ItemsModel<UserItemModel> users = await _userService.GetAll(page);
+                ItemsModel<UserItemModel> users = await _userService.FindUsers(page);
                 return Ok(users);
             }
             catch (Exception ex)
@@ -42,7 +42,7 @@ namespace coop2._0.Controllers
         {
             try
             {
-                IEnumerable<UserItemModel> users = await _userService.SearchBy(value);
+                IEnumerable<UserItemModel> users = await _userService.FindBy(value);
                 return Ok(users);
 
             } catch(Exception ex)

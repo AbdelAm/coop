@@ -9,18 +9,19 @@ namespace coop2._0.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> GetUserByEmail(string email);
-        Task<User> GetUserById(string id);
-        Task<string> SetUser(User user, string password);
-        Task<User> GetUser(LoginModel model);
-        Task<List<string>> GetUserRoles(User user);
+        Task<User> SelectById(string id);
+        Task<User> SelectByEmail(string email);
+        Task<User> SelectBySocialNumber(string socialNumber);
+        Task<string> InsertUser(User user, string password);
+        Task<User> SelectUser(LoginModel model);
+        Task<List<string>> SelectUserRoles(User user);
         Task<string> GenerateConfirmationToken(User user);
         Task<string> GenerateResetToken(User user);
         Task<IdentityResult> ConfirmEmail(User user, string token);
         Task<IdentityResult> ResetPassword(User user, string token, string password);
-        Task<IEnumerable<UserItemModel>> FindAll(int page);
-        Task<int> GetCount();
-        Task<IEnumerable<UserItemModel>> FindBy(string value);
+        Task<IEnumerable<UserItemModel>> SelectAll(int page);
+        Task<int> SelectCount();
+        Task<IEnumerable<UserItemModel>> SelectBy(string value);
         Task<IdentityResult> UpdateUser(User user);
         Task<IdentityResult> DeleteUser(User user);
     }

@@ -1,11 +1,11 @@
 ﻿using coop2._0.Entities;
-using System.IdentityModel.Tokens.Jwt;
+using coop2._0.Model;
 using System.Threading.Tasks;
 
 namespace coop2._0.Services
 {
     public interface IJwtService
     {
-        Task<JwtSecurityToken> GenerateJwtToken(User user);
+        Task<TokenModel> GenerateJwtToken(User user);
     }
 }
