@@ -75,7 +75,7 @@ namespace coop2._0.Repositories
 
             if (request is not { Status: Status.Progress }) return null;
             request.Status = Status.Approuved;
-            _context.Update(request);
+            _context.Entry(request).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return request;
         }

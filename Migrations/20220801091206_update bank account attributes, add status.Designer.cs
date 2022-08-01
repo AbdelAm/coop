@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using coop2._0.Entities;
 
 namespace coop2._0.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220801091206_update bank account attributes, add status")]
+    partial class updatebankaccountattributesaddstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -394,7 +396,7 @@ namespace coop2._0.Migrations
                         .IsRequired();
 
                     b.HasOne("coop2._0.Entities.BankAccount", "SenderBankAccount")
-                        .WithMany("TransactionsSent")
+                        .WithMany("TransactionsSended")
                         .HasForeignKey("SenderBankAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -408,7 +410,7 @@ namespace coop2._0.Migrations
                 {
                     b.Navigation("TransactionsReceived");
 
-                    b.Navigation("TransactionsSent");
+                    b.Navigation("TransactionsSended");
                 });
 
             modelBuilder.Entity("coop2._0.Entities.User", b =>

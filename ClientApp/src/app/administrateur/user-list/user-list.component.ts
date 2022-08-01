@@ -15,7 +15,8 @@ import Swal from 'sweetalert2';
 })
 export class UserListComponent implements OnInit {
 
-  readonly pageSize = 1;
+  readonly pageSize = 5;
+  currentPage: number;
   listUser: Array<string>;
   userItems: ItemsModel<UserItemModel>;
   pageNumber: Array<number>;
@@ -32,6 +33,7 @@ export class UserListComponent implements OnInit {
     this.listUser = new Array<string>();
     this.userItems = new ItemsModel<UserItemModel>();
     this.pageNumber = [];
+    this.currentPage = 0;
   }
 
   ngOnInit(): void {
@@ -48,6 +50,7 @@ export class UserListComponent implements OnInit {
           result++;
         }
         this.pageNumber = Array.from(Array(result).keys());
+        this.currentPage = num;
       },
       err => {
         if([401,403].includes(err["status"])) {
@@ -127,8 +130,11 @@ export class UserListComponent implements OnInit {
   {
     this.userService.validateUsers(this.listUser).subscribe(
       res => {
-        this.userItems.items = this.userItems.items.filter(u => {
-          return !this.listUser.includes(u.cif);
+        this.userItems.items.map(u => {
+          if(this.listUser.includes(u.cif)) {
+            u.status = '1';
+            console.log()
+          }
         });
         this.listUser.length = 0;
         Swal.fire({
@@ -184,10 +190,22 @@ export class UserListComponent implements OnInit {
   searchItem(e: Event)
   {
     let value = (<HTMLInputElement> e.target).value;
-    this.userService.searchUser(value).subscribe(
-      res => console.log(res),
-      err => console.log(err)
-    )
+    if(value != "") {
+      this.userService.searchUser(value).subscribe(
+        res => {
+          this.userItems.items = [...res]
+        },
+        err => {
+          Swal.fire({
+            title: "There is a Problem!!!",
+            text: err["error"],
+            icon: "error",
+          });
+        }
+      )
+    } else {
+      this.getItems(this.currentPage);
+    }
   }
 
 }

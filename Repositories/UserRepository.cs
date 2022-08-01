@@ -12,7 +12,7 @@ namespace coop2._0.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private const int PageSize = 1;
+        private const int PageSize = 5;
 
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -26,19 +26,24 @@ namespace coop2._0.Repositories
             _context = context;
         }
 
-        public async Task<User> GetUserByEmail(string email)
-        {
-            User user = await _userManager.FindByEmailAsync(email);
-            return user;
-        }
-
-        public async Task<User> GetUserById(string id)
+        public async Task<User> SelectById(string id)
         {
             User user = await _userManager.FindByIdAsync(id);
             return user;
         }
+        public async Task<User> SelectByEmail(string email)
+        {
+            User user = await _userManager.FindByEmailAsync(email);
+            return user;
+        }
+        public async Task<User> SelectBySocialNumber(string socialNumber)
+        {
+            User user = await _userManager.Users.Where(u => u.SocialNumber == socialNumber)
+                                                .FirstOrDefaultAsync();
+            return user;
+        }
 
-        public async Task<string> SetUser(User user, string password)
+        public async Task<string> InsertUser(User user, string password)
         {
             var result = await _userManager.CreateAsync(user, password);
             if (result.Succeeded)
@@ -50,7 +55,7 @@ namespace coop2._0.Repositories
             return null;
         }
 
-        public async Task<User> GetUser(LoginModel model)
+        public async Task<User> SelectUser(LoginModel model)
         {
             var user = await _userManager.FindByIdAsync(model.Cif);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
@@ -61,7 +66,7 @@ namespace coop2._0.Repositories
             return null;
         }
 
-        public async Task<List<string>> GetUserRoles(User user)
+        public async Task<List<string>> SelectUserRoles(User user)
         {
             return (List<string>)await _userManager.GetRolesAsync(user);
         }
@@ -86,27 +91,26 @@ namespace coop2._0.Repositories
             return await _userManager.ResetPasswordAsync(user, token, password);
         }
 
-        public async Task<IEnumerable<UserItemModel>> FindAll(int page)
+        public async Task<IEnumerable<UserItemModel>> SelectAll(int page)
         {
             return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
-                .Skip(page * PageSize)
-                .Take(PageSize)
-                .Select(u => new UserItemModel(u))
-                .ToListAsync();
+                                           .Skip(page*PageSize)
+                                           .Take(PageSize)
+                                           .Select(u => new UserItemModel(u))
+                                           .ToListAsync();
         }
 
-        public async Task<int> GetCount()
+        public async Task<int> SelectCount()
         {
             return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
-                .CountAsync();
+                                           .CountAsync();
         }
 
-        public async Task<IEnumerable<UserItemModel>> FindBy(string value)
+        public async Task<IEnumerable<UserItemModel>> SelectBy(string value)
         {
-            return await _userManager.Users.Where(u =>
-                    !u.IsAdmin && (u.Id.Contains(value) || u.Name.Contains(value) || u.Email.Contains(value)))
-                .Select(u => new UserItemModel(u))
-                .ToListAsync();
+            return await _userManager.Users.Where(u => !u.IsAdmin && (u.Id.Contains(value) || u.Name.Contains(value) || u.Email.Contains(value)))
+                                           .Select(u => new UserItemModel(u))
+                                           .ToListAsync();
         }
 
         public async Task<IdentityResult> UpdateUser(User user)

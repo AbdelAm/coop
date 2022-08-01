@@ -23,6 +23,9 @@ export class RequestServiceService {
   getRequestsByUser(userId: string, page: number = 1): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${userId}/${page}`);
   }
+  searchRequest(value: string): Observable<RequestModel[]> {
+    return this.http.get<RequestModel[]>(this.baseUrl + `request/${value}`);
+  }
   validateRequests(requestList: Array<number>): Observable<RequestModel[]> {
     return this.http.post<RequestModel[]>(this.baseUrl + 'request/validate', requestList);
   }

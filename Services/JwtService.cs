@@ -1,4 +1,5 @@
 ﻿using coop2._0.Entities;
+using coop2._0.Model;
 using coop2._0.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -21,9 +22,9 @@ namespace coop2._0.Services
             _userRepository = userRepository;
             _configuration = configuration;
         }
-        public async Task<JwtSecurityToken> GenerateJwtToken(User user)
+        public async Task<TokenModel> GenerateJwtToken(User user)
         {
-            var roles = await _userRepository.GetUserRoles(user);
+            var roles = await _userRepository.SelectUserRoles(user);
             var roleClaims = roles.Select(role => new Claim("roles", role)).ToList();
 
             var claims = new[]
@@ -45,7 +46,14 @@ namespace coop2._0.Services
                 expires: DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"])),
                 signingCredentials: signingCredentials);
 
-            return jwtSecurityToken;
+            return new TokenModel
+            {
+                Cif = user.Id,
+                Name = user.Name,
+                IsAdmin = user.IsAdmin,
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                ValidTo = jwtSecurityToken.ValidTo
+            };
         }
     }
 }

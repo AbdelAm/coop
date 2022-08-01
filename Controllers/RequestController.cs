@@ -15,8 +15,6 @@ namespace coop2._0.Controllers
         // context is in repository implementation, remove it from controller
         // every method that interacts with the database should be in the repository implementation 
 
-        private ApplicationDbContext _context;
-
         private readonly IRequestService _requestService;
 
         public RequestController(IRequestService requestService)
@@ -31,7 +29,7 @@ namespace coop2._0.Controllers
             return await _requestService.GetRequests();
         }
 
-        [HttpGet("{id}")]
+        [HttpPost("list/{id}/{page}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
             var request = await _requestService.GetRequest(id);
@@ -40,7 +38,7 @@ namespace coop2._0.Controllers
             return Ok(request);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete")]
         public async Task<ActionResult> RemoveRequest(int id)
         {
             var deletedRequest = await _requestService.RemoveRequest(id);
@@ -49,16 +47,17 @@ namespace coop2._0.Controllers
             return Ok(deletedRequest);
         }
 
-        [HttpGet("{id}")]
+        [HttpPost("reject")]
         public async Task<ActionResult<Request>> RejectRequest(int id)
         {
             return await _requestService.RejectRequest(id);
         }
 
-        [HttpGet("{id}")]
+        [HttpPost("validate")]
         public async Task<ActionResult<Request>> ValidateRequest(int id)
         {
             return await _requestService.ValidateRequest(id);
+
         }
 
         [HttpPost]
