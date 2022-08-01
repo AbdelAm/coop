@@ -7,6 +7,8 @@ import { RequestServiceService } from 'src/app/shared/services/request-service.s
 import { RequestModel } from '../../shared/models/request-model';
 import { StatusModel } from '../../shared/models/status-model';
 import Swal from 'sweetalert2';
+//import { parse } from 'path';
+import { ItemsModel } from '../../shared/models/items-model';
 
 
 @Component({
@@ -15,8 +17,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./request-list.component.css']
 })
 export class RequestListComponent implements OnInit {
+  readonly pageSize = 1;
   listRequest: Array<number>
+  requestItems: ItemsModel<RequestModel>;
   requests: RequestModel[];
+  pageNumber: Array<number>;
+
   status = [
     '<strong>In Progress</strong>',
     '<strong class="text-success">Approuved</strong>',
@@ -29,6 +35,8 @@ export class RequestListComponent implements OnInit {
     (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('requests') : this.router.navigateByUrl('admin/requests');
     this.listRequest = new Array<number>();
     this.requests = new Array<RequestModel>();
+    this.requestItems = new ItemsModel<RequestModel>();
+    this.pageNumber = [];
 
   }
 
@@ -43,7 +51,30 @@ export class RequestListComponent implements OnInit {
     window.scrollTo(0, 0);
   }
 
-
+  getItems(num: number) {
+    this.requestService.getRequests(num).subscribe(
+      res => {
+        Object.assign(this.requestItems, res);
+        let result = Math.trunc(this.requestItems.itemsNumber / this.pageSize);
+        if (this.requestItems.itemsNumber % this.pageSize != 0) {
+          result++;
+        }
+        this.pageNumber = Array.from(Array(result).keys());
+      },
+      err => {
+        if ([401, 403].includes(err["status"])) {
+          this.router.navigate(['global']);
+        } else {
+          Swal.fire({
+            title: "There is a Problem!!!",
+            text: err["error"],
+            icon: "error"
+          })
+        }
+      }
+    );
+    window.scrollTo(0, 0);
+  }
 
 
   selectAll(e: Event)
@@ -106,9 +137,7 @@ export class RequestListComponent implements OnInit {
   validateAll() {
     this.requestService.validateRequests(this.listRequest).subscribe(
       res => {
-        this.requests = this.requests.filter(u => {
-          return !this.listRequest.includes(u.id);
-        });
+        this.requests = this.requests;
         this.listRequest.length = 0;
         Swal.fire({
           title: "Request Validated successfully!!!",
@@ -122,7 +151,7 @@ export class RequestListComponent implements OnInit {
     
     this.requestService.rejectRequests(this.listRequest).subscribe(
       res => {
-        this.requests.forEach(u => {
+        this.requestItems.items.forEach(u => {
           if (this.listRequest.includes(u.id)) {
             u.status = StatusModel.Rejected;
           }
@@ -139,7 +168,7 @@ export class RequestListComponent implements OnInit {
   deleteAll() {
     this.requestService.deleteRequests(this.listRequest).subscribe(
       res => {
-        this.requests = this.requests.filter(u => {
+        this.requestItems.items = this.requestItems.items.filter(u => {
           return !this.listRequest.includes(u.id);
         });
         this.listRequest.length = 0;
@@ -148,6 +177,14 @@ export class RequestListComponent implements OnInit {
           icon: "success",
         });
       },
+      err => console.log(err)
+    )
+  }
+  
+  searchItem(e: Event) {
+    let value =(<HTMLInputElement>e.target).value;
+    this.requestService.searchRequest(value).subscribe(
+      res => console.log(res),
       err => console.log(err)
     )
   }
