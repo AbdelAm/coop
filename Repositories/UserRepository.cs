@@ -18,7 +18,8 @@ namespace coop2._0.Repositories
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
 
-        public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
+        public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -30,6 +31,7 @@ namespace coop2._0.Repositories
             User user = await _userManager.FindByEmailAsync(email);
             return user;
         }
+
         public async Task<User> GetUserById(string id)
         {
             User user = await _userManager.FindByIdAsync(id);
@@ -44,6 +46,7 @@ namespace coop2._0.Repositories
                 await _userManager.AddToRoleAsync(user, "USER");
                 return user.Id;
             }
+
             return null;
         }
 
@@ -60,20 +63,24 @@ namespace coop2._0.Repositories
 
         public async Task<List<string>> GetUserRoles(User user)
         {
-            return (List<string>) await _userManager.GetRolesAsync(user);
+            return (List<string>)await _userManager.GetRolesAsync(user);
         }
+
         public async Task<string> GenerateConfirmationToken(User user)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
+
         public async Task<string> GenerateResetToken(User user)
         {
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
+
         public async Task<IdentityResult> ConfirmEmail(User user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
+
         public async Task<IdentityResult> ResetPassword(User user, string token, string password)
         {
             return await _userManager.ResetPasswordAsync(user, token, password);
@@ -82,32 +89,36 @@ namespace coop2._0.Repositories
         public async Task<IEnumerable<UserItemModel>> FindAll(int page)
         {
             return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
-                                           .Skip(page*PageSize)
-                                           .Take(PageSize)
-                                           .Select(u => new UserItemModel(u))
-                                           .ToListAsync();
+                .Skip(page * PageSize)
+                .Take(PageSize)
+                .Select(u => new UserItemModel(u))
+                .ToListAsync();
         }
 
         public async Task<int> GetCount()
         {
             return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
-                                           .CountAsync();
+                .CountAsync();
         }
 
         public async Task<IEnumerable<UserItemModel>> FindBy(string value)
         {
-            return await _userManager.Users.Where(u => !u.IsAdmin && (u.Id.Contains(value) || u.Name.Contains(value) || u.Email.Contains(value)))
-                                           .Select(u => new UserItemModel(u))
-                                           .ToListAsync();
+            return await _userManager.Users.Where(u =>
+                    !u.IsAdmin && (u.Id.Contains(value) || u.Name.Contains(value) || u.Email.Contains(value)))
+                .Select(u => new UserItemModel(u))
+                .ToListAsync();
         }
+
         public async Task<IdentityResult> UpdateUser(User user)
         {
             return await _userManager.UpdateAsync(user);
         }
+
         public async Task<IdentityResult> DeleteUser(User user)
         {
             return await _userManager.DeleteAsync(user);
         }
+
         public async Task<ActionResult> RemoveUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -120,6 +131,7 @@ namespace coop2._0.Repositories
 
             return new OkResult();
         }
+
         public async Task<ActionResult<User>> RejectUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -130,6 +142,7 @@ namespace coop2._0.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+
         public async Task<ActionResult<User>> ValidateUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -140,6 +153,5 @@ namespace coop2._0.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
-
     }
 }

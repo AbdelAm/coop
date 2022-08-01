@@ -14,11 +14,10 @@ import {TransactionService} from '../../shared/services/transaction.service';
 export class TransactionListComponent implements OnInit {
   listTransaction: number[];
   transactions: TransactionModel[];
-
-  pageNumber: number = 1;
-  pageSize: number = 10;
-  totalElements: number = 100;
-  maxSize: number = 5;
+  pageNumber = 1;
+  pageSize = 10;
+  totalElements = 100;
+  maxSize = 5;
 
   constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private transactionService: TransactionService) {
     (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('transaction') : this.router.navigateByUrl('admin/transaction');
@@ -53,14 +52,14 @@ export class TransactionListComponent implements OnInit {
   }
 
   toggleItem(id: number, isChecked: boolean) {
-    let elt = document.querySelector('.dataTable-dropdown');
+    const elt = document.querySelector('.dataTable-dropdown');
     if (isChecked) {
       this.listTransaction.push(id);
     } else {
-      let index = this.listTransaction.indexOf(id);
+      const index = this.listTransaction.indexOf(id);
       this.listTransaction.splice(index, 1);
     }
-    if (this.listTransaction.length != 0) {
+    if (this.listTransaction.length !== 0) {
       elt.classList.remove('d-none');
     } else {
       elt.classList.add('d-none');
@@ -69,14 +68,20 @@ export class TransactionListComponent implements OnInit {
 
 
   getTransactionsByUser() {
-    const connectedUserId = this.jwt.getConnectedUserId();
-    if (connectedUserId !== undefined) {
-      this.transactionService.getTransactionsByUser(connectedUserId).subscribe(
-        data => this.transactions = data
-      );
-    }
+    this.transactionService.getTransactions(this.pageNumber, this.pageSize).subscribe(
+      this.processResult()
+    );
   }
 
+  processResult() {
+    return data => {
+      console.log(data.response[0]);
+      this.transactions = data.response;
+      this.pageNumber = data.pagination?.pageNumber;
+      this.pageSize = data.pagination?.pageSize;
+      this.totalElements = data.pagination?.totalRecords;
+    };
+  }
 
   validateTransaction(transactionId: number) {
     this.transactionService.validateTransaction(transactionId).subscribe();
@@ -107,5 +112,24 @@ export class TransactionListComponent implements OnInit {
 
   removeAllTransactions(listTransaction: Array<number>) {
     this.transactionService.removeAllTransaction(listTransaction).subscribe();
+  }
+
+
+  handleTransactionSearch(keyword: string) {
+    this.transactionService.handleTransactionSearch(keyword).subscribe(
+      // data => this.transactions = data
+    );
+  }
+
+  statusCasting(status: number): string {
+    switch (status) {
+      case 0:
+        return 'Progress';
+      case 1:
+        return 'Approved';
+      case 2:
+        return 'Rejected';
+
+    }
   }
 }

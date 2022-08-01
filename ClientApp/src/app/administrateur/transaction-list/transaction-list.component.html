@@ -74,125 +74,124 @@
                   </div>
                   <div class="dataTable-search">
                     <input
+                      #searchTransaction
                       class="dataTable-input"
                       placeholder="Búsqueda..."
-                      type="text"
+                      type="search"
+                      (keyup)="handleTransactionSearch(searchTransaction.value)"
                     />
                   </div>
                 </div>
                 <div class="dataTable-container">
                   <table id="datatablesSimple" class="dataTable-table">
                     <thead>
-                      <tr>
-                        <th>
-                          <input type="checkbox" (change)="selectAll($event)" />
-                        </th>
-                        <th data-sortable="">Monto</th>
-                        <th data-sortable="">Balance</th>
-                        <th data-sortable="">Concepto</th>
-                        <th data-sortable="">Apellido</th>
-                        <th data-sortable="">Cuenta original</th>
-                        <th data-sortable="">Cuenta de destino</th>
-                        <th data-sortable="">Estado</th>
-                        <th data-sortable="">Acción</th>
-                      </tr>
+                    <tr>
+                      <th>
+                        <input type="checkbox" (change)="selectAll($event)"/>
+                      </th>
+                      <th data-sortable="">Monto</th>
+                      <th data-sortable="">Balance</th>
+                      <th data-sortable="">Concepto</th>
+                      <th data-sortable="">Apellido</th>
+                      <th data-sortable="">Cuenta original</th>
+                      <th data-sortable="">Cuenta de destino</th>
+                      <th data-sortable="">Estado</th>
+                      <th data-sortable="">Acción</th>
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let transaction of transactions">
-                        <td>
-                          <input
-                            (change)="setTransaction(transaction.id, $event)"
-                            class="items"
-                            type="checkbox"
-                            value="1"
-                          />
-                        </td>
-                        <td style="color: red">{{ transaction.amount }}</td>
-                        <td style="color: green">
-                          {{ transaction.senderAccount?.balance }}
-                        </td>
-                        <td>concepto</td>
-                        <td>{{ transaction.senderAccount?.user.name }}</td>
-                        <td>{{ transaction.senderAccount?.accountNumber }}</td>
-                        <td>
-                          {{ transaction.receiverAccount?.accountNumber }}
-                        </td>
-                        <td>{{ transaction.status }}</td>
-                        <td class="icons">
-                          <button
-                            (click)="validateTransaction(transaction.id)"
-                            class="border-0 bg-transparent align-middle"
-                          >
-                            <i
-                              class="fa-regular fa-circle-check"
-                              style="
+                    <tr *ngFor="let transaction of transactions">
+                      <td>
+                        <input
+                          (change)="setTransaction(transaction.id, $event)"
+                          class="items"
+                          type="checkbox"
+                          value="1"
+                        />
+                      </td>
+                      <td style="color: red">{{ transaction.amount }}</td>
+                      <td style="color: green">
+                        {{ transaction.senderBankAccount?.balance }}
+                      </td>
+                      <td>concepto</td>
+                      <td>{{ transaction.senderBankAccount?.user.name }}</td>
+                      <td>{{ transaction.senderBankAccount?.accountNumber }}</td>
+                      <td>
+                        {{ transaction.receiverBankAccount?.user.name}}
+                      </td>
+                      <td>{{ statusCasting(transaction.status)}}</td>
+                      <td class="icons">
+                        <button
+                          (click)="validateTransaction(transaction.id)"
+                          class="border-0 bg-transparent align-middle"
+                        >
+                          <i
+                            class="fa-regular fa-circle-check"
+                            style="
                                 color: green;
                                 font-size: 20px;
                                 font-weight: 500;
                                 margin: 0 10px;
                               "
-                            ></i>
-                          </button>
-                          <button
-                            (click)="rejectTransaction(transaction.id)"
-                            class="border-0 bg-transparent align-middle"
-                          >
-                            <i
-                              class="fa-regular fa-circle-xmark"
-                              style="
+                          ></i>
+                        </button>
+                        <button
+                          (click)="rejectTransaction(transaction.id)"
+                          class="border-0 bg-transparent align-middle"
+                        >
+                          <i
+                            class="fa-regular fa-circle-xmark"
+                            style="
                                 margin: 0 10px;
                                 font-size: 20px;
                                 font-weight: 500;
                                 color: chocolate;
                               "
-                            ></i>
-                          </button>
-                          <button
-                            (click)="removeTransaction(transaction.id)"
-                            class="border-0 bg-transparent align-middle"
-                          >
-                            <i
-                              class="fa-regular fa-trash-can"
-                              style="
+                          ></i>
+                        </button>
+                        <button
+                          (click)="removeTransaction(transaction.id)"
+                          class="border-0 bg-transparent align-middle"
+                        >
+                          <i
+                            class="fa-regular fa-trash-can"
+                            style="
                                 margin: 0 10px;
                                 font-size: 20px;
                                 font-weight: 500;
                                 color: red;
                               "
-                            ></i>
-                          </button>
-                          <button
-                            (click)="updateTransaction()"
-                            class="border-0 bg-transparent align-middle"
-                          >
-                            <i
-                              class="fa-regular fa-pen-to-square"
-                              style="
+                          ></i>
+                        </button>
+                        <button
+                          (click)="updateTransaction()"
+                          class="border-0 bg-transparent align-middle"
+                        >
+                          <i
+                            class="fa-regular fa-pen-to-square"
+                            style="
                                 margin: 0 10px;
                                 font-size: 20px;
                                 font-weight: 500;
                                 color: cornflowerblue;
                               "
-                            ></i>
-                          </button>
-                        </td>
-                      </tr>
+                          ></i>
+                        </button>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="dataTable-bottom">
-                  <nav class="dataTable-pagination">
-                    <ul class="dataTable-pagination-list">
-                      <li class="active"><a href="#" data-page="1">1</a></li>
-                      <li class=""><a href="#" data-page="2">2</a></li>
-                      <li class=""><a href="#" data-page="3">3</a></li>
-                      <li class=""><a href="#" data-page="4">4</a></li>
-                      <li class=""><a href="#" data-page="5">5</a></li>
-                      <li class=""><a href="#" data-page="6">6</a></li>
-                      <li class="pager"><a href="#" data-page="2">›</a></li>
-                    </ul>
-                  </nav>
-                </div>
+
+                <ngb-pagination
+                  [(page)]="pageNumber"
+                  [pageSize]="pageSize"
+                  [collectionSize]="totalElements"
+                  [boundaryLinks]="true"
+                  (pageChange)="getTransactionsByUser()"
+                >
+                </ngb-pagination>
+
               </div>
             </div>
           </div>

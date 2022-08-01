@@ -395,7 +395,7 @@ namespace coop2._0.Migrations
                         .IsRequired();
 
                     b.HasOne("coop2._0.Entities.BankAccount", "SenderBankAccount")
-                        .WithMany("TransactionsSended")
+                        .WithMany("TransactionsSent")
                         .HasForeignKey("SenderBankAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -409,7 +409,7 @@ namespace coop2._0.Migrations
                 {
                     b.Navigation("TransactionsReceived");
 
-                    b.Navigation("TransactionsSended");
+                    b.Navigation("TransactionsSent");
                 });
 
             modelBuilder.Entity("coop2._0.Entities.User", b =>

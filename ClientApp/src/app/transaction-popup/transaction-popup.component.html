@@ -1,6 +1,6 @@
 <h4>información de la transacción</h4>
 <mat-stepper #stepper>
-  <form [formGroup]="transactionFormGroup" (ngSubmit)="submitTransaction()">
+  <form [formGroup]="transactionFormGroup" (ngSubmit)="onSubmit()">
     <mat-step [stepControl]="transactionFormGroup">
       <ng-template matStepLabel>cuentas de origen</ng-template>
       <div formGroupName="origin">
@@ -64,7 +64,7 @@
       <ng-template matStepLabel>monto</ng-template>
       <div formGroupName="receiverInfo">
         <div class="input-group" style="margin-top:50px;">
-          <input type="text"  class="form-control" formControlName="amount"
+          <input type="text" class="form-control" formControlName="amount"
                  aria-label="Amount (to the nearest dollar)" required>
           <div class="input-group-append">
             <span class="input-group-text">Euros</span>
@@ -140,7 +140,7 @@
             </button>
           </div>
 
-          <button class="btn btn-success" style="float:right;" (click)="submitTransaction()">Enviar</button>
+          <button class="btn btn-success" style="float:right;" >Enviar</button>
         </div>
       </div>
     </mat-step>

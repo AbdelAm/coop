@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using coop2._0.Entities;
-using coop2._0.Model;
+﻿using coop2._0.Entities;
 using coop2._0.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using coop2._0.Model;
 
 namespace coop2._0.Services
 {
@@ -17,12 +17,12 @@ namespace coop2._0.Services
         }
 
 
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetAllTransactions()
+        public async Task<object> GetAllTransactions(PaginationFilter filter)
         {
-            return await _transactionRepository.GetAllTransactions();
+            return await _transactionRepository.GetAllTransactions(filter);
         }
 
-        public async Task<ActionResult<Transaction>> GetTransaction(int id)
+        public async Task<Transaction> GetTransaction(int id)
         {
             return await _transactionRepository.GetTransaction(id);
         }
@@ -37,7 +37,7 @@ namespace coop2._0.Services
             return await _transactionRepository.RejectTransaction(id);
         }
 
-        public async Task<ActionResult<Transaction>> AddTransaction(TransactionModel model)
+        public async Task<ActionResult<Transaction>> AddTransaction(Transaction model)
         {
             return await _transactionRepository.AddTransaction(model);
         }
@@ -47,9 +47,14 @@ namespace coop2._0.Services
             return await _transactionRepository.ValidateTransaction(id);
         }
 
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByUser(int userId)
+        public async Task<object> GetTransactionsByUser(int userId, PaginationFilter filter)
         {
-            return await _transactionRepository.GetTransactionsByUser(userId);
+            return await _transactionRepository.GetTransactionsByUser(userId, filter);
+        }
+
+        public async Task<IEnumerable<Transaction>> SearchForTransactions(string keyword)
+        {
+            return await _transactionRepository.SearchForTransactions(keyword);
         }
     }
 }

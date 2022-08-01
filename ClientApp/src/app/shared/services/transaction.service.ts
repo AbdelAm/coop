@@ -16,12 +16,16 @@ export class TransactionService {
     this.transaction = new TransactionModel();
   }
 
-  getTransactionsByUser(userBankAccountId): Observable<TransactionModel[]> {
-    return this.httpClient.post<TransactionModel[]>(this.baseUrl + '/user' , userBankAccountId);
+  postTransaction(transaction: TransactionModel) {
+    this.httpClient.post(this.baseUrl, transaction);
   }
 
-  getTransactions(): Observable<TransactionModel[]> {
-    return this.httpClient.get<TransactionModel[]>(this.baseUrl + 'transactions');
+  getTransactionsByUser(userBankAccountId: number, pageNumber: number, pageSize: number): Observable<GetTransactionsResponse> {
+    return this.httpClient.get<GetTransactionsResponse>(this.baseUrl + 'user/' + userBankAccountId + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
+  }
+
+  getTransactions(pageNumber: number, pageSize: number): Observable<GetTransactionsResponse> {
+    return this.httpClient.get<GetTransactionsResponse>(this.baseUrl + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }
 
   validateTransaction(transactionId: number) {
@@ -33,7 +37,7 @@ export class TransactionService {
   }
 
   removeTransaction(transactionId: number) {
-    return this.httpClient.delete(this.baseUrl + '/' + transactionId);
+    return this.httpClient.delete(this.baseUrl + '/ ' + transactionId);
   }
 
   updateTransaction() {
@@ -53,4 +57,19 @@ export class TransactionService {
     return this.httpClient.post(this.baseUrl + '/remove-all', transactionsIds);
   }
 
+  handleTransactionSearch(keyword: string): Observable<GetTransactionsResponse> {
+    return this.httpClient.get<GetTransactionsResponse>(this.baseUrl + /search/ + keyword);
+  }
+}
+
+
+interface GetTransactionsResponse {
+  response: {
+    transactions: TransactionModel[];
+  },
+  pagination: {
+    pageNumber: number,
+    pageSize: number,
+    totalRecords: number
+  };
 }

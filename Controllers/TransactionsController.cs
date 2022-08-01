@@ -1,10 +1,11 @@
 ﻿using coop2._0.Entities;
-using coop2._0.Model;
 using coop2._0.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using coop2._0.Model;
+using Microsoft.Extensions.Logging.EventSource;
 
 namespace coop2._0.Controllers
 {
@@ -20,9 +21,9 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
+        public async Task<object> GetTransactions([FromQuery] PaginationFilter filter)
         {
-            return await _transactionService.GetAllTransactions();
+            return await _transactionService.GetAllTransactions(filter);
         }
 
         [HttpGet("{id:int}")]
@@ -35,9 +36,9 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet("user/{userId:int}")]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByUser(int userId)
+        public async Task<object> GetTransactionsByUser([FromQuery] PaginationFilter filter , int userId)
         {
-            return await _transactionService.GetTransactionsByUser(userId);
+            return await _transactionService.GetTransactionsByUser(userId, filter);
         }
 
 
@@ -63,7 +64,7 @@ namespace coop2._0.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Transaction>> AddTransaction(TransactionModel model)
+        public async Task<ActionResult<Transaction>> AddTransaction(Transaction model)
         {
             return await _transactionService.AddTransaction(model);
         }
@@ -110,5 +111,13 @@ namespace coop2._0.Controllers
 
             return Ok();
         }
+
+        [HttpGet("search/{keyword}")]
+        public async Task<IEnumerable<Transaction>> SearchForTransactions(string keyword)
+        {
+            return await _transactionService.SearchForTransactions(keyword);
+        }
+
+
     }
 }
