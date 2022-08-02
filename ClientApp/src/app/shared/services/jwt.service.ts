@@ -7,14 +7,14 @@ import {TokenModel} from '../models/token-model';
 export class JwtService {
 
   jwt!: TokenModel;
-  switchBtn!: boolean;
+  switchBtn: boolean;
 
   constructor() {
     let res = localStorage.getItem('auth');
     if (res) {
       this.jwt = JSON.parse(res);
     }
-    this.switchBtn = true;
+    this.switchBtn = this.jwt.isAdmin;
   }
 
   saveToken(tokenModel: TokenModel) {

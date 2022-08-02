@@ -18,10 +18,10 @@
                 <li><a class="dropdown-item" routerLink="/profile"><i class="fa-solid fa-user"></i><span style="margin-left: 8px;">Perfil</span></a></li>
                 <li><a class="dropdown-item" href="#!">Ajustes</a></li>
                 <li><a class="dropdown-item" href="#!">Registro de actividades</a></li>
-                <li>
+                <li *ngIf="this.isAdmin()">
                     <a class="dropdown-item" href="#!">
                         <div class="button b2" id="button-13">
-                            <input type="checkbox" class="switch-toggle" (change)="switchAccount($event)"/>
+                            <input type="checkbox" id="switch-toggle" (change)="switchAccount($event)"/>
                             <div class="knobs">
                               <span class="checkbox-toggle"></span>
                             </div>

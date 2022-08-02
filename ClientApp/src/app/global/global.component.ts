@@ -11,7 +11,10 @@ export class GlobalComponent implements OnInit {
 
   constructor(private jwt:JwtService, private router: Router) {
     if(!this.jwt.isConnected()) {
-      this.router.navigateByUrl('login');
+      this.router.navigateByUrl('/login');
+    }
+    if(this.jwt.isAdmin() && this.jwt.switchBtn) {
+      this.router.navigateByUrl('/admin');
     }
   }
 
