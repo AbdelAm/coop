@@ -14,12 +14,16 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    document.addEventListener("DOMContentLoaded", () => { 
+    if(this.jwt.isAdmin()) {
+      console.log(this.jwt.switchBtn);
+      (<HTMLInputElement> document.querySelector('.switch-toggle')).checked = this.jwt.switchBtn;
+    }
+    /*document.addEventListener("DOMContentLoaded", () => { 
       if(this.jwt.isAdmin()) {
         console.log(this.jwt.switchBtn);
         (<HTMLInputElement> document.querySelector('.switch-toggle')).checked = this.jwt.switchBtn;
       }
-    });
+    });*/
   }
   isAdmin()
   {

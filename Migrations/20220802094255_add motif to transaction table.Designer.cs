@@ -9,8 +9,8 @@ using coop2._0.Entities;
 namespace coop2._0.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220801215816_delete user from request")]
-    partial class deleteuserfromrequest
+    [Migration("20220802094255_add motif to transaction table")]
+    partial class addmotiftotransactiontable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -211,7 +211,12 @@ namespace coop2._0.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Requests");
                 });
@@ -227,6 +232,9 @@ namespace coop2._0.Migrations
 
                     b.Property<DateTime>("DateTransaction")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Motif")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("ReceiverBankAccountId")
                         .HasColumnType("int");
@@ -387,6 +395,15 @@ namespace coop2._0.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("coop2._0.Entities.Request", b =>
+                {
+                    b.HasOne("coop2._0.Entities.User", "User")
+                        .WithMany("Requests")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("coop2._0.Entities.Transaction", b =>
                 {
                     b.HasOne("coop2._0.Entities.BankAccount", "ReceiverBankAccount")
@@ -416,6 +433,8 @@ namespace coop2._0.Migrations
             modelBuilder.Entity("coop2._0.Entities.User", b =>
                 {
                     b.Navigation("BankAccounts");
+
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

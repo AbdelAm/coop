@@ -8,6 +8,7 @@ namespace coop2._0.Entities
     {
         public int Id { get; set; }
         public double Amount { get; set; }
+        public string Motif { get; set; }
         public int SenderBankAccountId { get; set; }
         public int ReceiverBankAccountId { get; set; }
         public virtual BankAccount SenderBankAccount { get; set; }

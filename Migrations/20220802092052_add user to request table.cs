@@ -2,24 +2,9 @@
 
 namespace coop2._0.Migrations
 {
-    public partial class deleteuserfromrequest : Migration
+    public partial class addusertorequesttable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Requests_AspNetUsers_UserId",
-                table: "Requests");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Requests_UserId",
-                table: "Requests");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Requests");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "UserId",
@@ -40,6 +25,21 @@ namespace coop2._0.Migrations
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Requests_AspNetUsers_UserId",
+                table: "Requests");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Requests_UserId",
+                table: "Requests");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Requests");
         }
     }
 }

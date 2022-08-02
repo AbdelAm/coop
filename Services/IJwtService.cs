@@ -7,5 +7,6 @@ namespace coop2._0.Services
     public interface IJwtService
     {
         Task<TokenModel> GenerateJwtToken(User user);
+        Task<string> DecodeJwtToken(string jwt);
     }
 }

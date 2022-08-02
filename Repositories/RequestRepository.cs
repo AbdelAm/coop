@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace coop2._0.Repositories
@@ -27,7 +28,7 @@ namespace coop2._0.Repositories
 
         public async Task<Request> GetRequest(int id)
         {
-            return await _context.Requests.FindAsync(id);
+            return await _context.Requests.Include(req => req.User).Where(req => req.Id == id).FirstOrDefaultAsync();
         }
         public async Task<ActionResult> RemoveRequest(int id)
         {

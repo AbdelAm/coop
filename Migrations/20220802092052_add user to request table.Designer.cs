@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using coop2._0.Entities;
 
 namespace coop2._0.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220802092052_add user to request table")]
+    partial class addusertorequesttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,9 +232,6 @@ namespace coop2._0.Migrations
 
                     b.Property<DateTime>("DateTransaction")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Motif")
-                        .HasColumnType("longtext");
 
                     b.Property<int>("ReceiverBankAccountId")
                         .HasColumnType("int");

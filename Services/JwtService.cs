@@ -55,5 +55,12 @@ namespace coop2._0.Services
                 ValidTo = jwtSecurityToken.ValidTo
             };
         }
+
+        public async Task<string> DecodeJwtToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+            return jwtSecurityToken.Claims.First(claim => claim.Type == "uid").Value;
+        }
     }
 }
