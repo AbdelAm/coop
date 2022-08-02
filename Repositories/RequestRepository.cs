@@ -25,7 +25,7 @@ namespace coop2._0.Repositories
         }
 
 
-        public async Task<ActionResult<Request>> GetRequest(int id)
+        public async Task<Request> GetRequest(int id)
         {
             return await _context.Requests.FindAsync(id);
         }
@@ -69,12 +69,8 @@ namespace coop2._0.Repositories
             return request;
         }
 
-        public async Task<ActionResult<Request>> ValidateRequest(int id)
+        public async Task<Request> ValidateRequest(Request request)
         {
-            var request = await _context.Requests.FindAsync(id);
-
-            if (request is not { Status: Status.Progress }) return null;
-            request.Status = Status.Approuved;
             _context.Entry(request).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return request;

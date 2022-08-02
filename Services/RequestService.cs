@@ -18,7 +18,7 @@ namespace coop2._0.Services
         }
 
 
-        public Task<ActionResult<Request>> GetRequest(int id)
+        public Task<Request> GetRequest(int id)
         {
             return _requestRepository.GetRequest(id);
         }
@@ -42,9 +42,25 @@ namespace coop2._0.Services
             return await _requestRepository.AddRequest(model);
         }
 
-        public async Task<ActionResult<Request>> ValidateRequest(int id)
+        public async Task<bool> ValidateRequest(List<int> requests)
         {
-            return await _requestRepository.ValidateRequest(id);
+            bool temoin = true;
+            foreach(int id in requests)
+            {
+                var request = await _requestRepository.GetRequest(id);
+                request.Status = Status.Approuved;
+                var result = await _requestRepository.ValidateRequest(request);
+                if(result == null)
+                {
+                    temoin = false;
+                }
+
+            }
+            if(!temoin)
+            {
+                throw new System.Exception("some requests doesn't approuved, please try again later");
+            }
+            return temoin;
         }
     }
 }

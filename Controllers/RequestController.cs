@@ -3,6 +3,7 @@ using coop2._0.Model;
 using coop2._0.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -54,9 +55,16 @@ namespace coop2._0.Controllers
         }
 
         [HttpPost("validate")]
-        public async Task<ActionResult<Request>> ValidateRequest(int id)
+        public async Task<ActionResult> ValidateRequest([FromBody] List<int> requests)
         {
-            return await _requestService.ValidateRequest(id);
+            try
+            {
+                var res = await _requestService.ValidateRequest(requests);
+                return Ok(res);
+            } catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
 

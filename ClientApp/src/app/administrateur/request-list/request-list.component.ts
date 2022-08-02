@@ -135,9 +135,15 @@ export class RequestListComponent implements OnInit {
     this.deleteAll();
   }
   validateAll() {
+    console.log(this.listRequest);
     this.requestService.validateRequests(this.listRequest).subscribe(
       res => {
-        this.requests = this.requests;
+        console.log(res);
+        this.requests.map(req => {
+          if(this.listRequest.includes(req.id)) {
+            req.status = StatusModel.Approuved;
+          }
+        });
         this.listRequest.length = 0;
         Swal.fire({
           title: "Request Validated successfully!!!",

@@ -93,7 +93,7 @@ namespace coop2._0.Repositories
 
         public async Task<IEnumerable<UserItemModel>> SelectAll(int page)
         {
-            return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
+            return await _userManager.Users.Where(u => !u.IsAdmin)
                                            .Skip(page*PageSize)
                                            .Take(PageSize)
                                            .Select(u => new UserItemModel(u))
@@ -102,7 +102,7 @@ namespace coop2._0.Repositories
 
         public async Task<int> SelectCount()
         {
-            return await _userManager.Users.Where(u => u.EmailConfirmed && u.Status != Status.Approuved)
+            return await _userManager.Users.Where(u => !u.IsAdmin)
                                            .CountAsync();
         }
 

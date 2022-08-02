@@ -133,7 +133,6 @@ export class UserListComponent implements OnInit {
         this.userItems.items.map(u => {
           if(this.listUser.includes(u.cif)) {
             u.status = '1';
-            console.log()
           }
         });
         this.listUser.length = 0;

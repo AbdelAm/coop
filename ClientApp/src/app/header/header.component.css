@@ -22,7 +22,7 @@ li .dropdown-item .button {
   border-radius: 2px;
 }
 
-.switch-btn {
+.switch-toggle {
   position: relative;
   width: 100%;
   height: 100%;
@@ -58,7 +58,7 @@ li .dropdown-item .button {
   line-height: 1;
   padding: 9px 4px;
   border-radius: 2px;
-  transition: 0.3s ease all;
+  transition: all 0.3s ease;
 }
 
 #button-13 .knobs:before,
@@ -77,13 +77,13 @@ li .dropdown-item .button {
   left: 51%;
 }
 
-#button-13 .switch-btn:checked + .knobs > span {
+#button-13 .switch-toggle:checked ~ .knobs > span {
     left: 4%;
     background-color: #f44336;
     z-index: 2;
 }
 
-#button-13 .switch-btn:not(:checked) + .knobs > span {
+#button-13 .knobs > span {
     left: 51%;
     background-color: #03a9f4;
     z-index: 2;

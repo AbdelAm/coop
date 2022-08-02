@@ -8,11 +8,11 @@ namespace coop2._0.Services
 {
     public interface IRequestService
     {
-        Task<ActionResult<Request>> GetRequest(int id);
+        Task<Request> GetRequest(int id);
         Task<ActionResult<IEnumerable<Request>>> GetRequests();
         Task<ActionResult> RemoveRequest(int id);
         Task<ActionResult<Request>> RejectRequest(int id);
-        Task<ActionResult<Request>> ValidateRequest(int id);
+        Task<bool> ValidateRequest(List<int> requests);
         Task<ActionResult<Request>> AddRequest(RequestModel model);
     }
 }
