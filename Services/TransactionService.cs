@@ -52,9 +52,9 @@ namespace coop2._0.Services
             return await _transactionRepository.GetTransactionsByUser(userId, filter);
         }
 
-        public async Task<IEnumerable<Transaction>> SearchForTransactions(string keyword)
+        public async Task<object> SearchForTransactions(string keyword, PaginationFilter filter)
         {
-            return await _transactionRepository.SearchForTransactions(keyword);
+            return await _transactionRepository.SearchForTransactions(keyword, filter);
         }
     }
 }

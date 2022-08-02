@@ -90,9 +90,9 @@
                         <input type="checkbox" (change)="selectAll($event)"/>
                       </th>
                       <th data-sortable="">Monto</th>
-                      <th data-sortable="">Balance</th>
+                      <th data-sortable="">Saldo</th>
+                      <th data-sortable="">Fetcha</th>
                       <th data-sortable="">Concepto</th>
-                      <th data-sortable="">Apellido</th>
                       <th data-sortable="">Cuenta original</th>
                       <th data-sortable="">Cuenta de destino</th>
                       <th data-sortable="">Estado</th>
@@ -113,9 +113,9 @@
                       <td style="color: green">
                         {{ transaction.senderBankAccount?.balance }}
                       </td>
-                      <td>concepto</td>
+                      <td>{{ transaction.dateTransaction | date:"dd-MM-yyyy"}}</td>
+                      <td>{{transaction.motif}}</td>
                       <td>{{ transaction.senderBankAccount?.user.name }}</td>
-                      <td>{{ transaction.senderBankAccount?.accountNumber }}</td>
                       <td>
                         {{ transaction.receiverBankAccount?.user.name}}
                       </td>
@@ -163,7 +163,7 @@
                               "
                           ></i>
                         </button>
-                        <button
+                        <!--<button
                           (click)="updateTransaction()"
                           class="border-0 bg-transparent align-middle"
                         >
@@ -176,7 +176,7 @@
                                 color: cornflowerblue;
                               "
                           ></i>
-                        </button>
+                        </button>-->
                       </td>
                     </tr>
                     </tbody>
