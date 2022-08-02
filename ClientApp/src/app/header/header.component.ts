@@ -15,23 +15,14 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.jwt.isAdmin()) {
-      console.log(this.jwt.switchBtn);
-      (<HTMLInputElement> document.querySelector('.switch-toggle')).checked = this.jwt.switchBtn;
+      document.addEventListener("DOMContentLoaded", () => {
+        (<HTMLInputElement> document.getElementById('switch-toggle')).checked = this.jwt.switchBtn;
+      });
     }
-    /*document.addEventListener("DOMContentLoaded", () => { 
-      if(this.jwt.isAdmin()) {
-        console.log(this.jwt.switchBtn);
-        (<HTMLInputElement> document.querySelector('.switch-toggle')).checked = this.jwt.switchBtn;
-      }
-    });*/
   }
   isAdmin()
   {
     return this.jwt.isAdmin();
-  }
-  isChecked()
-  {
-    return this.jwt.switchBtn.toString();
   }
   toggleSideBar() {
     document.body.classList.toggle('sb-sidenav-toggled');
@@ -42,7 +33,9 @@ export class HeaderComponent implements OnInit {
   switchAccount(e: Event)
   {
     this.jwt.switchBtn = (<HTMLInputElement> e.target).checked;
-    (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigate(['/admin']) : this.router.navigate(['/global'])
+    setTimeout(() => {
+      (this.jwt.switchBtn) ? this.router.navigateByUrl('/admin') : this.router.navigateByUrl('/global')
+    }, 500)
   }
   logout()
   {
