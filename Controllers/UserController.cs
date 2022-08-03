@@ -11,7 +11,7 @@ namespace coop2._0.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize(Roles = "ADMIN")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -23,6 +23,7 @@ namespace coop2._0.Controllers
 
         [HttpGet]
         [Route("list/{page}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<ItemsModel<UserItemModel>>> GetUsers(int page)
         {
             try
@@ -37,7 +38,23 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet]
-        [Route("{value}")]
+        [Route("{cif}")]
+        [Authorize(Roles = "USER")]
+        public async Task<ActionResult<UserItemModel>> GetUser(string cif)
+        {
+            try
+            {
+                UserItemModel user = await _userService.FindUser(cif);
+                return Ok(user);
+            } catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("search/{value}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<IEnumerable<UserItemModel>>> GetBy(string value)
         {
             try
@@ -53,6 +70,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("validate/{page}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> ValidateUsers([FromBody] List<string> users, int page)
         {
             try
@@ -67,6 +85,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("reject/{page}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> RejectUsers([FromBody] List<string> users, int page)
         {
             try
@@ -82,6 +101,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("delete/{page}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteUsers([FromBody] List<string> users, int page)
         {
             try

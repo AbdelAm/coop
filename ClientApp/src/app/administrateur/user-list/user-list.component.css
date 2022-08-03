@@ -1,3 +1,8 @@
 .icons {
   text-align: center;
 }
+.wraped {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

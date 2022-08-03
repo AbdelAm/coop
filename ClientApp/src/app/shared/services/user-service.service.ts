@@ -22,8 +22,11 @@ export class UserService {
   getUsers(page: number = 0): Observable<ItemsModel<UserItemModel>> {
     return this.http.get<ItemsModel<UserItemModel>>(this.baseUrl + `user/list/${page}`);
   }
+  getUser(cif: string): Observable<UserItemModel> {
+    return this.http.get<UserItemModel>(this.baseUrl + `user/${cif}`);
+  }
   searchUser(value: string): Observable<UserItemModel[]> {
-    return this.http.get<UserItemModel[]>(this.baseUrl + `user/${value}`);
+    return this.http.get<UserItemModel[]>(this.baseUrl + `user/search/${value}`);
   }
   validateUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
     return this.http.post<UserItemModel[]>(this.baseUrl + `user/validate/${page}`, userList);

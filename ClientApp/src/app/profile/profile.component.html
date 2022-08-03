@@ -11,73 +11,67 @@
                         <li class="breadcrumb-item active">perfil</li>
                     </ol>
                     <div class="card mb-4">
-                        <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs sidebar" id="myTab" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link " id="user-tab" data-toggle="tab"  role="tab"
-                                            aria-controls="user" aria-selected="true" (click)="onSelected('user')" >Usuario</a>
+                        <div class="card-header p-0">
+                                <ul class="nav nav-tabs sidebar" id="myTab" role="tablist">
+                                    <li class="nav-item tabs-items">
+                                        <a class="nav-link py-3 active" id="user-tab" data-toggle="tab"  role="tab"
+                                            aria-controls="user" aria-selected="true" (click)="onSelected('user', $event)" >Usuario</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="email-tab" data-toggle="tab" role="tab"
-                                            aria-controls="email" aria-selected="false" (click)="onSelected('email')">Email</a>
+                                    <li class="nav-item tabs-items">
+                                        <a class="nav-link py-3" id="email-tab" data-toggle="tab" role="tab"
+                                            aria-controls="email" aria-selected="false" (click)="onSelected('email', $event)">Email</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="password-tab" data-toggle="tab" role="tab"
-                                            aria-controls="password" aria-selected="false" (click)="onSelected('password')">contraseña</a>
+                                    <li class="nav-item tabs-items">
+                                        <a class="nav-link py-3" id="password-tab" data-toggle="tab" role="tab"
+                                            aria-controls="password" aria-selected="false" (click)="onSelected('password', $event)">contraseña</a>
                                     </li>
                                 </ul>
                         </div>
                         <div class="card-body">
-
-
-                            <form *ngIf="selectedButton === 'user' || selectedButton === ''">
+                            <form *ngIf="selectedButton === 'user'">
                                 <p class="setting-title">administrar usuario</p>
                                 <div class="form-group">
-                                <label for="email">username</label>
-                                <input type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                    <input type="text" class="form-control"placeholder="Update your Name">
+                                    <strong id="name_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                <label for="NIF">NIF/CIF</label>
-                                <input type="text" class="form-control " id="NIF" placeholder="NIF">
+                                    <input type="text" class="form-control" placeholder="Update your Social Number">
+                                    <strong id="socialNumber_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                    <label for="NIF">Telephone</label>
-                                    <input type="tel" class="form-control" id="NIF" placeholder="Telephone">
+                                    <input type="tel" class="form-control" placeholder="Update your Phone">
+                                    <strong id="tel_error" class="form-text text-danger d-block"></strong>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <input type="submit" class="btn btn-primary" value="Submit">
                             </form>
-
                             <form *ngIf="selectedButton === 'email'">
                                 <p class="setting-title">administrar correo electrónico</p>
                                 <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                                <a style="color: rgb(30, 6, 240)">Envia un correo electronico de verificación</a>
+                                    <input type="email" class="form-control" placeholder="Enter your Email">
+                                    <strong id="email_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                <label for="emailconf">Nuevo correo electrónico</label>
-                                <input type="emailconf" class="form-control" id="email" placeholder="email">
+                                    <input type="email" class="form-control" placeholder="Enter the new Email">
+                                    <strong id="new_email_error" class="form-text text-danger d-block"></strong>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                <input type="submit" class="btn btn-primary" value="Submit">
                             </form>
-
                             <form *ngIf="selectedButton === 'password'">
                                 <p class="setting-title">Cambia la contraseña</p>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">contraseña actual</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    <input type="password" class="form-control" placeholder="Enter your current Password">
+                                    <strong id="password_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword2">Nueva contraseña</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+                                    <input type="password" class="form-control" placeholder="Enter your new Password">
+                                    <strong id="new_password_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword3">Confirmar nueva contraseña</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+                                    <input type="password" class="form-control" placeholder="Confirm your new Password">
+                                    <strong id="confirmed_password_error" class="form-text text-danger d-block"></strong>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Actualiza contraseña</button>
+                                <input type="submit" class="btn btn-primary" value="Submit">
                             </form>
-                            
                         </div>
                     </div>
                 </div>

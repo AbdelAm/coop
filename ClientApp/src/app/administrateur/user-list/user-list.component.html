@@ -41,33 +41,35 @@
                                   <thead>
                                     <tr>
                                       <th><input (change)="selectAll($event)" type="checkbox"></th>
-                                      <th data-sortable="">CiF</th>
-                                      <th data-sortable="">Full Name</th>
-                                      <th data-sortable="">Email</th>
-                                      <th data-sortable="">Numero Social</th>
-                                      <th data-sortable="">Email Confirmation</th>
-                                      <th data-sortable="">Status</th>
-                                      <th data-sortable="">Acción</th>
+                                      <th class="text-capitalize">CiF</th>
+                                      <th class="text-capitalize">Full Name</th>
+                                      <th class="text-capitalize">Email</th>
+                                      <th class="text-capitalize">Numero Social</th>
+                                      <th class="text-capitalize">Phone</th>
+                                      <th class="text-capitalize">Confirmed</th>
+                                      <th class="text-capitalize">Status</th>
+                                      <th class="text-capitalize">Acción</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr *ngFor="let user of userItems.items">
                                       <td><input (change)="setUser(user.cif, $event)" class="items" type="checkbox" value="{{user.cif}}" /></td>
-                                      <td>{{user.cif}}</td>
+                                      <td class="wraped">{{user.cif}}</td>
                                       <td>{{user.name}}</td>
                                       <td>{{user.email}}</td>
                                       <td>{{user.socialNumber}}</td>
+                                      <td>{{user.tel}}</td>
                                       <td>{{user.isConfirmed}}</td>
                                       <td [innerHTML]="this.status[user.status]"></td>
                                       <td class="icons d-flex justify-content-center">
                                           <button class="border-0 bg-transparent align-middle" (click)="validateUser(user.cif)">
-                                            <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                                            <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0;"></i>
                                           </button>
                                           <button class="border-0 bg-transparent align-middle" (click)="rejectUser(user.cif)">
-                                            <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                                            <i class="fa-regular fa-circle-xmark" style=" margin: 0; font-size: 20px; font-weight: 500; color: chocolate"></i>
                                           </button>
                                           <button class="border-0 bg-transparent align-middle" (click)="deleteUser(user.cif)">
-                                            <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                                            <i class="fa-regular fa-trash-can" style="margin: 0; font-size: 20px; font-weight: 500; color: red"></i>
                                           </button>
                                       </td>
                                     </tr>
