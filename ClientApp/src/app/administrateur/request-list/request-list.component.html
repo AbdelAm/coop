@@ -53,7 +53,7 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let request of requests">
-                              <td><input (change)="setRequest(request.Id, $event)" class="items" type="checkbox" value="{{request.id}}" /></td>
+                              <td><input (change)="setRequest(request.id, $event)" class="items" type="checkbox" value="{{request.id}}" /></td>
                               <td>{{request.id}}</td>
                               <td>{{request.userId}}</td>
                               <td>{{request.type}}</td>

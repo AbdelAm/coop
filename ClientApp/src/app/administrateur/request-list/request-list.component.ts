@@ -44,6 +44,7 @@ export class RequestListComponent implements OnInit {
     this.requestService.getRequests().subscribe(
       res => {
         this.requests.push(...res);
+        console.log(this.requests);
       },
       err => console.log(err)
     );
@@ -172,7 +173,7 @@ export class RequestListComponent implements OnInit {
   deleteAll() {
     this.requestService.deleteRequests(this.listRequest).subscribe(
       res => {
-        this.requestItems.items = this.requestItems.items.filter(u => {
+        this.requests = this.requests.filter(u => {
           return !this.listRequest.includes(u.id);
         });
         this.listRequest.length = 0;

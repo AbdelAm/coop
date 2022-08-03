@@ -35,7 +35,7 @@ namespace coop2._0.Services
             {
                 var request = await _requestRepository.GetRequest(id);
                 var result = await _requestRepository.RemoveRequest(request);
-                if (result == null)
+                if (!result)
                 {
                     temoin = false;
                 }

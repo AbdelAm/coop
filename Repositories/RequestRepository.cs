@@ -30,11 +30,11 @@ namespace coop2._0.Repositories
         {
             return await _context.Requests.Include(req => req.User).Where(req => req.Id == id).FirstOrDefaultAsync();
         }
-        public async Task<Request> RemoveRequest(Request request)
+        public async Task<bool> RemoveRequest(Request request)
         {
-            _context.Entry(request).State = EntityState.Modified;
+            _context.Requests.Remove(request);
             await _context.SaveChangesAsync();
-            return request;
+            return true;
         }
 
         public async Task<Request> RejectRequest(Request request)

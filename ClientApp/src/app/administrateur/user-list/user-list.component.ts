@@ -150,7 +150,7 @@ export class UserListComponent implements OnInit {
   rejectAll() {
     this.userService.rejectUsers(this.listUser).subscribe(
       res => {
-        this.userItems.items.forEach(u => {
+        this.userItems.items.map(u => {
           if (this.listUser.includes(u.cif)) {
             u.status = '2';
           }
