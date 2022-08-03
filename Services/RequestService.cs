@@ -27,14 +27,14 @@ namespace coop2._0.Services
         {
             return _requestRepository.GetRequests();
         }
-        public Task<ActionResult> RemoveRequest(int id)
+        public Task<ActionResult> RemoveRequest(List<int> requests)
         {
-            return _requestRepository.RemoveRequest(id);
+            return _requestRepository.RemoveRequest(requests);
         }
 
-        public async Task<ActionResult<Request>> RejectRequest(int id)
+        public async Task<ActionResult<Request>> RejectRequest(List<int> requests)
         {
-            return await _requestRepository.RejectRequest(id);
+            return await _requestRepository.RejectRequest(requests);
         }
 
         public async Task<ActionResult<Request>> AddRequest(RequestModel model)

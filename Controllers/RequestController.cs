@@ -40,18 +40,26 @@ namespace coop2._0.Controllers
         }
 
         [HttpDelete("delete")]
-        public async Task<ActionResult> RemoveRequest(int id)
+        public async Task<ActionResult> RemoveRequest([FromBody] List<int> requests)
         {
-            var deletedRequest = await _requestService.RemoveRequest(id);
+            var deletedRequest = await _requestService.RemoveRequest(requests);
             if (deletedRequest == null)
                 return BadRequest();
             return Ok(deletedRequest);
         }
 
         [HttpPost("reject")]
-        public async Task<ActionResult<Request>> RejectRequest(int id)
+        public async Task<ActionResult<Request>> RejectRequest([FromBody] List<int> requests)
         {
-            return await _requestService.RejectRequest(id);
+            try
+            {
+                var res = await _requestService.RejectRequest(requests);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("validate")]
