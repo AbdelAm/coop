@@ -35,6 +35,15 @@ namespace coop2._0.Services
                 ItemsNumber = itemNum
             };
         }
+        public async Task<UserItemModel> FindUser(string cif)
+        {
+            User user = await _userRepository.SelectById(cif);
+            if (user == null)
+            {
+                throw new Exception("There is no user existe with these information");
+            }
+            return new UserItemModel(user);
+        }
 
         public async Task<IEnumerable<UserItemModel>> FindBy(string value)
         {
