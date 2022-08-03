@@ -28,48 +28,47 @@
                                 </ul>
                         </div>
                         <div class="card-body">
-                            <form *ngIf="selectedButton === 'user' || selectedButton === ''">
+                            <form *ngIf="selectedButton === 'user'">
                                 <p class="setting-title">administrar usuario</p>
                                 <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Update your Name">
+                                    <input type="text" class="form-control"placeholder="Update your Name">
+                                    <strong id="name_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                <label for="NIF">NIF/CIF</label>
-                                <input type="text" class="form-control" id="NIF" placeholder="NIF">
+                                    <input type="text" class="form-control" placeholder="Update your Social Number">
+                                    <strong id="socialNumber_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                    <label for="NIF">Telephone</label>
-                                    <input type="tel" class="form-control" id="NIF" placeholder="Telephone">
+                                    <input type="tel" class="form-control" placeholder="Update your Phone">
+                                    <strong id="tel_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <input type="submit" class="btn btn-primary" value="Submit">
                             </form>
                             <form *ngIf="selectedButton === 'email'">
                                 <p class="setting-title">administrar correo electrónico</p>
                                 <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                                <a style="color: rgb(30, 6, 240)">Envia un correo electronico de verificación</a>
+                                    <input type="email" class="form-control" placeholder="Enter your Email">
+                                    <strong id="email_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                <label for="emailconf">Nuevo correo electrónico</label>
-                                <input type="emailconf" class="form-control" id="email" placeholder="email">
+                                    <input type="email" class="form-control" placeholder="Enter the new Email">
+                                    <strong id="new_email_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <input type="submit" class="btn btn-primary" value="Submit">
                             </form>
                             <form *ngIf="selectedButton === 'password'">
                                 <p class="setting-title">Cambia la contraseña</p>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">contraseña actual</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    <input type="password" class="form-control" placeholder="Enter your current Password">
+                                    <strong id="password_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword2">Nueva contraseña</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+                                    <input type="password" class="form-control" placeholder="Enter your new Password">
+                                    <strong id="new_password_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword3">Confirmar nueva contraseña</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+                                    <input type="password" class="form-control" placeholder="Confirm your new Password">
+                                    <strong id="confirmed_password_error" class="form-text text-danger d-block"></strong>
                                 </div>
                                 <input type="submit" class="btn btn-primary" value="Submit">
                             </form>
