@@ -14,7 +14,7 @@ export class JwtService {
     if (res) {
       this.jwt = JSON.parse(res);
     }
-    this.switchBtn = this.jwt.isAdmin;
+    this.switchBtn = true;
   }
 
   saveToken(tokenModel: TokenModel) {

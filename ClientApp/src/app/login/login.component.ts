@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthentificationService, private router: Router, private jwt: JwtService) {
     this.loginModel = new LoginModel();
     if(this.jwt.isConnected()) {
-      (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigateByUrl('admin') : this.router.navigateByUrl('users');
+      (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigateByUrl('/admin') : this.router.navigateByUrl('/global');
     }
   }
 
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
         let tokenModel = new TokenModel(res);
         if(this.jwt.saveToken(tokenModel))
         {
-          (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigate(['/admin']) : this.router.navigate(['/global']); 
+          (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigateByUrl('/admin') : this.router.navigateByUrl('/global'); 
         }
       },
       err => {

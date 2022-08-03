@@ -47,7 +47,6 @@ export class RequestListComponent implements OnInit {
       },
       err => console.log(err)
     );
-    console.log(this.requests);
     window.scrollTo(0, 0);
   }
 
@@ -106,7 +105,6 @@ export class RequestListComponent implements OnInit {
     } else {
       elt.classList.add("d-none");
     }
-    console.log(this.listRequest);
   }
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
 
@@ -138,7 +136,6 @@ export class RequestListComponent implements OnInit {
     console.log(this.listRequest);
     this.requestService.validateRequests(this.listRequest).subscribe(
       res => {
-        console.log(res);
         this.requests.map(req => {
           if(this.listRequest.includes(req.id)) {
             req.status = StatusModel.Approuved;

@@ -75,7 +75,6 @@ export class TransactionListComponent implements OnInit {
 
   processResult() {
     return data => {
-      console.log(data.response[0]);
       this.transactions = data.response;
       this.pageNumber = data.pagination?.pageNumber;
       this.pageSize = data.pagination?.pageSize;

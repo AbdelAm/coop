@@ -51,12 +51,13 @@ namespace coop2._0.Services
                 Cif = user.Id,
                 Name = user.Name,
                 IsAdmin = user.IsAdmin,
+                BankAccount = user.BankAccounts.First().AccountNumber,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 ValidTo = jwtSecurityToken.ValidTo
             };
         }
 
-        public async Task<string> DecodeJwtToken(string token)
+        public string DecodeJwtToken(string token)
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(token);

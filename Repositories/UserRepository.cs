@@ -57,7 +57,7 @@ namespace coop2._0.Repositories
 
         public async Task<User> SelectUser(LoginModel model)
         {
-            var user = await _userManager.FindByIdAsync(model.Cif);
+            var user = await _userManager.Users.Include(u => u.BankAccounts).Where(u => u.Id == model.Cif).FirstOrDefaultAsync();
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 return user;
