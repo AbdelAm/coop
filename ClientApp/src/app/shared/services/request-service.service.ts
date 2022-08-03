@@ -30,7 +30,7 @@ export class RequestServiceService {
     return this.http.post<RequestModel[]>(this.baseUrl + 'request/validate', requestList);
   }
 
-  rejectRequests(requestList: Array<number>, page: number = 1): Observable<RequestModel[]> {
+  rejectRequests(requestList: Array<number>): Observable<RequestModel[]> {
     return this.http.post<RequestModel[]>(this.baseUrl + `request/reject`, requestList);
   }
   deleteRequests(requestList: Array<number>): Observable<RequestModel[]> {

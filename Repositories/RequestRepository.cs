@@ -30,26 +30,16 @@ namespace coop2._0.Repositories
         {
             return await _context.Requests.Include(req => req.User).Where(req => req.Id == id).FirstOrDefaultAsync();
         }
-        public async Task<ActionResult> RemoveRequest(List<int> requests)
+        public async Task<Request> RemoveRequest(Request request)
         {
-            var request = await _context.Requests.FindAsync(requests);
-
-            if (request == null || request.Status == Status.Approuved) return null;
-
-            _context.Requests.Remove(request);
-
+            _context.Entry(request).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-
-            return new OkResult();
+            return request;
         }
 
-        public async Task<ActionResult<Request>> RejectRequest(List<int> requests)
+        public async Task<Request> RejectRequest(Request request)
         {
-            var request = await _context.Requests.FindAsync(requests);
-
-            if (request is not { Status: Status.Progress }) return null;
-            request.Status = Status.Rejected;
-            _context.Update(request);
+            _context.Entry(request).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return request;
         }

@@ -10,8 +10,8 @@ namespace coop2._0.Repositories
     {
         Task<ActionResult<IEnumerable<Request>>> GetRequests();
         Task<Request> GetRequest(int id);
-        Task<ActionResult> RemoveRequest(List<int> requests);
-        Task<ActionResult<Request>> RejectRequest(List<int> requests);
+        Task<Request> RemoveRequest(Request request);
+        Task<Request> RejectRequest(Request request);
         Task<Request> ValidateRequest(Request request);
         Task<ActionResult<Request>> AddRequest(RequestModel model);
     }

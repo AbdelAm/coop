@@ -151,14 +151,14 @@ export class RequestListComponent implements OnInit {
     )
   }
   rejectAll() {
-    
+    console.log(this.listRequest);
     this.requestService.rejectRequests(this.listRequest).subscribe(
       res => {
-        this.requestItems.items.forEach(u => {
-          if (this.listRequest.includes(u.id)) {
-            u.status = StatusModel.Rejected;
+        this.requests.map(req => {
+          if (this.listRequest.includes(req.id)) {
+            req.status = StatusModel.Rejected;
           }
-        })
+        });
         this.listRequest.length = 0;
         Swal.fire({
           title: "Request Rejected successfully!!!",
@@ -168,6 +168,7 @@ export class RequestListComponent implements OnInit {
       err => console.log(err)
     )
   }
+
   deleteAll() {
     this.requestService.deleteRequests(this.listRequest).subscribe(
       res => {
