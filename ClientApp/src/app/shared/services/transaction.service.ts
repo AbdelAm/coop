@@ -40,9 +40,9 @@ export class TransactionService {
     return this.httpClient.delete(this.baseUrl + '/ ' + transactionId);
   }
 
-  updateTransaction() {
-    // TO DO
-  }
+  /*  updateTransaction() {
+      // TO DO
+    }*/
 
   validateAllTransaction(transactionsIds: number[]) {
     return this.httpClient.post(this.baseUrl + '/validate-all', transactionsIds);

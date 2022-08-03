@@ -30,9 +30,9 @@ namespace coop2._0.Repositories
         {
             return await _context.Requests.Include(req => req.User).Where(req => req.Id == id).FirstOrDefaultAsync();
         }
-        public async Task<ActionResult> RemoveRequest(int id)
+        public async Task<ActionResult> RemoveRequest(List<int> requests)
         {
-            var request = await _context.Requests.FindAsync(id);
+            var request = await _context.Requests.FindAsync(requests);
 
             if (request == null || request.Status == Status.Approuved) return null;
 
@@ -43,9 +43,9 @@ namespace coop2._0.Repositories
             return new OkResult();
         }
 
-        public async Task<ActionResult<Request>> RejectRequest(int id)
+        public async Task<ActionResult<Request>> RejectRequest(List<int> requests)
         {
-            var request = await _context.Requests.FindAsync(id);
+            var request = await _context.Requests.FindAsync(requests);
 
             if (request is not { Status: Status.Progress }) return null;
             request.Status = Status.Rejected;

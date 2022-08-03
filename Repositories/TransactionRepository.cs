@@ -37,23 +37,6 @@ namespace coop2._0.Repositories
         }
 
 
-        public async Task<object> GetTransactionsByUser(int userId,
-            PaginationFilter filter)
-        {
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-
-
-            var response = await _context.Transactions
-                .Where(u => u.SenderBankAccountId == userId || u.ReceiverBankAccountId == userId)
-                .OrderBy(d => d.DateTransaction).Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-                .Take(validFilter.PageSize)
-                .ToListAsync();
-            var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
-                response.Count());
-
-            return new { response, pagination };
-        }
-
         public async Task<Transaction> GetTransaction(int id)
         {
             return await _context.Transactions.FindAsync(id);
@@ -117,16 +100,47 @@ namespace coop2._0.Repositories
         }
 
 
-        public async Task<IEnumerable<Transaction>> SearchForTransactions(string keyword)
+        public async Task<object> SearchForTransactions(string keyword, PaginationFilter filter)
         {
-            if (!string.IsNullOrWhiteSpace(keyword))
-            {
-                return await _context.Transactions.Where(t =>
-                    t.SenderBankAccount.User.Name.ToLower().Contains(keyword.Trim().ToLower()) ||
-                    t.ReceiverBankAccount.User.Name.ToLower().Contains(keyword.Trim().ToLower())).ToListAsync();
-            }
+            if (string.IsNullOrWhiteSpace(keyword)) return null;
 
-            return null;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+
+            var response = await _context.Transactions.Where(t =>
+                    (t.SenderBankAccount.User.Name.ToLower().Contains(keyword.Trim().ToLower())) ||
+                    (t.ReceiverBankAccount.User.Name.ToLower().Contains(keyword.Trim().ToLower())) ||
+                    (t.Motif.ToLower().Contains(keyword.Trim().ToLower())))
+                .Include(t => t.SenderBankAccount.User)
+                .Include(t => t.ReceiverBankAccount.User)
+                .OrderBy(t => t.DateTransaction)
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize).ToListAsync();
+
+
+            var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
+                response.Count());
+            return new
+            {
+                response,
+                pagination
+            };
+        }
+
+        public async Task<object> GetTransactionsByUser(int userId,
+            PaginationFilter filter)
+        {
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+
+
+            var response = await _context.Transactions
+                .Where(u => u.SenderBankAccountId == userId || u.ReceiverBankAccountId == userId)
+                .OrderBy(d => d.DateTransaction).Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+            var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
+                response.Count());
+
+            return new { response, pagination };
         }
     }
 }

@@ -36,7 +36,7 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet("user/{userId:int}")]
-        public async Task<object> GetTransactionsByUser([FromQuery] PaginationFilter filter , int userId)
+        public async Task<object> GetTransactionsByUser([FromQuery] PaginationFilter filter, int userId)
         {
             return await _transactionService.GetTransactionsByUser(userId, filter);
         }
@@ -113,11 +113,9 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet("search/{keyword}")]
-        public async Task<IEnumerable<Transaction>> SearchForTransactions(string keyword)
+        public async Task<object> SearchForTransactions([FromQuery] PaginationFilter filter, string keyword)
         {
-            return await _transactionService.SearchForTransactions(keyword);
+            return await _transactionService.SearchForTransactions(keyword, filter);
         }
-
-
     }
 }

@@ -10,4 +10,5 @@ export class TransactionModel {
   senderBankAccount!: BankAccountModel;
   receiverBankAccount!: BankAccountModel;
   status: number;
+  motif: string;
 }

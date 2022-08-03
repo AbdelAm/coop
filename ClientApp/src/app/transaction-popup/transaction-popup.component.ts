@@ -42,7 +42,6 @@ export class TransactionPopupComponent implements OnInit {
         Validators.required,
         CoopValidators.notOnlyWhiteSpace,
       ]),
-      transactionTimestamp: new FormControl('', [Validators.required]),
     }),
   });
 

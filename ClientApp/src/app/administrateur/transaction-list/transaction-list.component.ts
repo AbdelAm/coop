@@ -96,10 +96,10 @@ export class TransactionListComponent implements OnInit {
 
   }
 
-  updateTransaction() {
+  /*updateTransaction() {
     this.transactionService.updateTransaction();
   }
-
+*/
   validateAllTransactions(listTransaction: Array<number>) {
     this.transactionService.validateAllTransaction(listTransaction).subscribe();
 
@@ -115,9 +115,14 @@ export class TransactionListComponent implements OnInit {
 
 
   handleTransactionSearch(keyword: string) {
-    this.transactionService.handleTransactionSearch(keyword).subscribe(
-      // data => this.transactions = data
-    );
+
+    if (keyword !== '') {
+      this.transactionService.handleTransactionSearch(keyword).subscribe(
+        this.processResult()
+      );
+    } else {
+      this.getTransactionsByUser();
+    }
   }
 
   statusCasting(status: number): string {

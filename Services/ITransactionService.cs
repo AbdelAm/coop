@@ -16,6 +16,6 @@ namespace coop2._0.Services
         Task<ActionResult<Transaction>> ValidateTransaction(int id);
         Task<object> GetTransactionsByUser(int userId, PaginationFilter filter);
 
-        Task<IEnumerable<Transaction>> SearchForTransactions(string keyword);
+        Task<object> SearchForTransactions(string keyword, PaginationFilter filter);
     }
 }
