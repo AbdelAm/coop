@@ -39,7 +39,6 @@ namespace coop2._0.Controllers
 
         [HttpGet]
         [Route("{cif}")]
-        [Authorize(Roles = "USER")]
         public async Task<ActionResult<UserItemModel>> GetUser(string cif)
         {
             try

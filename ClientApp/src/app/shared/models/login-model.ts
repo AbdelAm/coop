@@ -1,4 +1,4 @@
 export class LoginModel {
-    cif!: string;
+    email!: string;
     password!: string;
 }

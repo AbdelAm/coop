@@ -1,26 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
   
-  url: string;
-  constructor(private router: Router){
-  }
-
-  ngOnInit(): void
-  {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.url = event.url;
-      }
-    })
-  }
-
-  isAuthRoute() {
-    return ['/login', '/signup', 'email-confirmation', 'forgot-password', 'reset-password'].includes(this.url);
+  constructor(){
   }
 }

@@ -27,7 +27,7 @@
           <form class="login" #loginForm="ngForm" (submit)="onSubmit()">
             <div class="login__field">
               <i class="login__icon fas fa-user"></i>
-              <input type="text" name="cif" #cif="ngModel" [(ngModel)]="this.loginModel.cif" class="login__input" placeholder="NIF/CIF...">
+              <input type="text" name="email" #email="ngModel" [(ngModel)]="this.loginModel.email" class="login__input" placeholder="Email...">
             </div>
             <div class="login__field">
               <i class="login__icon fas fa-lock"></i>
