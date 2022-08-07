@@ -9,6 +9,7 @@ import { StatusModel } from '../../shared/models/status-model';
 import Swal from 'sweetalert2';
 //import { parse } from 'path';
 import { ItemsModel } from '../../shared/models/items-model';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class RequestListComponent implements OnInit {
   requestItems: ItemsModel<RequestModel>;
   requests: RequestModel[];
   pageNumber: Array<number>;
+  request: RequestModel;
 
   status = [
     '<strong>In Progress</strong>',
@@ -31,7 +33,7 @@ export class RequestListComponent implements OnInit {
 
 
 
-  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private requestService: RequestServiceService) {
+  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private modalService: NgbModal) {
     this.listRequest = new Array<number>();
     this.requests = new Array<RequestModel>();
     this.requestItems = new ItemsModel<RequestModel>();
@@ -111,13 +113,13 @@ export class RequestListComponent implements OnInit {
   }
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
 
-  addRequest(): void {
-    this.dialog.open(RequestPopupComponent, {
-      width: '60%',
-      height: '60%',
-      data: "right click"
-    })
-  }
+  //addRequest(): void {
+  //  this.dialog.open(RequestPopupComponent, {
+  //    width: '60%',
+  //    height: '60%',
+  //    data: "right click"
+  //  })
+  //}
   uncheckAll() {
     this.checkboxes.forEach((element) => {
       element.nativeElement.checked = false;
@@ -195,4 +197,45 @@ export class RequestListComponent implements OnInit {
       err => console.log(err)
     )
   }
+  // ------------------------------ POPUP METHODES ------------------------------
+  selected: string;
+  msg: string;
+  options = [
+    { name: "Consultarnos dudas", value: 1 },
+    { name: "Informarnos de cambios en tus datos", value: 2 },
+    { name: "Solicitar alta o modificación de aportaciones periodicas", value: 3 },
+    { name: "Solicitar la baja como socio", value: 4 },
+    { name: "Solicitar mi historial de cuenta de años anteriores", value: 5 }
+  ]
+  selectOption(id: number) {
+    //getted from event
+    console.log(id);
+    //getted from binding
+    //console.log(this.selected)
+    return this.selected;
+  }
+  showmsg() {
+    console.log(this.msg);
+  }
+  closeResult = '';
+  open(content) {
+    this.modalService.open(content,
+      { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult =
+          `Dismissed ${this.getDismissReason(reason)}`;
+      });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+  
 }
