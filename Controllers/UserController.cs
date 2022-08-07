@@ -21,8 +21,7 @@ namespace coop2._0.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        [Route("list/{page}")]
+        [HttpGet("list/{page}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<ItemsModel<UserItemModel>>> GetUsers(int page)
         {
@@ -37,8 +36,7 @@ namespace coop2._0.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{cif}")]
+        [HttpGet("{cif}")]
         public async Task<ActionResult<UserItemModel>> GetUser(string cif)
         {
             try
@@ -51,8 +49,7 @@ namespace coop2._0.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("search/{value}")]
+        [HttpGet("search/{value}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<IEnumerable<UserItemModel>>> GetBy(string value)
         {
@@ -67,8 +64,7 @@ namespace coop2._0.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("validate/{page}")]
+        [HttpPost("validate/{page}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> ValidateUsers([FromBody] List<string> users, int page)
         {
@@ -82,8 +78,7 @@ namespace coop2._0.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("reject/{page}")]
+        [HttpPost("reject/{page}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> RejectUsers([FromBody] List<string> users, int page)
         {
@@ -98,8 +93,7 @@ namespace coop2._0.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("delete/{page}")]
+        [HttpPost("delete/{page}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteUsers([FromBody] List<string> users, int page)
         {
@@ -109,6 +103,32 @@ namespace coop2._0.Controllers
                 return Ok();
             }
             catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update/info")]
+        public async Task<ActionResult<bool>> ChangeUserInfo([FromBody] UserInfoModel model)
+        {
+            try
+            {
+                bool done = await _userService.ChangeInfo(model);
+                return Ok(done);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update/email")]
+        public async Task<ActionResult<bool>> ChangeUserEmail([FromBody] EmailUpdateModel model)
+        {
+            try
+            {
+                Response response = await _userService.ChangeEmail(model);
+                return Ok(response);
+            } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

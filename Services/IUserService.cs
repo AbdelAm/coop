@@ -14,5 +14,7 @@ namespace coop2._0.Services
         Task<bool> Validate(List<string> users, int page);
         Task<bool> Reject(List<string> users, int page);
         Task<bool> Delete(List<string> users, int page);
+        Task<bool> ChangeInfo(UserInfoModel model);
+        Task<Response> ChangeEmail(EmailUpdateModel model);
     }
 }

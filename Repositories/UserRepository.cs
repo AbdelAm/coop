@@ -113,6 +113,12 @@ namespace coop2._0.Repositories
                                            .ToListAsync();
         }
 
+        public async Task<bool> EmailExists(string email)
+        {
+            int count =  await _userManager.Users.Where(u => u.Email == email)
+                                           .CountAsync();
+            return count > 0;
+        }
         public async Task<IdentityResult> UpdateUser(User user)
         {
             return await _userManager.UpdateAsync(user);

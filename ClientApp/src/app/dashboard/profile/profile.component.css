@@ -11,7 +11,7 @@
     color: #555;
     cursor: pointer;
 }
-.tabs-items a.active {
+.tabs-items a.profile-active {
     color: #222;
     background-color: #fff;
     pointer-events: none;

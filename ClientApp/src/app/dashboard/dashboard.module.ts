@@ -15,7 +15,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {TransactionPopupComponent} from './transaction-popup/transaction-popup.component';
@@ -41,6 +41,7 @@ import {TokenInterceptorService} from '../shared/services/token-interceptor.serv
     CommonModule,
     DashboardRoutingModule,
     NgbModule,
+    FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

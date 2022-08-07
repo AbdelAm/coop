@@ -14,11 +14,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.isAdmin()) {
-      document.addEventListener("DOMContentLoaded", () => {
-        (<HTMLInputElement> document.querySelector('.switch-toggle')).checked = this.jwt.switchBtn;
-      });
-    }
   }
   isAdmin()
   {
