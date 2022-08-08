@@ -46,7 +46,7 @@ namespace coop2._0.Repositories
         {
             var transaction = await _context.Transactions.FindAsync(id);
 
-            if (transaction == null || transaction.Status == Status.Approuved) return null;
+            if (transaction == null || transaction.Status == Status.Approuved) return new BadRequestResult();
 
             _context.Transactions.Remove(transaction);
 
@@ -59,7 +59,7 @@ namespace coop2._0.Repositories
         {
             var transaction = await _context.Transactions.FindAsync(id);
 
-            if (transaction is not { Status: Status.Progress }) return null;
+            if (transaction is not { Status: Status.Progress }) return new BadRequestResult();
 
             transaction.Status = Status.Rejected;
 
@@ -68,19 +68,21 @@ namespace coop2._0.Repositories
             return transaction;
         }
 
-        public async Task<ActionResult<Transaction>> AddTransaction(Transaction transaction)
+        public async Task<ActionResult> AddTransaction(Transaction transaction)
         {
+            if (transaction == null) return new BadRequestResult();
+
             transaction.DateTransaction = DateTime.Now;
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
-            return transaction;
+            return new OkResult();
         }
 
         public async Task<ActionResult<Transaction>> ValidateTransaction(int id)
         {
             var transaction = await _context.Transactions.FindAsync(id);
 
-            if (transaction is not { Status: Status.Progress }) return null;
+            if (transaction is not { Status: Status.Progress }) return new BadRequestResult();
 
             var senderBankAccount = await _context.BankAccounts.FindAsync(transaction.SenderBankAccountId);
             var receiverBankAccount = await _context.BankAccounts.FindAsync(transaction.ReceiverBankAccountId);
@@ -126,17 +128,18 @@ namespace coop2._0.Repositories
             };
         }
 
-        public async Task<object> GetTransactionsByUser(int userId,
-            PaginationFilter filter)
+        public async Task<object> GetTransactionsByUser(TransactionByUserModel model)
         {
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
+            var validFilter = new PaginationFilter(model.Page);
 
-            var response = await _context.Transactions
-                .Where(u => u.SenderBankAccountId == userId || u.ReceiverBankAccountId == userId)
-                .OrderBy(d => d.DateTransaction).Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            var response =
+                await _context.BankAccounts.Where(b => b.Id == model.UserBankAccountId)
+                .Select(t => new { t.TransactionsSent, t.TransactionsReceived })
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                 .Take(validFilter.PageSize)
                 .ToListAsync();
+
             var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
                 response.Count());
 

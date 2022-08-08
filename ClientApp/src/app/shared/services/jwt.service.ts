@@ -43,4 +43,8 @@ export class JwtService {
   getConnectedUserId() {
     return this.jwt.cif;
   }
+
+  getConnectedUserBankAccountId() {
+    return this.jwt.bankAccount;
+  }
 }

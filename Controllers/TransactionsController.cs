@@ -34,21 +34,21 @@ namespace coop2._0.Controllers
                 return NotFound();
             return Ok(transaction);
         }
+        
+        [HttpPost]
+        [Route("user")]
 
-        [HttpGet("user/{userId:int}")]
-        public async Task<object> GetTransactionsByUser([FromQuery] PaginationFilter filter, int userId)
+        public async Task<object> GetTransactionsByUser([FromBody] TransactionByUserModel model)
         {
-            return await _transactionService.GetTransactionsByUser(userId, filter);
+            return await _transactionService.GetTransactionsByUser(model);
         }
 
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> RemoveTransaction(int id)
         {
-            var deletedTransaction = await _transactionService.RemoveTransaction(id);
-            if (deletedTransaction == null)
-                return BadRequest();
-            return Ok(deletedTransaction);
+            return await _transactionService.RemoveTransaction(id);
+            ;
         }
 
         [HttpGet("reject/{id:int}")]

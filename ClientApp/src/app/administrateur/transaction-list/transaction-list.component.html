@@ -86,7 +86,7 @@
                   <table id="datatablesSimple" class="dataTable-table">
                     <thead>
                     <tr>
-                      <th>
+                      <th *ngIf="isConnected && hasAdminRole">
                         <input type="checkbox" (change)="selectAll($event)"/>
                       </th>
                       <th data-sortable="">Monto</th>
@@ -96,12 +96,12 @@
                       <th data-sortable="">Cuenta original</th>
                       <th data-sortable="">Cuenta de destino</th>
                       <th data-sortable="">Estado</th>
-                      <th data-sortable="">Acción</th>
+                      <th *ngIf="isConnected && hasAdminRole" data-sortable="">Acción</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let transaction of transactions">
-                      <td>
+                      <td *ngIf="isConnected && hasAdminRole">
                         <input
                           (change)="setTransaction(transaction.id, $event)"
                           class="items"
@@ -120,7 +120,7 @@
                         {{ transaction.receiverBankAccount?.user.name}}
                       </td>
                       <td>{{ statusCasting(transaction.status)}}</td>
-                      <td class="icons">
+                      <td *ngIf="isConnected && hasAdminRole" class="icons">
                         <button
                           (click)="validateTransaction(transaction.id)"
                           class="border-0 bg-transparent align-middle"
@@ -188,7 +188,8 @@
                   [pageSize]="pageSize"
                   [collectionSize]="totalElements"
                   [boundaryLinks]="true"
-                  (pageChange)="getTransactionsByUser()"
+                  [maxSize]="maxSize"
+                  (pageChange)="getTransactions()"
                 >
                 </ngb-pagination>
 

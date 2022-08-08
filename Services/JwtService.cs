@@ -22,6 +22,7 @@ namespace coop2._0.Services
             _userRepository = userRepository;
             _configuration = configuration;
         }
+
         public async Task<TokenModel> GenerateJwtToken(User user)
         {
             var roles = await _userRepository.SelectUserRoles(user);
@@ -51,7 +52,7 @@ namespace coop2._0.Services
                 Cif = user.Id,
                 Name = user.Name,
                 IsAdmin = user.IsAdmin,
-                BankAccount = user.BankAccounts.First().AccountNumber,
+                BankAccount = user.BankAccounts.First().Id,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 ValidTo = jwtSecurityToken.ValidTo
             };

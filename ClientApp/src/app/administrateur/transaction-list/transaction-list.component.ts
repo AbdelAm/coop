@@ -5,6 +5,7 @@ import {JwtService} from '../../shared/services/jwt.service';
 import {Router} from '@angular/router';
 import {TransactionModel} from '../../shared/models/transaction-model';
 import {TransactionService} from '../../shared/services/transaction.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-transaction-list',
@@ -18,11 +19,17 @@ export class TransactionListComponent implements OnInit {
   pageSize = 10;
   totalElements = 100;
   maxSize = 5;
+  isConnected = false;
+  hasAdminRole = false;
+  userBankAccountId: number;
 
   constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private transactionService: TransactionService) {
     (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('transaction') : this.router.navigateByUrl('admin/transaction');
     this.transactions = [];
     this.listTransaction = [];
+    this.isConnected = this.jwt.isConnected();
+    this.hasAdminRole = this.jwt.isAdmin();
+    this.userBankAccountId = this.jwt.getConnectedUserBankAccountId();
   }
 
   addTransaction(): void {
@@ -34,8 +41,20 @@ export class TransactionListComponent implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
-    this.getTransactionsByUser();
+    this.loadTransactionsByRole();
   }
+
+  loadTransactionsByRole() {
+    if (this.isConnected && this.hasAdminRole) {
+      this.getTransactions();
+    }
+    if (this.isConnected) {
+      this.getTransactionsByUser();
+    } else {
+      this.router.navigateByUrl('login');
+    }
+  }
+
 
   selectAll(e: Event) {
     const items = document.querySelectorAll('.items');
@@ -67,11 +86,19 @@ export class TransactionListComponent implements OnInit {
   }
 
 
-  getTransactionsByUser() {
+  getTransactions() {
     this.transactionService.getTransactions(this.pageNumber, this.pageSize).subscribe(
       this.processResult()
     );
+
   }
+
+  getTransactionsByUser() {
+    this.transactionService.getTransactionsByUser(this.userBankAccountId).subscribe(data => this.transactions = [...data.response[0].transactionsSent,
+      ...data.response[0].transactionsReceived]
+    );
+  }
+
 
   processResult() {
     return data => {
@@ -83,16 +110,66 @@ export class TransactionListComponent implements OnInit {
   }
 
   validateTransaction(transactionId: number) {
-    this.transactionService.validateTransaction(transactionId).subscribe();
+    this.transactionService.validateTransaction(transactionId).subscribe(
+      next => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Transaction has successfully validated ',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      },
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Transaction is already validated',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }
+    );
   }
 
   rejectTransaction(transactionId: number) {
-    this.transactionService.rejectTransaction(transactionId).subscribe();
-
+    this.transactionService.rejectTransaction(transactionId).subscribe(
+      next => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Transaction has successfully rejected ',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      },
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Validated Transactions cannot be rejecte',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }
+    );
   }
 
   removeTransaction(transactionId: number) {
-    this.transactionService.removeTransaction(transactionId).subscribe();
+    this.transactionService.removeTransaction(transactionId).subscribe(
+      next => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Transaction has successfully removed ',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      },
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Validated Transactions cannot be deleted',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }
+    );
 
   }
 
@@ -101,16 +178,32 @@ export class TransactionListComponent implements OnInit {
   }
 */
   validateAllTransactions(listTransaction: Array<number>) {
-    this.transactionService.validateAllTransaction(listTransaction).subscribe();
+    this.transactionService.validateAllTransaction(listTransaction).subscribe(
+      next => {
+        this.transactions = [];
+        this.loadTransactionsByRole();
+      }
+    );
 
   }
 
   rejectAllTransactions(listTransaction: Array<number>) {
-    this.transactionService.rejectAllTransaction(listTransaction).subscribe();
+    this.transactionService.rejectAllTransaction(listTransaction).subscribe(
+      next => {
+        this.transactions = [];
+        this.loadTransactionsByRole();
+      }
+    )
+    ;
   }
 
   removeAllTransactions(listTransaction: Array<number>) {
-    this.transactionService.removeAllTransaction(listTransaction).subscribe();
+    this.transactionService.removeAllTransaction(listTransaction).subscribe(
+      next => {
+        this.transactions = [];
+        this.loadTransactionsByRole();
+      }
+    );
   }
 
 
@@ -121,7 +214,7 @@ export class TransactionListComponent implements OnInit {
         this.processResult()
       );
     } else {
-      this.getTransactionsByUser();
+      this.getTransactions();
     }
   }
 

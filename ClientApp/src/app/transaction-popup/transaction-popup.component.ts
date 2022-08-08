@@ -3,6 +3,9 @@ import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {JwtService} from '../shared/services/jwt.service';
 import {CoopValidators} from '../shared/validators/coopValidators';
+import {TransactionModel} from '../shared/models/transaction-model';
+import {TransactionService} from '../shared/services/transaction.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-transaction-popup',
@@ -16,17 +19,29 @@ import {CoopValidators} from '../shared/validators/coopValidators';
   ],
 })
 export class TransactionPopupComponent implements OnInit {
-  readonly connectedUserId: string;
+  readonly userBankAccountId: number;
+  readonly hasAdminRole: boolean;
+  readonly isConnected: boolean;
+
 
   transactionFormGroup = this._formBuilder.group({
     origin: this._formBuilder.group({
       originalAccount: new FormControl(''),
-      externalAccount: new FormControl(''),
+      receiverAccount: new FormControl('', [
+        Validators.required,
+        CoopValidators.notOnlyWhiteSpace
+      ]),
+      externalAccount: new FormControl('', [
+        Validators.required,
+        CoopValidators.notOnlyWhiteSpace
+      ]),
     }),
     destination: this._formBuilder.group({
       originalAccountDestination: new FormControl(''),
-      externalDestination: new FormControl(''),
-      destinationAccount: new FormControl(''),
+      destinationAccount: new FormControl('', [Validators.required,
+        CoopValidators.notOnlyWhiteSpace]),
+      externalDestination: new FormControl('', [Validators.required,
+        CoopValidators.notOnlyWhiteSpace]),
     }),
     receiverInfo: this._formBuilder.group({
       amount: new FormControl('', [
@@ -34,26 +49,53 @@ export class TransactionPopupComponent implements OnInit {
         Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$'),
         Validators.min(0),
       ]),
-      destinationName: new FormControl('', [
-        Validators.required,
-        CoopValidators.notOnlyWhiteSpace,
-      ]),
       concept: new FormControl('', [
         Validators.required,
-        CoopValidators.notOnlyWhiteSpace,
+        CoopValidators.notOnlyWhiteSpace
       ]),
     }),
   });
 
-  constructor(private _formBuilder: FormBuilder, private jwt: JwtService) {
-    this.connectedUserId = jwt.getConnectedUserId();
+  constructor(private _formBuilder: FormBuilder, private jwt: JwtService, private transactionService: TransactionService) {
+    this.userBankAccountId = jwt.getConnectedUserBankAccountId();
+    this.isConnected = jwt.isConnected();
+    this.hasAdminRole = jwt.isAdmin();
   }
 
   ngOnInit(): void {
   }
 
-  get destinationName() {
-    return this.transactionFormGroup.get('receiverInfo.destinationName');
+  onSubmit() {
+    if (this.transactionFormGroup.invalid) {
+      this.transactionFormGroup.markAllAsTouched();
+      return;
+    }
+    const transaction = new TransactionModel();
+    transaction.senderBankAccountId = this.transactionFormGroup.get('origin.originalAccount').value;
+    transaction.receiverBankAccountId = this.transactionFormGroup.get('destination.destinationAccount').value ?
+      this.transactionFormGroup.get('destination.destinationAccount').value :
+      this.transactionFormGroup.get('destination.originalAccountDestination').value;
+    transaction.amount = this.transactionFormGroup.get('receiverInfo.amount').value;
+    transaction.motif = this.transactionFormGroup.get('receiverInfo.concept').value;
+
+    this.transactionService.postTransaction(transaction).subscribe(
+      next => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Transaction added successfully',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      },
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Something wrong with your inputs',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }
+    );
   }
 
   get concept() {
@@ -64,24 +106,41 @@ export class TransactionPopupComponent implements OnInit {
     return this.transactionFormGroup.get('receiverInfo.amount');
   }
 
-  get transactionTimestamp() {
-    return this.transactionFormGroup.get('receiverInfo.transactionTimestamp');
+  get receiverAccount() {
+    return this.transactionFormGroup.get('origin.receiverAccount');
   }
 
-  onSubmit() {
-    console.log(this.transactionFormGroup.value);
+  get externalAccount() {
+    return this.transactionFormGroup.get('origin.externalAccount');
+  }
+
+  get destination() {
+    return this.transactionFormGroup.get('destination.destinationAccount');
+  }
+
+  get externalDestination() {
+    return this.transactionFormGroup.get('destination.externalDestination');
   }
 
   disableOriginInput(event) {
     if (event.target.checked) {
       this.transactionFormGroup.get('origin.externalAccount').disable();
+      this.transactionFormGroup.get('origin.receiverAccount').disable();
       this.transactionFormGroup.get('origin.externalAccount').reset();
+      this.transactionFormGroup.get('origin.receiverAccount').reset();
+
     }
   }
 
-  enableOriginInput(event) {
+  enableExternalInput(event) {
     if (event.target.value) {
       this.transactionFormGroup.get('origin.externalAccount').enable();
+    }
+  }
+
+  enableReceiverInput(event) {
+    if (event.target.value) {
+      this.transactionFormGroup.get('origin.receiverAccount').enable();
     }
   }
 

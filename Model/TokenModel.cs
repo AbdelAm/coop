@@ -8,7 +8,7 @@ namespace coop2._0.Model
         public string Cif { get; set; }
         public string Name { get; set; }
         public bool IsAdmin { get; set; }
-        public string BankAccount { get; set; }
+        public int BankAccount { get; set; }
         public string Token { get; set; }
         public DateTime ValidTo { get; set; }
     }
