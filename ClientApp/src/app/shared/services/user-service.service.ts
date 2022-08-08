@@ -6,6 +6,7 @@ import { EmailUpdateModel } from '../models/email-update-model';
 import { ForgetPasswordModel } from '../models/forget-password-model';
 import { ItemsModel } from '../models/items-model';
 import { LoginModel } from '../models/login-model';
+import { PasswordUpdateModel } from '../models/password-update-model';
 import { RegisterModel } from '../models/register-model';
 import { ResetPasswordModel } from '../models/reset-password-model';
 import { TokenModel } from '../models/token-model';
@@ -46,5 +47,9 @@ export class UserService {
   updateEmail(userEmail: EmailUpdateModel) : Observable<Response>
   {
     return this.http.put<Response>(this.baseUrl + `user/update/email`, userEmail);
+  }
+  updatePassword(userPassword: PasswordUpdateModel) : Observable<Response>
+  {
+    return this.http.put<Response>(this.baseUrl + `user/update/password`, userPassword);
   }
 }

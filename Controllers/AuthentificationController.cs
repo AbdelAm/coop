@@ -65,7 +65,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("forget-password")]
-        public async Task<IActionResult> Forget(ForgetPasswordModel model)
+        public async Task<IActionResult> Forget([FromBody] ForgetPasswordModel model)
         {
             try
             {

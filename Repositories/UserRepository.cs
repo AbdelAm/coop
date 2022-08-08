@@ -66,6 +66,10 @@ namespace coop2._0.Repositories
             return null;
         }
 
+        public async Task<bool> CheckPassword(User user, string password)
+        {
+            return await _userManager.CheckPasswordAsync(user, password);
+        }
         public async Task<List<string>> SelectUserRoles(User user)
         {
             return (List<string>)await _userManager.GetRolesAsync(user);

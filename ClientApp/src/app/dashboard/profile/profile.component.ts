@@ -6,6 +6,7 @@ import { UserItemModel } from '../../shared/models/user-item-model';
 import { JwtService } from '../../shared/services/jwt.service';
 import { UserService } from '../../shared/services/user-service.service';
 import { EmailUpdateModel } from 'src/app/shared/models/email-update-model';
+import { PasswordUpdateModel } from 'src/app/shared/models/password-update-model';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,7 @@ export class ProfileComponent implements OnInit {
   user: UserItemModel;
   userInfo: UserInfoModel;
   emailUpdate: EmailUpdateModel;
+  passwordUpdate: PasswordUpdateModel;
 
   constructor(private jwt:JwtService, private router: Router, private userService: UserService) {
     if(!this.jwt.isConnected()) {
@@ -27,6 +29,7 @@ export class ProfileComponent implements OnInit {
     this.user = new UserItemModel();
     this.userInfo = new UserInfoModel();
     this.emailUpdate = new EmailUpdateModel();
+    this.passwordUpdate = new PasswordUpdateModel();
   }
 
   ngOnInit(): void {
@@ -35,6 +38,7 @@ export class ProfileComponent implements OnInit {
         Object.assign(this.user, res);
         this.userInfo.setInfo(this.user);
         this.emailUpdate.cif = this.user.cif;
+        this.passwordUpdate.cif = this.user.cif;
       },
       err => {
         Swal.fire({
@@ -100,6 +104,32 @@ export class ProfileComponent implements OnInit {
       )
     } else {
       document.getElementById('email_error').textContent = "The current email is not correct, please verify your email";
+    }
+  }
+
+  updateUserPassword()
+  {
+    if(this.passwordUpdate.newPassword === this.passwordUpdate.confirmedPassword)
+    {
+      this.userService.updatePassword(this.passwordUpdate).subscribe(
+        res => {
+          Swal.fire({
+            title: "Password Changed successfully!!!",
+            text: res["message"],
+            icon: "success",
+          }).then(() => {
+            this.jwt.removeToken();
+            this.router.navigateByUrl('/login');
+          });
+        },
+        err => {
+          Object.keys(err["error"]).forEach(key => {
+            document.getElementById(key).textContent = err["error"][key];
+          })
+        }
+      )
+    } else {
+      document.getElementById('confirmed_password_error').textContent = "the new password and the confirmed password should be the same"
     }
   }
   emptyError(field: string)

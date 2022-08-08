@@ -51,18 +51,18 @@
                         </div>
                         <input type="submit" class="btn btn-primary" value="Submit">
                     </form>
-                    <form *ngIf="selectedButton === 'password'">
+                    <form #passwordUpdatePassword="ngForm" (submit)="updateUserPassword()" *ngIf="selectedButton === 'password'">
                         <p class="setting-title mb-5">Cambia la contraseña</p>
                         <div class="form-group mb-4">
-                            <input type="password" class="form-control" placeholder="Enter your current Password">
+                            <input type="password" name="currentPassword" #currentPassword="ngModel" [(ngModel)]="this.passwordUpdate.currentPassword" class="form-control" placeholder="Enter your current Password">
                             <strong id="password_error" class="form-text text-danger d-block"></strong>
                         </div>
                         <div class="form-group mb-4">
-                            <input type="password" class="form-control" placeholder="Enter your new Password">
+                            <input type="password" name="newPassword" #newPassword="ngModel" [(ngModel)]="this.passwordUpdate.newPassword" class="form-control" placeholder="Enter your new Password">
                             <strong id="new_password_error" class="form-text text-danger d-block"></strong>
                         </div>
                         <div class="form-group mb-4">
-                            <input type="password" class="form-control" placeholder="Confirm your new Password">
+                            <input type="password" name="confirmedPassword" #confirmedPassword="ngModel" [(ngModel)]="this.passwordUpdate.confirmedPassword" class="form-control" placeholder="Confirm your new Password">
                             <strong id="confirmed_password_error" class="form-text text-danger d-block"></strong>
                         </div>
                         <input type="submit" class="btn btn-primary" value="Submit">

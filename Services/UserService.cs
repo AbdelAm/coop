@@ -1,6 +1,7 @@
 ﻿using coop2._0.Entities;
 using coop2._0.Model;
 using coop2._0.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -187,6 +188,31 @@ namespace coop2._0.Services
             {
                 Status = "success",
                 Message = "Email has been updated successfully, you should confirm your new email by clicking in link sent to your new email"
+            };
+        }
+
+        public async Task<Response> ChangePassword(PasswordUpdateModel model)
+        {
+            Exception e = new Exception();
+            var user = await _userRepository.SelectById(model.Cif);
+            bool temoin = await _userRepository.CheckPassword(user, model.CurrentPassword);
+            if (!temoin)
+            {
+                e.Data.Add("password_error", "The current password is not correct");
+                throw e;
+            }
+            string token = await _userRepository.GenerateResetToken(user);
+            IdentityResult res = await _userRepository.ResetPassword(user, token, model.NewPassword);
+            if (!res.Succeeded)
+            {
+                e.Data.Add("new_password_error", "the password doesn't change, please try again later");
+                throw e;
+            }
+
+            return new Response
+            {
+                Status = "success",
+                Message = "Password has been changed, you can login with new Password"
             };
         }
     }

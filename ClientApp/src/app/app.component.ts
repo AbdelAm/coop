@@ -12,10 +12,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(!this.jwt.isConnected()) {
-      this.router.navigateByUrl('/login')
-    } else {
-      (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigateByUrl('/dashboard/users') : this.router.navigateByUrl('/dashboard/global');
-    }
+    
   }
 }

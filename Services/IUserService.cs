@@ -16,5 +16,6 @@ namespace coop2._0.Services
         Task<bool> Delete(List<string> users, int page);
         Task<bool> ChangeInfo(UserInfoModel model);
         Task<Response> ChangeEmail(EmailUpdateModel model);
+        Task<Response> ChangePassword(PasswordUpdateModel model);
     }
 }

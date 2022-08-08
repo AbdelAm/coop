@@ -122,7 +122,7 @@ namespace coop2._0.Controllers
         }
 
         [HttpPut("update/email")]
-        public async Task<ActionResult<bool>> ChangeUserEmail([FromBody] EmailUpdateModel model)
+        public async Task<ActionResult<Response>> ChangeUserEmail([FromBody] EmailUpdateModel model)
         {
             try
             {
@@ -131,6 +131,20 @@ namespace coop2._0.Controllers
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update/password")]
+        public async Task<ActionResult<Response>> ChangeUserPassword([FromBody] PasswordUpdateModel model)
+        {
+            try
+            {
+                Response response = await _userService.ChangePassword(model);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Data);
             }
         }
     }

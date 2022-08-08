@@ -76,12 +76,14 @@ namespace coop2._0.Services
         public async Task<TokenModel> Login(LoginModel model)
         {
             var user = await _userRepository.SelectUser(model);
+
             if (user is null)
                 throw new Exception("The user doesn't exist");
             if (user is not { EmailConfirmed: true })
                 throw new Exception("The user has not been confirmed yet");
             if (user is not { Status: Status.Approuved })
                 throw new Exception("The user has not been approved yet");
+
 
             var jwtSecurityToken = await _jwtService.GenerateJwtToken(user);
 
