@@ -28,7 +28,7 @@
                   </button>
                 </div>
                 <div class="dataTable-search">
-                  <input class="dataTable-input" (keyup)="searchItem($event)" placeholder="Búsqueda..." type="text">
+                  <!--<input class="dataTable-input" (keyup)="searchItem($event)" placeholder="Búsqueda..." type="text">-->
 
                 </div>
               </div>
@@ -71,10 +71,11 @@
                   </tbody>
                 </table>
               </div>
-              <ngb-pagination [(page)]="pageNumber"
-                              [pageSize]="pageSize"
-                              [collectionSize]=""
-                              [boundaryLinks]="true">
+              <ngb-pagination [(page)]="this.pageNumber"
+                              [pageSize]="this.pageSize"
+                              [collectionSize]="this.total"
+                              [boundaryLinks]="true"
+                              (pageChange)="this.getRequestsByUser()">
               </ngb-pagination>
             </div>
           </div>

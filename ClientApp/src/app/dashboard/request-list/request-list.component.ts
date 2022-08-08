@@ -25,6 +25,7 @@ export class RequestListComponent implements OnInit {
   requests: RequestModel[];
   pageNumber: Array<number>;
   request: RequestModel;
+  total: number;
 
   status = [
     '<strong>In Progress</strong>',
@@ -41,6 +42,7 @@ export class RequestListComponent implements OnInit {
     this.pageNumber = [];
     this.ConnectedUserId = this.jwt.getConnectedUserId();
     this.request = new RequestModel();
+    this.total = 1;
   }
 
   ngOnInit(): void {
@@ -53,9 +55,17 @@ export class RequestListComponent implements OnInit {
     );
     window.scrollTo(0, 0);
   }
-  isAdmin()
-  {
-    return (this.jwt.isAdmin() && this.jwt.switchBtn) 
+  getRequestsByUser() {
+    this.requestService.getRequests(this.pageSize).subscribe(
+      this.processResult()
+    );
+  }
+  processResult() {
+    return data => {
+      this.requests = data.response;
+      this.pageNumber = data.pagination?.pageNumber;
+      this.total = data.pagination?.totalRecords;
+    };
   }
   getItems(num: number) {
     this.requestService.getRequests(num).subscribe(
@@ -117,11 +127,8 @@ export class RequestListComponent implements OnInit {
         });
       },
       err => console.log(err)
-    ),(reason) => {
-      this.closeResult =
-        `Dismissed ${this.getDismissReason(reason)}`;
-    }
-    this.router.navigate(['requests']);
+    )
+    this.router.navigate(['./requests']);
   }
 
 
