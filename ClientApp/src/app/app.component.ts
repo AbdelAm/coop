@@ -1,17 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { JwtService } from './shared/services/jwt.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   
-  constructor(private jwt: JwtService, private router: Router){
-  }
-
-  ngOnInit(): void {
-    
+  constructor(){
   }
 }
