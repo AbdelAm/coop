@@ -57,7 +57,7 @@ namespace coop2._0.Repositories
 
         public async Task<User> SelectUser(LoginModel model)
         {
-            var user = await _userManager.Users.Include(u => u.BankAccounts).Where(u => u.Id == model.Cif).FirstOrDefaultAsync();
+            var user = await _userManager.Users.Include(u => u.BankAccounts).Where(u => u.Email == model.Email).FirstOrDefaultAsync();
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 return user;
@@ -66,6 +66,10 @@ namespace coop2._0.Repositories
             return null;
         }
 
+        public async Task<bool> CheckPassword(User user, string password)
+        {
+            return await _userManager.CheckPasswordAsync(user, password);
+        }
         public async Task<List<string>> SelectUserRoles(User user)
         {
             return (List<string>)await _userManager.GetRolesAsync(user);
@@ -113,6 +117,12 @@ namespace coop2._0.Repositories
                                            .ToListAsync();
         }
 
+        public async Task<bool> EmailExists(string email)
+        {
+            int count =  await _userManager.Users.Where(u => u.Email == email)
+                                           .CountAsync();
+            return count > 0;
+        }
         public async Task<IdentityResult> UpdateUser(User user)
         {
             return await _userManager.UpdateAsync(user);

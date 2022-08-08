@@ -2,7 +2,7 @@
 {
     public class LoginModel
     {
-        public string Cif { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
     }
 }

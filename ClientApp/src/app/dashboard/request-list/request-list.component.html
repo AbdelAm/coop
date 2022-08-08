@@ -1,0 +1,129 @@
+<main style="width: calc(100vw - 245px)">
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">Peticiones</h1>
+    <ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item"><a href="../admin/global">Global</a></li>
+      <li class="breadcrumb-item active">Peticiones</li>
+    </ol>
+    <button style="margin-bottom:30px" type="button" class="btn btn-success" (click)="open(content)">Agregar petición </button>
+    <div class="card mb-4">
+      <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+        <div class="card mb-4">
+          <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Listas de Peticiones     <!-------------------transalate------------>
+          </div>
+          <div class="card-body">
+            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+              <div class="dataTable-top">
+                <div class="dataTable-dropdown pt-2 d-none">
+                  <button class="border-0 bg-transparent align-middle" (click)="validateAll()">
+                    <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                  </button>
+                  <button class="border-0 bg-transparent align-middle" (click)="rejectAll()">
+                    <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                  </button>
+                  <button class="border-0 bg-transparent align-middle" (click)="deleteAll()">
+                    <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                  </button>
+                </div>
+                <div class="dataTable-search">
+                  <!--<input class="dataTable-input" (keyup)="searchItem($event)" placeholder="Búsqueda..." type="text">-->
+
+                </div>
+              </div>
+              <div class="dataTable-container">
+                <table id="datatablesSimple" class="dataTable-table">
+                  <thead>
+                    <tr>
+                      <th><input type="checkbox" (change)="selectAll($event)"></th>
+                      <th data-sortable="">Id</th>
+                      <th data-sortable="">User</th>
+                      <th data-sortable="">Type</th>
+                      <th data-sortable="">Message</th>
+                      <th data-sortable="">DateRequest</th>
+                      <th data-sortable="">Status</th>
+                      <th data-sortable="">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let request of requests">
+                      <td><input (change)="setRequest(request.id, $event)" class="items" type="checkbox" value="{{request.id}}" /></td>
+                      <td>{{request.id}}</td>
+                      <td>{{request.userId}}</td>
+                      <td>{{request.type}}</td>
+                      <td>{{request.message}}</td>
+                      <td>{{request.dateRequest}}</td>
+                      <td [innerHTML]="this.status[request.status]"></td>
+                      <td class="icons d-flex justify-i-center align-items-center h-100">
+                        <button class="border-0 bg-transparent align-middle" (click)="validateRequest(request.id)">
+                          <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                        </button>
+                        <button class="border-0 bg-transparent align-middle" (click)="rejectRequest(request.id)">
+                          <i class="fa-regular fa-circle-xmark" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate"></i>
+                        </button>
+                        <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)">
+                          <i class="fa-regular fa-trash-can" style="margin: 0 10px; font-size: 20px; font-weight: 500; color: red"></i>
+                        </button>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <ngb-pagination [(page)]="this.pageNumber"
+                              [pageSize]="this.pageSize"
+                              [collectionSize]="this.total"
+                              [boundaryLinks]="true"
+                              (pageChange)="this.getRequestsByUser()">
+              </ngb-pagination>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header col-lg-12">
+    <h4 class="modal-title" id="modal-basic-title">
+      Agregar petición
+    </h4>
+    <button type="button" class="btn-close btn-close-red" aria-label="Close" (click)="modal.dismiss('Cross click')"> </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="typeRequest">Tipo petición</label>
+
+        <div class="input-group">
+
+          <div class="col-lg-12">
+
+            <select [[ngMode]]="selected" (change)="selectOption($event.target.value)" class="form-control" id="optdata" name="typeDemande">
+              <option [[value]]="o.value" *ngFor="let o of options">
+                {{o.name}}
+              </option>
+            </select>
+            </div>
+            <br />
+
+            <div class="col-lg-12">
+              <label>Mensaje</label>
+              <textarea [[ngMode]]="this.msg" id="msg" class="form-control" name="description" placeholder="" rows="3" ></textarea>
+            </div>
+
+          </div>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="close btn btn-danger" aria-label="Close" (click)="modal.dismiss('Cross click')"> Annular </button>
+    <button type="button" class="btn btn-success" (click)="setRequest()"> Enviar </button>
+  </div>
+</ng-template>
+
+

@@ -1,0 +1,73 @@
+<main style="width: calc(100vw - 245px);">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Perfil</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item active">perfil</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-header p-0">
+                        <ul class="nav nav-tabs sidebar" id="myTab" role="tablist">
+                            <li class="nav-item tabs-items">
+                                <a class="nav-link py-3 profile-active" id="user-tab" data-toggle="tab"  role="tab"
+                                    aria-controls="user" aria-selected="true" (click)="onSelected('user', $event)" >Usuario</a>
+                            </li>
+                            <li class="nav-item tabs-items">
+                                <a class="nav-link py-3" id="email-tab" data-toggle="tab" role="tab"
+                                    aria-controls="email" aria-selected="false" (click)="onSelected('email', $event)">Email</a>
+                            </li>
+                            <li class="nav-item tabs-items">
+                                <a class="nav-link py-3" id="password-tab" data-toggle="tab" role="tab"
+                                    aria-controls="password" aria-selected="false" (click)="onSelected('password', $event)">contraseña</a>
+                            </li>
+                        </ul>
+                </div>
+                <div class="card-body">
+                    <form #userInfoForm="ngForm" (submit)="updateUserInfo()" *ngIf="selectedButton === 'user'">
+                        <p class="setting-title mb-5">administrar usuario</p>
+                        <div class="form-group mb-4">
+                            <input type="text" name="name" #name="ngModel" [(ngModel)]="this.userInfo.name" class="form-control" placeholder="Update your Name">
+                            <strong id="name_error" class="form-text text-danger d-block"></strong>
+                        </div>
+                        <div class="form-group mb-4">
+                            <input type="text" name="socialNumber" #socialNumber="ngModel" [(ngModel)]="this.userInfo.socialNumber" class="form-control" placeholder="Update your Social Number">
+                            <strong id="socialNumber_error" class="form-text text-danger d-block"></strong>
+                        </div>
+                        <div class="form-group mb-4">
+                            <input type="tel" name="phone" #phone="ngModel" [(ngModel)]="this.userInfo.phone" class="form-control" placeholder="Update your Phone">
+                            <strong id="phone_error" class="form-text text-danger d-block"></strong>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit" [disabled]="!submitAcivated()">
+                    </form>
+                    <form #emailUpdateForm="ngForm" (submit)="updateUserEmail()" *ngIf="selectedButton === 'email'">
+                        <p class="setting-title mb-5">administrar correo electrónico</p>
+                        <div class="form-group mb-4">
+                            <input type="email" name="currentEmail" #currentEmail="ngModel" [(ngModel)]="this.emailUpdate.currentEmail" (focus)="emptyError('email_error')" class="form-control" placeholder="Enter your Email">
+                            <strong id="email_error" class="form-text text-danger d-block"></strong>
+                        </div>
+                        <div class="form-group mb-4">
+                            <input type="email" name="newEmail" #newEmail="ngModel" [(ngModel)]="this.emailUpdate.newEmail" class="form-control" placeholder="Enter the new Email">
+                            <strong id="new_email_error" class="form-text text-danger d-block"></strong>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </form>
+                    <form #passwordUpdatePassword="ngForm" (submit)="updateUserPassword()" *ngIf="selectedButton === 'password'">
+                        <p class="setting-title mb-5">Cambia la contraseña</p>
+                        <div class="form-group mb-4">
+                            <input type="password" name="currentPassword" #currentPassword="ngModel" [(ngModel)]="this.passwordUpdate.currentPassword" class="form-control" placeholder="Enter your current Password">
+                            <strong id="password_error" class="form-text text-danger d-block"></strong>
+                        </div>
+                        <div class="form-group mb-4">
+                            <input type="password" name="newPassword" #newPassword="ngModel" [(ngModel)]="this.passwordUpdate.newPassword" class="form-control" placeholder="Enter your new Password">
+                            <strong id="new_password_error" class="form-text text-danger d-block"></strong>
+                        </div>
+                        <div class="form-group mb-4">
+                            <input type="password" name="confirmedPassword" #confirmedPassword="ngModel" [(ngModel)]="this.passwordUpdate.confirmedPassword" class="form-control" placeholder="Confirm your new Password">
+                            <strong id="confirmed_password_error" class="form-text text-danger d-block"></strong>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+</main>

@@ -39,17 +39,22 @@ namespace coop2._0.Controllers
             return Ok(request);
         }
 
-        [HttpDelete("delete")]
+        [HttpPost("delete")]
         public async Task<ActionResult> RemoveRequest([FromBody] List<int> requests)
         {
-            var deletedRequest = await _requestService.RemoveRequest(requests);
-            if (deletedRequest == null)
-                return BadRequest();
-            return Ok(deletedRequest);
+            try
+            {
+                var deletedRequest = await _requestService.RemoveRequest(requests);
+                return Ok(deletedRequest);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("reject")]
-        public async Task<ActionResult<Request>> RejectRequest([FromBody] List<int> requests)
+        public async Task<ActionResult> RejectRequest([FromBody] List<int> requests)
         {
             try
             {
@@ -76,7 +81,7 @@ namespace coop2._0.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult<Request>> AddRequest(RequestModel model)
         {
             return await _requestService.AddRequest(model);

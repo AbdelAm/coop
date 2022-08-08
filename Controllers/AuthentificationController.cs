@@ -20,7 +20,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public async Task<ActionResult<Response>> Register([FromBody] RegisterModel model)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("forget-password")]
-        public async Task<IActionResult> Forget(ForgetPasswordModel model)
+        public async Task<IActionResult> Forget([FromBody] ForgetPasswordModel model)
         {
             try
             {

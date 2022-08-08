@@ -1,0 +1,26 @@
+.sidebar {
+    justify-content: stretch;
+    border: none;
+}
+
+.tabs-items {
+    width: calc(100% / 3);
+    text-align: center;
+}
+.tabs-items a {
+    color: #555;
+    cursor: pointer;
+}
+.tabs-items a.profile-active {
+    color: #222;
+    background-color: #fff;
+    pointer-events: none;
+}
+.form-group {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.setting-title {
+    font-size: 1.5em;
+}

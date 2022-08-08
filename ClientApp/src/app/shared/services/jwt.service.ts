@@ -37,6 +37,7 @@ export class JwtService {
 
   removeToken() {
     this.jwt = null;
+    this.switchBtn = true;
     localStorage.removeItem('auth');
   }
 

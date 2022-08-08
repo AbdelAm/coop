@@ -1,6 +1,7 @@
 ﻿using coop2._0.Entities;
 using coop2._0.Model;
 using coop2._0.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,15 @@ namespace coop2._0.Services
                 Items = users,
                 ItemsNumber = itemNum
             };
+        }
+        public async Task<UserItemModel> FindUser(string cif)
+        {
+            User user = await _userRepository.SelectById(cif);
+            if (user == null)
+            {
+                throw new Exception("There is no user existe with these information");
+            }
+            return new UserItemModel(user);
         }
 
         public async Task<IEnumerable<UserItemModel>> FindBy(string value)
@@ -129,6 +139,81 @@ namespace coop2._0.Services
                 throw new Exception("some users doesn't deleted, please try again later");
             }
             return temoin;
+        }
+
+        public async Task<bool> ChangeInfo(UserInfoModel model)
+        {
+            var user = await _userRepository.SelectById(model.Cif);
+            user.Name = model.Name;
+            user.SocialNumber = model.SocialNumber;
+            user.PhoneNumber = model.Phone;
+            
+            var result = await _userRepository.UpdateUser(user);
+
+            if(!result.Succeeded)
+            {
+                throw new Exception("An error occured on updating the user, please try again later");
+            }
+            return result.Succeeded;
+        }
+
+        public async Task<Response> ChangeEmail(EmailUpdateModel model)
+        {
+            var user = await _userRepository.SelectById(model.Cif);
+            bool temoin = await _userRepository.EmailExists(model.NewEmail);
+            if(temoin)
+            {
+                throw new Exception("This email is Already exists, please enter another valid email");
+            }
+            user.Email = model.NewEmail;
+            user.EmailConfirmed = false;
+
+            var result = await _userRepository.UpdateUser(user);
+
+            if (!result.Succeeded)
+            {
+                throw new Exception("An error occured on updating the user, please try again later");
+            }
+
+            string token = await _userRepository.GenerateConfirmationToken(user);
+            MailModel mailModel = new MailModel()
+            {
+                Email = model.NewEmail,
+                Subject = "Email Confirmation",
+                Body = user.Name + '-' + token + '-' + user.Email,
+            };
+            await _mailService.SendConfirmMail(mailModel);
+
+            return new Response
+            {
+                Status = "success",
+                Message = "Email has been updated successfully, you should confirm your new email by clicking in link sent to your new email"
+            };
+        }
+
+        public async Task<Response> ChangePassword(PasswordUpdateModel model)
+        {
+            Exception e = new Exception();
+            var user = await _userRepository.SelectById(model.Cif);
+            bool temoin = await _userRepository.CheckPassword(user, model.CurrentPassword);
+            if (!temoin)
+            {
+                e.Data.Add("password_error", "The current password is not correct");
+                throw e;
+            }
+            string token = await _userRepository.GenerateResetToken(user);
+            IdentityResult res = await _userRepository.ResetPassword(user, token, model.NewPassword);
+            if (!res.Succeeded)
+            {
+                e.Data.Add("new_password_error", "the password doesn't change, please try again later");
+                throw e;
+            }
+
+            return new Response
+            {
+                Status = "success",
+                Message = "Password has been changed, you can login with new Password"
+            };
         }
     }
 }

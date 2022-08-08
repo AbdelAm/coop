@@ -5,6 +5,7 @@
       <div class="screen__content">
         <br />
         <b>Registro de usuario</b>
+        <strong id="user" class="form-text text-danger d-block"></strong>
         <form class="login" #registerForm="ngForm" (submit)="onSubmit()">
           <div class="login__field">
             <input class="login__input" name="name" #name="ngModel" [(ngModel)]="this.registerModel.name" (focus)="emptyError('name_error')" placeholder="Nombre / Apellido">

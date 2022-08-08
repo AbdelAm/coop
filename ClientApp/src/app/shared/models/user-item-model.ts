@@ -1,11 +1,9 @@
-import { BankAccountModel } from "./bankAccount-model";
-
-
 export class UserItemModel {
     cif!: string;
     name!: string;
     email!: string;
-    socialNumber!: number;
+    phone!: string;
+    socialNumber!: string;
     isConfirmed: boolean = false;
     status!: string;
 }
