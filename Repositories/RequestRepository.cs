@@ -46,12 +46,12 @@ namespace coop2._0.Repositories
 
         public async Task<ActionResult<Request>> AddRequest(RequestModel model)
         {
-            
+
             var request = new Request()
             {
-                Id = model.Id,
                 Message = model.Message,
                 Type = model.Type,
+                UserId = model.UserId,
                 DateRequest = DateTime.Now,
                 Status = model.Status
             };

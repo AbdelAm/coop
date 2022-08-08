@@ -18,6 +18,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./request-list.component.css']
 })
 export class RequestListComponent implements OnInit {
+  readonly ConnectedUserId: string;
   readonly pageSize = 1;
   listRequest: Array<number>
   requestItems: ItemsModel<RequestModel>;
@@ -38,7 +39,8 @@ export class RequestListComponent implements OnInit {
     this.requests = new Array<RequestModel>();
     this.requestItems = new ItemsModel<RequestModel>();
     this.pageNumber = [];
-
+    this.ConnectedUserId = this.jwt.getConnectedUserId();
+    this.request = new RequestModel();
   }
 
   ngOnInit(): void {
@@ -90,11 +92,39 @@ export class RequestListComponent implements OnInit {
       let id = parseInt((<HTMLInputElement> items[i]).value);
       this.toggleItem(id, (<HTMLInputElement> e.target).checked);
     }
+  }
 
+  setRequest() {
+    console.log(this.request);
+    //this.toggleItem(id, (<HTMLInputElement>e.target).checked);
+
+    const input = document.getElementById('msg') as HTMLTextAreaElement | null;
+    var elem = document.getElementById('optdata') as HTMLSelectElement;
+
+    var sel = elem.selectedIndex;
+    var opt = elem.options[sel];
+
+    this.request.type = opt.value.toString();
+    this.request.message = input.value;
+    this.request.userId = this.ConnectedUserId;
+
+    this.requestService.setRequest(this.request).subscribe(
+      res => {
+        this.requests.push(this.request)
+        Swal.fire({
+          title: "Request added successfully!!!",
+          icon: "success",
+        });
+      },
+      err => console.log(err)
+    ),(reason) => {
+      this.closeResult =
+        `Dismissed ${this.getDismissReason(reason)}`;
+    }
+    this.router.navigate(['requests']);
   }
-  setRequest(id: number, e:Event) {
-    this.toggleItem(id, (<HTMLInputElement> e.target).checked);
-  }
+
+
   toggleItem(id: number, isChecked: boolean)
   {
     let elt = document.querySelector(".dataTable-dropdown");
@@ -198,8 +228,7 @@ export class RequestListComponent implements OnInit {
     )
   }
   // ------------------------------ POPUP METHODES ------------------------------
-  selected: string;
-  msg: string;
+  
   options = [
     { name: "Consultarnos dudas", value: 1 },
     { name: "Informarnos de cambios en tus datos", value: 2 },
@@ -208,15 +237,21 @@ export class RequestListComponent implements OnInit {
     { name: "Solicitar mi historial de cuenta de años anteriores", value: 5 }
   ]
   selectOption(id: number) {
-    //getted from event
     console.log(id);
-    //getted from binding
-    //console.log(this.selected)
-    return this.selected;
   }
-  showmsg() {
-    console.log(this.msg);
+  getElement() {
+    const input = document.getElementById('msg') as HTMLTextAreaElement | null;
+    var e = (document.getElementById("TypeRequest")) as HTMLSelectElement;
+
+    var sel = e.selectedIndex;
+    var opt = e.options[sel];
+
+    console.log(input.value);
+    console.log(opt.value);
+
   }
+
+
   closeResult = '';
   open(content) {
     this.modalService.open(content,

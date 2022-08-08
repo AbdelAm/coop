@@ -81,7 +81,7 @@ namespace coop2._0.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult<Request>> AddRequest(RequestModel model)
         {
             return await _requestService.AddRequest(model);

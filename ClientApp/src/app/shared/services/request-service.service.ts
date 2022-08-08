@@ -10,12 +10,12 @@ import { RequestModel } from '../models/request-model';
 export class RequestServiceService {
 
   readonly baseUrl = environment.apiUrl;
-  request: RequestModel;
+ /* request: RequestModel;*/
   constructor(private http: HttpClient) {
-    this.request = new RequestModel();
+    /*this.request = new RequestModel();*/
   }
-  setRequest(): Observable<RequestModel> {
-    return this.http.post<RequestModel>(this.baseUrl + 'request/add', this.request);
+  setRequest(request: RequestModel): Observable<RequestModel> {
+    return this.http.post<RequestModel>(this.baseUrl + 'request/add', request);
   }
   getRequests(page: number = 1): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${page}`);

@@ -96,13 +96,13 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-        <label for="typeRequest"> Tipo petición </label>
+        <label for="typeRequest">Tipo petición</label>
 
         <div class="input-group">
 
           <div class="col-lg-12">
 
-            <select [[ngMode]]="selected" (change)="selectOption($event.target.value)" class="form-control" id="exampleSelect1" name="typeDemande">
+            <select [[ngMode]]="selected" (change)="selectOption($event.target.value)" class="form-control" id="optdata" name="typeDemande">
               <option [[value]]="o.value" *ngFor="let o of options">
                 {{o.name}}
               </option>
@@ -112,7 +112,7 @@
 
             <div class="col-lg-12">
               <label>Mensaje</label>
-              <textarea type="text" [[ngMode]]="this.msg" class="form-control" name="description" placeholder="" rows="3" ></textarea>
+              <textarea [[ngMode]]="this.msg" id="msg" class="form-control" name="description" placeholder="" rows="3" ></textarea>
             </div>
 
           </div>
@@ -121,7 +121,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="close btn btn-danger" aria-label="Close" (click)="modal.dismiss('Cross click')"> Annular </button>
-    <button type="button" class="btn btn-success" (click)="showmsg()"> Enviar </button>
+    <button type="button" class="btn btn-success" (click)="setRequest()"> Enviar </button>
   </div>
 </ng-template>
 
