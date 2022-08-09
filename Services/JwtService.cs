@@ -51,7 +51,6 @@ namespace coop2._0.Services
                 Cif = user.Id,
                 Name = user.Name,
                 IsAdmin = user.IsAdmin,
-                BankAccount = user.BankAccounts.First().AccountNumber,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 ValidTo = jwtSecurityToken.ValidTo
             };

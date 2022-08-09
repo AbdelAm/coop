@@ -28,19 +28,16 @@ namespace coop2._0.Repositories
 
         public async Task<User> SelectById(string id)
         {
-            User user = await _userManager.FindByIdAsync(id);
-            return user;
+            return await _userManager.FindByIdAsync(id);
         }
         public async Task<User> SelectByEmail(string email)
         {
-            User user = await _userManager.FindByEmailAsync(email);
-            return user;
+            return await _userManager.FindByEmailAsync(email);
         }
         public async Task<User> SelectBySocialNumber(string socialNumber)
         {
-            User user = await _userManager.Users.Where(u => u.SocialNumber == socialNumber)
+            return await _userManager.Users.Where(u => u.SocialNumber == socialNumber)
                                                 .FirstOrDefaultAsync();
-            return user;
         }
 
         public async Task<string> InsertUser(User user, string password)
@@ -57,7 +54,7 @@ namespace coop2._0.Repositories
 
         public async Task<User> SelectUser(LoginModel model)
         {
-            var user = await _userManager.Users.Include(u => u.BankAccounts).Where(u => u.Email == model.Email).FirstOrDefaultAsync();
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 return user;
@@ -131,41 +128,6 @@ namespace coop2._0.Repositories
         public async Task<IdentityResult> DeleteUser(User user)
         {
             return await _userManager.DeleteAsync(user);
-        }
-
-        public async Task<ActionResult> RemoveUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null || user.Status == Status.Approuved) return null;
-
-            _context.Users.Remove(user);
-
-            await _context.SaveChangesAsync();
-
-            return new OkResult();
-        }
-
-        public async Task<ActionResult<User>> RejectUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user is not { Status: Status.Progress }) return null;
-            user.Status = Status.Rejected;
-            _context.Update(user);
-            await _context.SaveChangesAsync();
-            return user;
-        }
-
-        public async Task<ActionResult<User>> ValidateUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user is not { Status: Status.Progress }) return null;
-            user.Status = Status.Approuved;
-            _context.Update(user);
-            await _context.SaveChangesAsync();
-            return user;
         }
     }
 }

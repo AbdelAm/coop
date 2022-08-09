@@ -84,9 +84,6 @@ namespace coop2._0.Services
             if (user is not { Status: Status.Approuved })
                 throw new Exception("The user has not been approved yet");
 
-
-            var jwtSecurityToken = await _jwtService.GenerateJwtToken(user);
-
             return await _jwtService.GenerateJwtToken(user);
         }
 
