@@ -22,7 +22,7 @@
         <div
           class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
         >
-          <div class="dataTable-top">
+          <div class="dataTable-top" *ngIf="isConnected&&hasAdminRole">
             <div class="dataTable-dropdown pt-2 d-none">
               <button
                 (click)="validateAllTransactions(this.listTransaction)"
@@ -67,7 +67,7 @@
                 ></i>
               </button>
             </div>
-            <div class="dataTable-search">
+            <div class="dataTable-search" >
               <input
                 #searchTransaction
                 class="dataTable-input"
@@ -82,7 +82,7 @@
               <thead>
               <tr>
                 <th>
-                  <input type="checkbox" (change)="selectAll($event)"/>
+                  <input *ngIf="isConnected&&hasAdminRole" type="checkbox" (change)="selectAll($event)"/>
                 </th>
                 <th data-sortable="">Monto</th>
                 <th data-sortable="">Fetcha</th>
@@ -90,7 +90,7 @@
                 <th data-sortable="">Cuenta original</th>
                 <th data-sortable="">Cuenta de destino</th>
                 <th data-sortable="">Estado</th>
-                <th data-sortable="">Acción</th>
+                <th *ngIf="isConnected&&hasAdminRole" data-sortable="">Acción</th>
               </tr>
               </thead>
               <tbody>
@@ -111,7 +111,7 @@
                   {{ transaction.receiverBankAccount?.user.name}}
                 </td>
                 <td>{{ statusCasting(transaction.status)}}</td>
-                <td class="icons">
+                <td *ngIf="isConnected&&hasAdminRole" class="icons">
                   <button
                     (click)="validateTransaction(transaction.id)"
                     class="border-0 bg-transparent align-middle"

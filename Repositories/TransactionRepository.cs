@@ -130,15 +130,16 @@ namespace coop2._0.Repositories
 
         public async Task<object> GetTransactionsByUser(TransactionByUserModel model)
         {
-
             var validFilter = new PaginationFilter(model.Page);
 
             var response =
-                await _context.BankAccounts.Where(b => b.Id == model.UserBankAccountId)
-                .Select(t => new { t.TransactionsSent, t.TransactionsReceived })
-                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-                .Take(validFilter.PageSize)
-                .ToListAsync();
+                await _context.Transactions
+                    .Where(b => b.ReceiverBankAccountId == model.UserBankAccountId ||
+                                b.SenderBankAccountId == model.UserBankAccountId)
+                    .Include(b => b.ReceiverBankAccount.User)
+                    .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                    .Take(validFilter.PageSize)
+                    .ToListAsync();
 
             var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
                 response.Count());

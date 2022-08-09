@@ -94,8 +94,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   getTransactionsByUser() {
-    this.transactionService.getTransactionsByUser(this.userBankAccountId, this.pageNumber).subscribe(data => this.transactions = [...data.response[0].transactionsSent,
-      ...data.response[0].transactionsReceived]
+    this.transactionService.getTransactionsByUser(this.userBankAccountId, this.pageNumber).subscribe(this.processResult()
     );
   }
 
