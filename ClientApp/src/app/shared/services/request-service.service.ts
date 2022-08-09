@@ -20,7 +20,10 @@ export class RequestServiceService {
   getRequests( page: number = 1): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${page}`);
   }
-  getRequestsByUser(userId: string, page: number = 1): Observable<RequestModel[]> {
+  getRequestsPagination(pageNumber: number, pageSize: number): Observable<RequestModel[]> {
+    return this.http.get<RequestModel[]>(this.baseUrl + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
+  }
+  getRequestsByUser(userId: number, page: number = 1): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${userId}/${page}`);
   }
   searchRequest(value: string): Observable<RequestModel[]> {
@@ -37,3 +40,4 @@ export class RequestServiceService {
     return this.http.post<RequestModel[]>(this.baseUrl + 'request/delete', requestList);
   }
 }
+
