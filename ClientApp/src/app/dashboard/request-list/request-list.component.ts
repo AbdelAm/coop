@@ -46,14 +46,14 @@ export class RequestListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.requestService.getRequests().subscribe(
       res => {
-        this.requests.push(...res);
+        this.requests = res;
         console.log(this.requests);
       },
       err => console.log(err)
     );
-    window.scrollTo(0, 0);
   }
   getRequestsByUser() {
     this.requestService.getRequests(this.pageSize).subscribe(
@@ -79,7 +79,7 @@ export class RequestListComponent implements OnInit {
       },
       err => {
         if ([401, 403].includes(err["status"])) {
-          this.router.navigate(['global']);
+          this.router.navigateByUrl('/dashboard/global');
         } else {
           Swal.fire({
             title: "There is a Problem!!!",
@@ -105,7 +105,6 @@ export class RequestListComponent implements OnInit {
   }
 
   setRequest() {
-    console.log(this.request);
     //this.toggleItem(id, (<HTMLInputElement>e.target).checked);
 
     const input = document.getElementById('msg') as HTMLTextAreaElement | null;
@@ -120,7 +119,8 @@ export class RequestListComponent implements OnInit {
 
     this.requestService.setRequest(this.request).subscribe(
       res => {
-        this.requests.push(this.request)
+        console.log(this.requests);
+        this.requests.push(res);
         Swal.fire({
           title: "Request added successfully!!!",
           icon: "success",
@@ -128,7 +128,6 @@ export class RequestListComponent implements OnInit {
       },
       err => console.log(err)
     )
-    this.router.navigate(['./requests']);
   }
 
 
