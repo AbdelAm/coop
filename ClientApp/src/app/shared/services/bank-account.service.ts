@@ -7,23 +7,24 @@ import { BankAccountModel } from '../models/bankAccount-model';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountServiceService {
+export class BankAccountService {
 
   readonly baseUrl = environment.apiUrl;
-  bankAccount: BankAccountModel
   constructor(private http: HttpClient) {
-    this.bankAccount = new BankAccountModel();
   }
-  setAccount(): Observable<BankAccountModel> {
-    return this.http.post<BankAccountModel>(this.baseUrl + '/accounts/add', this.bankAccount);
+  setBankAccount(bankAccount: BankAccountModel): Observable<Response> {
+    return this.http.post<Response>(this.baseUrl + 'bankaccount/add', bankAccount);
   }
   getAccounts(): Observable<BankAccountModel[]> {
-    return this.http.get<BankAccountModel[]>(this.baseUrl + '/accounts/list');
+    return this.http.get<BankAccountModel[]>(this.baseUrl + 'bankaccount/list');
+  }
+  getBankAccount(userId: string): Observable<number> {
+    return this.http.get<number>(this.baseUrl + `bankaccount/${userId}`);
   }
   validateAccounts(accountList: Array<number>): Observable<BankAccountModel[]> {
-    return this.http.post<BankAccountModel[]>(this.baseUrl + '/accounts/validate', accountList);
+    return this.http.post<BankAccountModel[]>(this.baseUrl + 'bankaccount/validate', accountList);
   }
   deleteAccounts(accountList: Array<number>): Observable<BankAccountModel[]> {
-    return this.http.post<BankAccountModel[]>(this.baseUrl + '/accounts/delete', accountList);
+    return this.http.post<BankAccountModel[]>(this.baseUrl + 'bankaccount/delete', accountList);
   }
 }

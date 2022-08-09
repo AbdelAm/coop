@@ -22,7 +22,6 @@ namespace coop2._0.Services
             _userRepository = userRepository;
             _configuration = configuration;
         }
-
         public async Task<TokenModel> GenerateJwtToken(User user)
         {
             var roles = await _userRepository.SelectUserRoles(user);

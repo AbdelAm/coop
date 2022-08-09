@@ -36,8 +36,7 @@ namespace coop2._0.Repositories
         }
         public async Task<User> SelectBySocialNumber(string socialNumber)
         {
-            return await _userManager.Users.Where(u => u.SocialNumber == socialNumber)
-                                                .FirstOrDefaultAsync();
+            return await _userManager.Users.Where(u => u.SocialNumber == socialNumber).FirstOrDefaultAsync();
         }
 
         public async Task<string> InsertUser(User user, string password)

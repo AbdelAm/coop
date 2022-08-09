@@ -6,5 +6,6 @@ namespace coop2._0.Repositories
     public interface IBankAccountRepository
     {
         Task<string> InsertBankAccount(BankAccount account);
+        Task<BankAccount> SelectByUser(string userId);
     }
 }

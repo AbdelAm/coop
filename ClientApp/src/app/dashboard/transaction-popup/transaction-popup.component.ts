@@ -7,6 +7,7 @@ import {CoopValidators} from '../../shared/validators/coopValidators';
 import {JwtService} from '../../shared/services/jwt.service';
 import {TransactionService} from '../../shared/services/transaction.service';
 import {TransactionModel} from '../../shared/models/transaction-model';
+import { BankAccountService } from 'src/app/shared/services/bank-account.service';
 
 @Component({
   selector: 'app-transaction-popup',
@@ -20,7 +21,7 @@ import {TransactionModel} from '../../shared/models/transaction-model';
   ],
 })
 export class TransactionPopupComponent implements OnInit {
-  readonly userBankAccountId: number;
+  userBankAccountId: number;
   readonly hasAdminRole: boolean;
   readonly isConnected: boolean;
 
@@ -57,13 +58,18 @@ export class TransactionPopupComponent implements OnInit {
     }),
   });
 
-  constructor(private _formBuilder: FormBuilder, private jwt: JwtService, private transactionService: TransactionService) {
-    this.userBankAccountId = jwt.getConnectedUserBankAccountId();
+  constructor(private _formBuilder: FormBuilder, private jwt: JwtService, private transactionService: TransactionService, private bankService: BankAccountService) {
     this.isConnected = jwt.isConnected();
     this.hasAdminRole = jwt.isAdmin();
   }
 
   ngOnInit(): void {
+    this.bankService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
+      res => {
+        this.userBankAccountId = res;
+      },
+      err => console.log(err)
+    );
   }
 
   onSubmit() {

@@ -6,6 +6,7 @@ import {TransactionModel} from '../../shared/models/transaction-model';
 import {TransactionService} from '../../shared/services/transaction.service';
 import Swal from 'sweetalert2';
 import {TransactionPopupComponent} from '../transaction-popup/transaction-popup.component';
+import { BankAccountService } from 'src/app/shared/services/bank-account.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -23,13 +24,11 @@ export class TransactionListComponent implements OnInit {
   hasAdminRole = false;
   userBankAccountId: number;
 
-  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private transactionService: TransactionService) {
-    (!this.jwt.isAdmin() || !this.jwt.switchBtn) ? this.router.navigateByUrl('transaction') : this.router.navigateByUrl('admin/transaction');
+  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private transactionService: TransactionService, private bankService: BankAccountService) {
     this.transactions = [];
     this.listTransaction = [];
     this.isConnected = this.jwt.isConnected();
     this.hasAdminRole = this.jwt.isAdmin();
-    this.userBankAccountId = this.jwt.getConnectedUserBankAccountId();
   }
 
   addTransaction(): void {
@@ -41,6 +40,13 @@ export class TransactionListComponent implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
+    this.bankService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
+      res => {
+        console.log(res);
+        this.userBankAccountId = res;
+      },
+      err => console.log(err)
+    );
     this.loadTransactionsByRole();
   }
 

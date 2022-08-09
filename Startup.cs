@@ -49,11 +49,13 @@ namespace coop2._0
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IBankAccountService, BankAccountService>();
             services.AddScoped<IRequestService, RequestService>();
 
             //Inject Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
             services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 

@@ -1,4 +1,6 @@
 ﻿using coop2._0.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace coop2._0.Repositories
@@ -18,6 +20,11 @@ namespace coop2._0.Repositories
             await _context.SaveChangesAsync();
 
             return account.AccountNumber;
+        }
+
+        public async Task<BankAccount> SelectByUser(string userId)
+        {
+            return await _context.BankAccounts.Where(b => b.UserId == userId && b.Status == Status.Approuved).FirstOrDefaultAsync();
         }
     }
 }
