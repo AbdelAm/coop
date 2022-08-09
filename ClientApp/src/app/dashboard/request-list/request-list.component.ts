@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { RequestPopupComponent } from '../request-popup/request-popup.component';
 import { JwtService } from 'src/app/shared/services/jwt.service';
 import { RequestServiceService } from 'src/app/shared/services/request-service.service';
 import { RequestModel } from '../../shared/models/request-model';
@@ -25,7 +24,6 @@ export class RequestListComponent implements OnInit {
   requests: RequestModel[];
   pageNumber: Array<number>;
   request: RequestModel;
-  total: number;
 
   status = [
     '<strong>In Progress</strong>',
@@ -42,7 +40,6 @@ export class RequestListComponent implements OnInit {
     this.pageNumber = [];
     this.ConnectedUserId = this.jwt.getConnectedUserId();
     this.request = new RequestModel();
-    this.total = 1;
   }
 
   ngOnInit(): void {
@@ -54,18 +51,6 @@ export class RequestListComponent implements OnInit {
       err => console.log(err)
     );
     window.scrollTo(0, 0);
-  }
-  getRequestsByUser() {
-    this.requestService.getRequests(this.pageSize).subscribe(
-      this.processResult()
-    );
-  }
-  processResult() {
-    return data => {
-      this.requests = data.response;
-      this.pageNumber = data.pagination?.pageNumber;
-      this.total = data.pagination?.totalRecords;
-    };
   }
   getItems(num: number) {
     this.requestService.getRequests(num).subscribe(
@@ -128,7 +113,6 @@ export class RequestListComponent implements OnInit {
       },
       err => console.log(err)
     )
-    this.router.navigate(['./requests']);
   }
 
 

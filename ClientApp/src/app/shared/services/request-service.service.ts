@@ -17,7 +17,7 @@ export class RequestServiceService {
   setRequest(request: RequestModel): Observable<RequestModel> {
     return this.http.post<RequestModel>(this.baseUrl + 'request/add', request);
   }
-  getRequests(page: number = 1): Observable<RequestModel[]> {
+  getRequests( page: number = 1): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${page}`);
   }
   getRequestsByUser(userId: string, page: number = 1): Observable<RequestModel[]> {
