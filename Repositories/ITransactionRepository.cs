@@ -12,9 +12,9 @@ namespace coop2._0.Repositories
         Task<Transaction> GetTransaction(int id);
         Task<ActionResult> RemoveTransaction(int id);
         Task<ActionResult<Transaction>> RejectTransaction(int id);
-        Task<ActionResult<Transaction>> AddTransaction(Transaction transaction);
+        Task<ActionResult> AddTransaction(Transaction transaction);
         Task<ActionResult<Transaction>> ValidateTransaction(int id);
-        Task<object> GetTransactionsByUser(int userId, PaginationFilter filter);
+        Task<object> GetTransactionsByUser(TransactionByUserModel model);
         Task<object> SearchForTransactions(string keyword, PaginationFilter filter);
     }
 }

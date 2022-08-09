@@ -17,11 +17,12 @@ export class TransactionService {
   }
 
   postTransaction(transaction: TransactionModel) {
-    this.httpClient.post(this.baseUrl, transaction);
+    return this.httpClient.post(this.baseUrl, transaction);
   }
 
-  getTransactionsByUser(userBankAccountId: number, pageNumber: number, pageSize: number): Observable<GetTransactionsResponse> {
-    return this.httpClient.get<GetTransactionsResponse>(this.baseUrl + 'user/' + userBankAccountId + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
+  getTransactionsByUser(userBankAccountId: number, page: number): Observable<GetTransactionsByUserResponse> {
+    const body = {'userBankAccountId': userBankAccountId, 'page': page};
+    return this.httpClient.post<GetTransactionsByUserResponse>(this.baseUrl + '/user', body);
   }
 
   getTransactions(pageNumber: number, pageSize: number): Observable<GetTransactionsResponse> {
@@ -66,6 +67,18 @@ export class TransactionService {
 interface GetTransactionsResponse {
   response: {
     transactions: TransactionModel[];
+  },
+  pagination: {
+    pageNumber: number,
+    pageSize: number,
+    totalRecords: number
+  };
+}
+
+interface GetTransactionsByUserResponse {
+  response: {
+    TransactionsSent: TransactionModel[];
+    TransactionsReceived: TransactionModel[];
   },
   pagination: {
     pageNumber: number,

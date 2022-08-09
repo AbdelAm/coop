@@ -5,19 +5,44 @@
       <ng-template matStepLabel>cuentas de origen</ng-template>
       <div formGroupName="origin">
         <div class="form-check" style="margin-top:40px;">
-          <input class="form-check-input" formControlName="originalAccount" [value]="this.connectedUserId"
+          <input class="form-check-input" formControlName="originalAccount" [value]="this.userBankAccountId"
                  (change)="disableOriginInput($event)"
                  type="radio" name="origin" checked>
           <label class="form-check-label">
             Mi cuenta CoopHalal
           </label>
         </div>
+        <div class="form-check" style="margin-top:20px;" *ngIf="this.isConnected&& this.hasAdminRole">
+          <input class="form-check-input" type="radio" name="origin" (change)="enableReceiverInput($event)">
+          <label class="form-check-label">
+            to another account
+          </label>
+          <input type="text" class="form-control" style="margin-top:10px;" formControlName="receiverAccount" disabled>
+        </div>
+        <div
+          *ngIf="receiverAccount?.invalid &&(receiverAccount?.dirty || receiverAccount?.touched)"
+          class="text-danger"
+        >
+          <div
+            *ngIf="receiverAccount?.errors?.['required'] || receiverAccount?.errors?.['notOnlyWhiteSpace']">
+            concept is required
+          </div>
+        </div>
         <div class="form-check" style="margin-top:20px;">
-          <input class="form-check-input" type="radio" name="origin" (change)="enableOriginInput($event)">
+          <input class="form-check-input" type="radio" name="origin" (change)="enableExternalInput($event)">
           <label class="form-check-label">
             Mi cuenta en otra entidad
           </label>
           <input type="text" class="form-control" style="margin-top:10px;" formControlName="externalAccount" disabled>
+        </div>
+        <div
+          *ngIf="externalAccount?.invalid &&(externalAccount?.dirty || externalAccount?.touched)"
+          class="text-danger"
+        >
+          <div
+            *ngIf="externalAccount?.errors?.['required'] || externalAccount?.errors?.['notOnlyWhiteSpace']">
+            concept is required
+          </div>
         </div>
       </div>
 
@@ -29,7 +54,7 @@
       <ng-template matStepLabel>cuenta de destino</ng-template>
       <div formGroupName="destination">
         <div class="form-check" style="margin-top:10px;">
-          <input class="form-check-input" type="radio" name="destination" [value]="this.connectedUserId"
+          <input class="form-check-input" type="radio" name="destination" [value]="this.userBankAccountId"
                  formControlName="originalAccountDestination"
                  (change)="disableAllDestinationInputs($event)">
           <label class="form-check-label">
@@ -42,14 +67,34 @@
             a otra cuenta CoopHalal
           </label>
           <input type="text" formControlName="destinationAccount" class="form-control" style="margin-top:5px;"
-           placeholder="Account number">
+                 placeholder="Account number">
+        </div>
+
+        <div
+          *ngIf="destination?.invalid &&(destination?.dirty || destination?.touched)"
+          class="text-danger"
+        >
+          <div
+            *ngIf="destination?.errors?.['required'] || destination?.errors?.['notOnlyWhiteSpace']">
+            concept is required
+          </div>
         </div>
         <div class="form-check" style="margin-top:25px;">
           <input class="form-check-input" type="radio" name="destination" (change)="disableDestinationInput($event)">
           <label class="form-check-label">
             a otra cuenta de otra entidad
           </label>
-          <input type="text" class="form-control" formControlName="externalDestination" style="margin-top:5px;" placeholder="Account number">
+          <input type="text" class="form-control" formControlName="externalDestination" style="margin-top:5px;"
+                 placeholder="Account number">
+        </div>
+      </div>
+      <div
+        *ngIf="externalDestination?.invalid &&(externalDestination?.dirty || externalDestination?.touched)"
+        class="text-danger"
+      >
+        <div
+          *ngIf="externalDestination?.errors?.['required'] || externalDestination?.errors?.['notOnlyWhiteSpace']">
+          concept is required
         </div>
       </div>
 
@@ -70,63 +115,41 @@
             <span class="input-group-text">Euros</span>
           </div>
         </div>
-      </div>
-      <div
-        *ngIf="amount?.invalid &&(amount?.dirty || amount?.touched)"
-        class="text-danger"
-      >
         <div
-          *ngIf="amount?.errors?.['required'] ">
-          amount is required
-        </div>
-        <div
-          *ngIf="amount?.errors?.['pattern'] ">
-          amount must be a valid digit
-        </div>
-      </div>
-      <button mat-button matStepperPrevious style="margin-top:10px" type="button" class="btn btn-light">espalda</button>
-      <button mat-button matStepperNext style="margin-top:10px;margin-left:10px" type="button" class="btn btn-success">
-        Siguiente
-      </button>
-    </mat-step>
-
-    <mat-step [stepControl]="transactionFormGroup">
-      <ng-template matStepLabel>atos adicionales</ng-template>
-      <div formGroupName="receiverInfo">
-        <div class="form-group" style="margin-bottom:10px;">
-          <label for="nomdest">Nombre del destinatario</label>
-          <input type="text" class="form-control" id="nomdest" formControlName="destinationName" placeholder="destination name" required>
+          *ngIf="amount?.invalid &&(amount?.dirty || amount?.touched)"
+          class="text-danger"
+        >
           <div
-            *ngIf="destinationName?.invalid &&(destinationName?.dirty || destinationName?.touched)"
+            *ngIf="amount?.errors?.['required'] ">
+            amount is required
+          </div>
+          <div
+            *ngIf="amount?.errors?.['pattern'] ">
+            amount must be a valid digit
+          </div>
+        </div>
+        <div class="form-group" style="margin:10px 0;">
+          <label for="concept">Concepto</label>
+          <input class="form-control" id="concept" type="text" style="margin-bottom: 10px" formControlName="concept"
+                 placeholder="motif" required>
+          <div
+            *ngIf="concept?.invalid &&(concept?.dirty || concept?.touched)"
             class="text-danger"
           >
             <div
-              *ngIf="destinationName?.errors?.['required'] || destinationName?.errors?.['notOnlyWhiteSpace']">
-              destination name is required
+              *ngIf="concept?.errors?.['required'] || concept?.errors?.['notOnlyWhiteSpace']">
+              concept is required
             </div>
           </div>
-
-          <div class="form-group" style="margin-bottom:10px;">
-            <label for="concept">Concepto</label>
-            <input class="form-control" id="concept" type="text" formControlName="concept"  placeholder="motif" required>
-            <div
-              *ngIf="concept?.invalid &&(concept?.dirty || concept?.touched)"
-              class="text-danger"
-            >
-              <div
-                *ngIf="concept?.errors?.['required'] || concept?.errors?.['notOnlyWhiteSpace']">
-                concept is required
-              </div>
-            </div>
-          </div>
-
           <div class="form-group">
-            <button type="button" class="btn btn-danger">Anular</button>
+            <button type="button" class="btn btn-danger" mat-button [mat-dialog-close]="">Anular</button>
             <button mat-button matStepperPrevious style="margin-left:10px" type="button" class="btn btn-light">espalda
             </button>
           </div>
 
-          <button class="btn btn-success" style="float:right;" (click)="onSubmit()">Enviar</button>
+          <button class="btn btn-success" style="float:right;" (click)="onSubmit()" >
+            Enviar
+          </button>
         </div>
       </div>
     </mat-step>

@@ -37,7 +37,7 @@ namespace coop2._0.Services
             return await _transactionRepository.RejectTransaction(id);
         }
 
-        public async Task<ActionResult<Transaction>> AddTransaction(Transaction model)
+        public async Task<ActionResult> AddTransaction(Transaction model)
         {
             return await _transactionRepository.AddTransaction(model);
         }
@@ -47,9 +47,9 @@ namespace coop2._0.Services
             return await _transactionRepository.ValidateTransaction(id);
         }
 
-        public async Task<object> GetTransactionsByUser(int userId, PaginationFilter filter)
+        public async Task<object> GetTransactionsByUser(TransactionByUserModel model)
         {
-            return await _transactionRepository.GetTransactionsByUser(userId, filter);
+            return await _transactionRepository.GetTransactionsByUser(model);
         }
 
         public async Task<object> SearchForTransactions(string keyword, PaginationFilter filter)

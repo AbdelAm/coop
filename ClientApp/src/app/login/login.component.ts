@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';     // Pour constructor(private router:Router)  : fonctionne
-import { AuthentificationService } from '../shared/services/authentification.service';
-import { NgForm } from '@angular/forms';
-import { LoginModel } from '../shared/models/login-model';
-import { TokenModel } from '../shared/models/token-model';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';     // Pour constructor(private router:Router)  : fonctionne
+import {AuthentificationService} from '../shared/services/authentification.service';
+import {NgForm} from '@angular/forms';
+import {LoginModel} from '../shared/models/login-model';
+import {TokenModel} from '../shared/models/token-model';
 import Swal from 'sweetalert2';
-import { JwtService } from '../shared/services/jwt.service';
+import {JwtService} from '../shared/services/jwt.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +15,7 @@ import { JwtService } from '../shared/services/jwt.service';
 export class LoginComponent implements OnInit {
 
   loginModel: LoginModel;
+
   constructor(private authService: AuthentificationService, private router: Router, private jwt: JwtService) {
     this.loginModel = new LoginModel();
     if(this.jwt.isConnected()) {
@@ -25,8 +26,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit()
-  {
+  onSubmit() {
     this.authService.login(this.loginModel).subscribe(
       res => {
         let tokenModel = new TokenModel(res);
@@ -37,12 +37,12 @@ export class LoginComponent implements OnInit {
       },
       err => {
         Swal.fire({
-          title: "There is probleme !!!",
-          text: err["error"],
-          icon: "error",
+          title: 'There is probleme !!!',
+          text: err['error'],
+          icon: 'error',
         });
       }
-    )
+    );
   }
 
 }
