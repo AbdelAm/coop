@@ -20,8 +20,8 @@ export class TransactionService {
     return this.httpClient.post(this.baseUrl, transaction);
   }
 
-  getTransactionsByUser(userBankAccountId: number): Observable<GetTransactionsByUserResponse> {
-    const body = {'userBankAccountId': userBankAccountId};
+  getTransactionsByUser(userBankAccountId: number, page: number): Observable<GetTransactionsByUserResponse> {
+    const body = {'userBankAccountId': userBankAccountId, 'page': page};
     return this.httpClient.post<GetTransactionsByUserResponse>(this.baseUrl + '/user', body);
   }
 

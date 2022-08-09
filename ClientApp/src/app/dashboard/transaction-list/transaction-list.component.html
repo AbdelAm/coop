@@ -85,7 +85,6 @@
                   <input type="checkbox" (change)="selectAll($event)"/>
                 </th>
                 <th data-sortable="">Monto</th>
-                <th data-sortable="">Saldo</th>
                 <th data-sortable="">Fetcha</th>
                 <th data-sortable="">Concepto</th>
                 <th data-sortable="">Cuenta original</th>
@@ -105,9 +104,6 @@
                   />
                 </td>
                 <td style="color: red">{{ transaction.amount }}</td>
-                <td style="color: green">
-                  {{ transaction.senderBankAccount?.balance }}
-                </td>
                 <td>{{ transaction.dateTransaction | date:"dd-MM-yyyy"}}</td>
                 <td>{{transaction.motif}}</td>
                 <td>{{ transaction.senderBankAccount?.user.name }}</td>
