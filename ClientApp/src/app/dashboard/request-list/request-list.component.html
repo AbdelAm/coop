@@ -71,12 +71,12 @@
                   </tbody>
                 </table>
               </div>
-              <!--<ngb-pagination [(page)]="this.pageNumber"
-                              [pageSize]="this.pageSize"
-                              [collectionSize]="this.total"
+              <ngb-pagination [(page)]="pageNumber"
+                              [pageSize]="pageSize"
+                              [collectionSize]="totalElements"
                               [boundaryLinks]="true"
-                              (pageChange)="this.getRequestsByUser()">
-              </ngb-pagination>-->
+                              (pageChange)="getRequestsByUser()">
+              </ngb-pagination>
             </div>
           </div>
 

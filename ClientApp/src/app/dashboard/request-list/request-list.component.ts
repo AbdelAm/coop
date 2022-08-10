@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { RequestPopupComponent } from '../request-popup/request-popup.component';
 import { JwtService } from 'src/app/shared/services/jwt.service';
 import { RequestServiceService } from 'src/app/shared/services/request-service.service';
 import { RequestModel } from '../../shared/models/request-model';
@@ -19,13 +18,19 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 })
 export class RequestListComponent implements OnInit {
   readonly ConnectedUserId: string;
-  readonly pageSize = 1;
   listRequest: Array<number>
   requestItems: ItemsModel<RequestModel>;
   requests: RequestModel[];
-  pageNumber: Array<number>;
   request: RequestModel;
-  total: number;
+  pg = 1;
+  pageNumber = [];
+  pageSize = 10;
+  totalElements = 100;
+  maxSize = 5;
+  userBankAccountId: number;
+
+  isConnected = false;
+  hasAdminRole = false;
 
   status = [
     '<strong>In Progress</strong>',
@@ -39,14 +44,13 @@ export class RequestListComponent implements OnInit {
     this.listRequest = new Array<number>();
     this.requests = new Array<RequestModel>();
     this.requestItems = new ItemsModel<RequestModel>();
-    this.pageNumber = [];
     this.ConnectedUserId = this.jwt.getConnectedUserId();
     this.request = new RequestModel();
-    this.total = 1;
+    this.pageNumber = Array<number>();
   }
+  
 
   ngOnInit(): void {
-    window.scrollTo(0, 0);
     this.requestService.getRequests().subscribe(
       res => {
         this.requests = res;
@@ -54,19 +58,21 @@ export class RequestListComponent implements OnInit {
       },
       err => console.log(err)
     );
+    window.scrollTo(0, 0);
+    /*this.loadRequestsByRole();*/
   }
-  getRequestsByUser() {
-    this.requestService.getRequests(this.pageSize).subscribe(
-      this.processResult()
-    );
-  }
-  processResult() {
-    return data => {
-      this.requests = data.response;
-      this.pageNumber = data.pagination?.pageNumber;
-      this.total = data.pagination?.totalRecords;
-    };
-  }
+
+  //loadRequestsByRole() {
+  //  if (this.isConnected && this.hasAdminRole) {
+  //    this.getRequests();
+  //  }
+  //  if (this.isConnected) {
+  //    this.getRequestsByUser();
+  //  } else {
+  //    this.router.navigateByUrl('login');
+  //  }
+  //}
+
   getItems(num: number) {
     this.requestService.getRequests(num).subscribe(
       res => {
@@ -84,7 +90,7 @@ export class RequestListComponent implements OnInit {
           Swal.fire({
             title: "There is a Problem!!!",
             text: err["error"],
-            icon: "error"
+            icon: "error",
           })
         }
       }
@@ -119,12 +125,14 @@ export class RequestListComponent implements OnInit {
 
     this.requestService.setRequest(this.request).subscribe(
       res => {
-        console.log(this.requests);
-        this.requests.push(res);
+        this.requests.push(this.request)
+        this.modalService.dismissAll()
         Swal.fire({
           title: "Request added successfully!!!",
           icon: "success",
         });
+        //this.router.navigate(['requests']);
+        //location.reload();
       },
       err => console.log(err)
     )
@@ -156,6 +164,29 @@ export class RequestListComponent implements OnInit {
   //    data: "right click"
   //  })
   //}
+
+
+  getRequests() {
+    this.requestService.getRequestsPagination(this.pg, this.pageSize).subscribe(
+      this.processResult()
+    );
+
+  }
+
+  getRequestsByUser() {
+    this.requestService.getRequestsByUser(this.userBankAccountId, this.pg).subscribe(this.processResult()
+    );
+  }
+  processResult() {
+    return data => {
+      this.request = data.response;
+      this.pageNumber = data.pagination?.pageNumber;
+      this.pageSize = data.pagination?.pageSize;
+      this.totalElements = data.pagination?.totalRecords;
+    };
+  }
+
+
   uncheckAll() {
     this.checkboxes.forEach((element) => {
       element.nativeElement.checked = false;
