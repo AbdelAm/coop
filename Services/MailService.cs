@@ -1,4 +1,5 @@
-﻿using coop2._0.Model;
+﻿using coop2._0.Entities;
+using coop2._0.Model;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,7 @@ namespace coop2._0.Services
             _configuration = configuration;
         }
 
-        private async Task SetUpSmtp(MimeMessage mail)
+        private async Task SendMail(MimeMessage mail)
         {
             // send email
             using var smtp = new SmtpClient();
@@ -29,12 +30,12 @@ namespace coop2._0.Services
             await smtp.SendAsync(mail);
             smtp.Disconnect(true);
         }
-        public async Task SendConfirmMail(MailModel mailer)
+        public async Task<bool> SendConfirmMail(User user, string token)
         {
             var mail = new MimeMessage();
             mail.From.Add(MailboxAddress.Parse("contact@coophalal.net"));
-            mail.To.Add(MailboxAddress.Parse(mailer.Email));
-            mail.Subject = mailer.Subject;
+            mail.To.Add(MailboxAddress.Parse(user.Email));
+            mail.Subject = "Email Confirmation";
             var builder = new BodyBuilder();
             using (StreamReader SourceReader = System.IO.File.OpenText("./Mails/ConfirmMail.cshtml"))
             {
@@ -42,23 +43,23 @@ namespace coop2._0.Services
                 builder.HtmlBody = SourceReader.ReadToEnd();
 
             }
-            var values = mailer.Body.Split('-', 2);
 
             string messageBody = string.Format(builder.HtmlBody,
-                        values[0],
-                        values[1]
+                        user.Name,
+                        token + '-' + user.Email
                         );
             mail.Body = new TextPart(TextFormat.Html) { Text = messageBody };
 
-            await SetUpSmtp(mail);
+            await SendMail(mail);
+            return true;
         }
 
-        public async Task SendForgetMail(MailModel mailer)
+        public async Task<bool> SendForgetMail(User user, string token)
         {
             var mail = new MimeMessage();
             mail.From.Add(MailboxAddress.Parse("contact@coophalal.net"));
-            mail.To.Add(MailboxAddress.Parse(mailer.Email));
-            mail.Subject = mailer.Subject;
+            mail.To.Add(MailboxAddress.Parse(user.Email));
+            mail.Subject = "Reset Password";
             var builder = new BodyBuilder();
             using (StreamReader SourceReader = System.IO.File.OpenText("./Mails/ForgetMail.cshtml"))
             {
@@ -66,17 +67,17 @@ namespace coop2._0.Services
                 builder.HtmlBody = SourceReader.ReadToEnd();
 
             }
-            var values = mailer.Body.Split('-', 2);
 
             string messageBody = string.Format(builder.HtmlBody,
-                        values[0],
-                        values[1]
+                        user.Name,
+                        token + '-' + user.Email
                         );
             mail.Body = new TextPart(TextFormat.Html) { Text = messageBody };
 
-            await SetUpSmtp(mail);
+            await SendMail(mail);
+            return true;
         }
-        public async Task SendValidationMail(MailModel mailer)
+        public async Task<bool> SendValidationMail(MailModel mailer)
         {
             var mail = new MimeMessage();
             mail.From.Add(MailboxAddress.Parse("contact@coophalal.net"));
@@ -97,7 +98,8 @@ namespace coop2._0.Services
                         );
             mail.Body = new TextPart(TextFormat.Html) { Text = messageBody };
 
-            await SetUpSmtp(mail);
+            await SendMail(mail);
+            return true;
         }
     }
 }

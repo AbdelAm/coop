@@ -64,28 +64,28 @@ namespace coop2._0.Controllers
             }
         }
 
-        [HttpPost("validate/{page}")]
+        [HttpPost("validate")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<ActionResult> ValidateUsers([FromBody] List<string> users, int page)
+        public async Task<ActionResult<Response>> ValidateUsers([FromBody] List<string> users)
         {
             try
             {
-                await _userService.Validate(users, page);
-                return Ok();
+                Response response = await _userService.Validate(users);
+                return Ok(response);
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost("reject/{page}")]
+        [HttpPost("reject")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<ActionResult> RejectUsers([FromBody] List<string> users, int page)
+        public async Task<ActionResult<Response>> RejectUsers([FromBody] List<string> users)
         {
             try
             {
-                await _userService.Reject(users, page);
-                return Ok();
+                Response response = await _userService.Reject(users);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -93,14 +93,14 @@ namespace coop2._0.Controllers
             }
         }
 
-        [HttpPost("delete/{page}")]
+        [HttpPost("delete")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<ActionResult> DeleteUsers([FromBody] List<string> users, int page)
+        public async Task<ActionResult<Response>> DeleteUsers([FromBody] List<string> users)
         {
             try
             {
-                await _userService.Delete(users, page);
-                return Ok();
+                Response response = await _userService.Delete(users);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -109,12 +109,12 @@ namespace coop2._0.Controllers
         }
 
         [HttpPut("update/info")]
-        public async Task<ActionResult<bool>> ChangeUserInfo([FromBody] UserInfoModel model)
+        public async Task<ActionResult<Response>> ChangeUserInfo([FromBody] UserInfoModel model)
         {
             try
             {
-                bool done = await _userService.ChangeInfo(model);
-                return Ok(done);
+                Response response = await _userService.ChangeInfo(model);
+                return Ok(response);
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);

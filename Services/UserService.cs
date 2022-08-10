@@ -56,7 +56,7 @@ namespace coop2._0.Services
             return users;
         }
 
-        public async Task<bool> Validate(List<string> users, int page)
+        public async Task<Response> Validate(List<string> users)
         {
             bool temoin = true;
             foreach(string id in users)
@@ -73,7 +73,10 @@ namespace coop2._0.Services
                         Subject = "User Approuved",
                         Body = user.Name + '-' + message,
                     };
-                    await _mailService.SendValidationMail(mailModel);
+                    if(!await _mailService.SendValidationMail(mailModel))
+                    {
+                        throw new Exception("There is problem with sending Reset Password Mail, please verify your email");
+                    }
                     BankAccount account = new BankAccount()
                     {
                         AccountNumber = Guid.NewGuid().ToString("D"),
@@ -91,10 +94,14 @@ namespace coop2._0.Services
             {
                 throw new Exception("some users doesn't approuved, please try again later");
             }
-            return temoin;
+            return new Response
+            {
+                Status = "Success",
+                Message = "the user has been validated successfully"
+            };
         }
 
-        public async Task<bool> Reject(List<string> users, int page)
+        public async Task<Response> Reject(List<string> users)
         {
             bool temoin = true;
             foreach (string id in users)
@@ -111,7 +118,10 @@ namespace coop2._0.Services
                         Subject = "User Rejected",
                         Body = user.Name + '-' + message,
                     };
-                    await _mailService.SendValidationMail(mailModel);
+                    if (!await _mailService.SendValidationMail(mailModel))
+                    {
+                        throw new Exception("There is problem with sending Reset Password Mail, please verify your email");
+                    }
                 }
                 else
                 {
@@ -122,26 +132,58 @@ namespace coop2._0.Services
             {
                 throw new Exception("some users doesn't rejected, please try again later");
             }
-            return temoin;
+            return new Response
+            {
+                Status = "Success",
+                Message = "The user has been Rejected successfully"
+            };
         }
 
-        public async Task<bool> Delete(List<string> users, int page)
+        public async Task<Response> Delete(List<string> users)
         {
             bool temoin = true;
             foreach (string id in users)
             {
                 var user = await _userRepository.SelectById(id);
+                var bankAccount = await _bankRepository.SelectByUser(id);
+                if (bankAccount != null)
+                {
+                    if(bankAccount.Status != Status.Approuved)
+                    {
+                        await _bankRepository.Delete(bankAccount);
+                    } else
+                    {
+                        throw new Exception("This user has an approuved bankaccount, and may has done some transactions with it, you need to verify his bank account situation before delete the user");
+                    }
+                }
                 var result = await _userRepository.DeleteUser(user);
-                if (!result.Succeeded) temoin = false;
+                if (result.Succeeded) 
+                {
+                    string message = "Unfortunately, your account has been Deleted";
+                    MailModel mailModel = new MailModel()
+                    {
+                        Email = user.Email,
+                        Subject = "User Deleted",
+                        Body = user.Name + '-' + message,
+                    };
+                    if (!await _mailService.SendValidationMail(mailModel))
+                    {
+                        throw new Exception("There is problem with sending Reset Password Mail, please verify your email");
+                    }
+                } else { temoin = false; }
             }
             if (!temoin)
             {
-                throw new Exception("some users doesn't deleted, please try again later");
+                throw new Exception("the user doesn't deleted, please try again later");
             }
-            return temoin;
+            return new Response
+            {
+                Status = "Success",
+                Message = "The user has been Deleted successfully"
+            };
         }
 
-        public async Task<bool> ChangeInfo(UserInfoModel model)
+        public async Task<Response> ChangeInfo(UserInfoModel model)
         {
             var user = await _userRepository.SelectById(model.Cif);
             user.Name = model.Name;
@@ -154,7 +196,11 @@ namespace coop2._0.Services
             {
                 throw new Exception("An error occured on updating the user, please try again later");
             }
-            return result.Succeeded;
+            return new Response
+            {
+                Status = "Success",
+                Message = "The user information has been Changed successfully"
+            };
         }
 
         public async Task<Response> ChangeEmail(EmailUpdateModel model)
@@ -176,13 +222,8 @@ namespace coop2._0.Services
             }
 
             string token = await _userRepository.GenerateConfirmationToken(user);
-            MailModel mailModel = new MailModel()
-            {
-                Email = model.NewEmail,
-                Subject = "Email Confirmation",
-                Body = user.Name + '-' + token + '-' + user.Email,
-            };
-            await _mailService.SendConfirmMail(mailModel);
+            
+            await _mailService.SendConfirmMail(user, token);
 
             return new Response
             {

@@ -58,13 +58,12 @@ namespace coop2._0.Services
             }
 
             string token = await _userRepository.GenerateConfirmationToken(user);
-            MailModel mailModel = new MailModel()
+            
+            if(!await _mailService.SendConfirmMail(user, token))
             {
-                Email = model.Email,
-                Subject = "Email Confirmation",
-                Body = user.Name + '-' + token + '-' + user.Email,
-            };
-            await _mailService.SendConfirmMail(mailModel);
+                e.Data.Add("user", "There is problem with sending confirmation Mail, please verify your email");
+                throw e;
+            }
 
             return new Response
             {
@@ -111,23 +110,22 @@ namespace coop2._0.Services
         }
         public async Task<Response> ForgetPassword(ForgetPasswordModel model)
         {
-            var u = await _userRepository.SelectByEmail(model.Email);
+            var user = await _userRepository.SelectByEmail(model.Email);
             Exception e = new();
-            if (u == null)
+            if (user == null)
             {
                 e.Data.Add("email_error", "email does not existe, please verify your information");
                 throw e;
             }
 
-            string token = await _userRepository.GenerateResetToken(u);
+            string token = await _userRepository.GenerateResetToken(user);
             token = System.Web.HttpUtility.UrlEncode(token);
-            MailModel mailModel = new MailModel()
+
+            if(!await _mailService.SendForgetMail(user, token))
             {
-                Email = model.Email,
-                Subject = "Reset Password",
-                Body = u.Name + '-' + token + '-' + u.Email,
-            };
-            await _mailService.SendForgetMail(mailModel);
+                e.Data.Add("email_error", "There is problem with sending Reset Password Mail, please verify your email");
+                throw e;
+            }
 
             return new Response
             {
