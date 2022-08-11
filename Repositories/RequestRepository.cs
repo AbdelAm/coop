@@ -30,6 +30,12 @@ namespace coop2._0.Repositories
         {
             return await _context.Requests.Include(req => req.User).Where(req => req.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<Request>> SelectByUser(string userId)
+        {
+            return await _context.Requests.Where(b => b.UserId == userId).ToListAsync();
+        }
+
         public async Task<bool> RemoveRequest(Request request)
         {
             _context.Requests.Remove(request);

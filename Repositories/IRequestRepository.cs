@@ -10,6 +10,7 @@ namespace coop2._0.Repositories
     {
         Task<ActionResult<IEnumerable<Request>>> GetRequests();
         Task<Request> GetRequest(int id);
+        Task<IEnumerable<Request>> SelectByUser(string userId);
         Task<bool> RemoveRequest(Request request);
         Task<Request> RejectRequest(Request request);
         Task<Request> ValidateRequest(Request request);

@@ -1,5 +1,8 @@
-﻿using coop2._0.Repositories;
+﻿using coop2._0.Entities;
+using coop2._0.Repositories;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace coop2._0.Services
@@ -16,11 +19,11 @@ namespace coop2._0.Services
         public async Task<int> GetBankAccount(string userId)
         {
             var bank = await _bankRepository.SelectByUser(userId);
-            if (bank == null)
+            if (!bank.Any())
             {
                 throw new Exception("There is no Bank Account with this information");
             }
-            return bank.Id;
+            return bank.FirstOrDefault().Id;
         }
     }
 }

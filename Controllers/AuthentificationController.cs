@@ -94,5 +94,20 @@ namespace coop2._0.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("administrateur/register")]
+        public async Task<ActionResult<Response>> RegisterAdmin([FromBody] RegisterModel model)
+        {
+            try
+            {
+                Response response = await _authService.RegisterAdmin(model);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Data);
+            }
+        }
     }
 }

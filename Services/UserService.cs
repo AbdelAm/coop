@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace coop2._0.Services
@@ -14,12 +15,14 @@ namespace coop2._0.Services
         private readonly IUserRepository _userRepository;
         private readonly IMailService _mailService;
         private readonly IBankAccountRepository _bankRepository;
+        private readonly IRequestRepository _requestRepository;
 
-        public UserService(IUserRepository userRepository, IMailService mailService, IBankAccountRepository bankAccount)
+        public UserService(IUserRepository userRepository, IMailService mailService, IBankAccountRepository bankAccount, IRequestRepository requestRepository)
         {
             _userRepository = userRepository;
             _mailService = mailService;
             _bankRepository = bankAccount;
+            _requestRepository = requestRepository;
         }
 
         public async Task<ItemsModel<UserItemModel>> FindUsers(int page)
@@ -145,17 +148,24 @@ namespace coop2._0.Services
             foreach (string id in users)
             {
                 var user = await _userRepository.SelectById(id);
-                var bankAccount = await _bankRepository.SelectByUser(id);
-                if (bankAccount != null)
+                var bankAccounts = await _bankRepository.SelectByUser(id);
+                if (bankAccounts != null)
                 {
-                    if(bankAccount.Status != Status.Approuved)
-                    {
-                        await _bankRepository.Delete(bankAccount);
-                    } else
+                    if(bankAccounts.Where(b => b.Status == Status.Approuved).Any())
                     {
                         throw new Exception("This user has an approuved bankaccount, and may has done some transactions with it, you need to verify his bank account situation before delete the user");
                     }
                 }
+                var requests = await _requestRepository.SelectByUser(id);
+                foreach(var bankAccount in bankAccounts)
+                {
+                    await _bankRepository.Delete(bankAccount);
+                }
+                foreach (var request in requests)
+                {
+                    await _requestRepository.RemoveRequest(request);
+                }
+                
                 var result = await _userRepository.DeleteUser(user);
                 if (result.Succeeded) 
                 {

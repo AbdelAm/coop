@@ -21,6 +21,9 @@ export class AuthentificationService {
   register(registerModel: RegisterModel): Observable<Response> {
     return this.http.post<Response>(this.baseUrl + 'authentification/register', registerModel, {headers:{skip:"true"}});
   }
+  registerAdmin(registerModel: RegisterModel): Observable<Response> {
+    return this.http.post<Response>(this.baseUrl + 'authentification/administrateur/register', registerModel, {headers:{skip:"true"}});
+  }
   confirmEmail(url: string): Observable<Response>
   {
     return this.http.get<Response>(this.baseUrl + `authentification${url}`, {headers:{skip:"true"}});
