@@ -47,6 +47,8 @@ export class RequestListComponent implements OnInit {
     this.ConnectedUserId = this.jwt.getConnectedUserId();
     this.request = new RequestModel();
     this.pageNumber = Array<number>();
+    this.isConnected = this.jwt.isConnected();
+    this.hasAdminRole = this.jwt.isAdmin();
   }
   
 
@@ -62,16 +64,16 @@ export class RequestListComponent implements OnInit {
     /*this.loadRequestsByRole();*/
   }
 
-  //loadRequestsByRole() {
-  //  if (this.isConnected && this.hasAdminRole) {
-  //    this.getRequests();
-  //  }
-  //  if (this.isConnected) {
-  //    this.getRequestsByUser();
-  //  } else {
-  //    this.router.navigateByUrl('login');
-  //  }
-  //}
+  loadRequestsByRole() {
+    if (this.isConnected && this.hasAdminRole) {
+      this.getRequests();
+    }
+    if (this.isConnected) {
+      this.getRequestsByUser();
+    } else {
+      this.router.navigateByUrl('login');
+    }
+  }
 
   getItems(num: number) {
     this.requestService.getRequests(num).subscribe(
@@ -180,7 +182,7 @@ export class RequestListComponent implements OnInit {
   processResult() {
     return data => {
       this.request = data.response;
-      this.pageNumber = data.pagination?.pageNumber;
+      this.pg = data.pagination?.pg;
       this.pageSize = data.pagination?.pageSize;
       this.totalElements = data.pagination?.totalRecords;
     };
