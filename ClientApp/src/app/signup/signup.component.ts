@@ -12,12 +12,19 @@ import { Router } from '@angular/router';
 export class SignupComponent implements OnInit {
 
   registerModel: RegisterModel;
+  role : string;
+  items = {
+    "/signup": "Users",
+    "/administrateur/register": "Admin"
+  }
 
   constructor(private authService: AuthentificationService, private router: Router) {
     this.registerModel = new RegisterModel();
+
   }
 
   ngOnInit(): void {
+    this.role = this.items[this.router.url];
   }
 
   onSubmit()
