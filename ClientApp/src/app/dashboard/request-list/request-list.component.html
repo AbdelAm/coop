@@ -2,10 +2,10 @@
   <div class="container-fluid px-4">
     <h1 class="mt-4">Peticiones</h1>
     <ol class="breadcrumb mb-4">
-      <li class="breadcrumb-item"><a href="../admin/global">Global</a></li>
+      <li class="breadcrumb-item"><a routerLink="/Dashboard/global">Global</a></li>
       <li class="breadcrumb-item active">Peticiones</li>
     </ol>
-    <button style="margin-bottom:30px" type="button" class="btn btn-success" (click)="open(content)">Agregar petición </button>
+    <button style="margin-bottom:30px" type="button" *ngIf="isConnected&&!hasAdminRole" class="btn btn-success" (click)="open(content)">Agregar petición </button>
     <div class="card mb-4">
       <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
         <div class="card mb-4">
@@ -15,7 +15,7 @@
           </div>
           <div class="card-body">
             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-              <div class="dataTable-top">
+              <div *ngIf="isConnected&&hasAdminRole" class="dataTable-top">
                 <div class="dataTable-dropdown pt-2 d-none">
                   <button class="border-0 bg-transparent align-middle" (click)="validateAll()">
                     <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
@@ -36,14 +36,14 @@
                 <table id="datatablesSimple" class="dataTable-table">
                   <thead>
                     <tr>
-                      <th><input type="checkbox" (change)="selectAll($event)"></th>
+                      <th><input type="checkbox" *ngIf="isConnected&&hasAdminRole" (change)="selectAll($event)"></th>
                       <th data-sortable="">Id</th>
                       <th data-sortable="">User</th>
                       <th data-sortable="">Type</th>
                       <th data-sortable="">Message</th>
                       <th data-sortable="">DateRequest</th>
                       <th data-sortable="">Status</th>
-                      <th data-sortable="">Action</th>
+                      <th *ngIf="isConnected&&hasAdminRole" data-sortable="">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -55,7 +55,7 @@
                       <td>{{request.message}}</td>
                       <td>{{request.dateRequest}}</td>
                       <td [innerHTML]="this.status[request.status]"></td>
-                      <td class="icons d-flex justify-i-center align-items-center h-100">
+                      <td *ngIf="isConnected&&hasAdminRole" class="icons d-flex justify-i-center align-items-center h-100">
                         <button class="border-0 bg-transparent align-middle" (click)="validateRequest(request.id)">
                           <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
                         </button>
@@ -71,8 +71,7 @@
                   </tbody>
                 </table>
               </div>
-
-              <ngb-pagination [(page)]="pageNumber"
+              <ngb-pagination [(page)]="pg"
                               [pageSize]="pageSize"
                               [collectionSize]="totalElements"
                               [boundaryLinks]="true"

@@ -10,10 +10,12 @@ import { JwtService } from '../shared/services/jwt.service';
 export class DashboardComponent implements OnInit {
 
   constructor(private jwt: JwtService, private router: Router) {
-    if(this.jwt.isConnected()) {
-      (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigateByUrl('/dashboard/users') : this.router.navigateByUrl('/dashboard/global');
-    } else {
+    if(!this.jwt.isConnected()) {
       this.router.navigateByUrl('/login');
+    } else if(this.jwt.isAdmin() && this.jwt.switchBtn) {
+      this.router.navigateByUrl('/dashboard/users');
+    } else {
+      this.router.navigateByUrl('/dashboard/global');
     }
   }
 

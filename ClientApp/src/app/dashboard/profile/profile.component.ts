@@ -22,9 +22,6 @@ export class ProfileComponent implements OnInit {
   passwordUpdate: PasswordUpdateModel;
 
   constructor(private jwt:JwtService, private router: Router, private userService: UserService) {
-    if(!this.jwt.isConnected()) {
-      this.router.navigateByUrl('/login');
-    }
     this.selectedButton = "user";
     this.user = new UserItemModel();
     this.userInfo = new UserInfoModel();

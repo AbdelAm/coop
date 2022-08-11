@@ -51,6 +51,19 @@ namespace coop2._0.Repositories
             return null;
         }
 
+        public async Task<string> InsertAdmin(User user, string password)
+        {
+            var result = await _userManager.CreateAsync(user, password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "ADMIN");
+                await _userManager.AddToRoleAsync(user, "USER");
+                return user.Id;
+            }
+
+            return null;
+        }
+
         public async Task<User> SelectUser(LoginModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);

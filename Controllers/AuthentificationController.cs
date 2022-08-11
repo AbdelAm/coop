@@ -35,7 +35,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<ActionResult<TokenModel>> Login([FromBody] LoginModel model)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace coop2._0.Controllers
 
         [HttpGet]
         [Route("email-confirmation")]
-        public async Task<IActionResult> Confirm([FromQuery] string param)
+        public async Task<ActionResult<Response>> Confirm([FromQuery] string param)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("forget-password")]
-        public async Task<IActionResult> Forget([FromBody] ForgetPasswordModel model)
+        public async Task<ActionResult<Response>> Forget([FromBody] ForgetPasswordModel model)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Route("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        public async Task<ActionResult<Response>> ResetPassword(ResetPasswordModel model)
         {
             try
             {
@@ -92,6 +92,21 @@ namespace coop2._0.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("administrateur/register")]
+        public async Task<ActionResult<Response>> RegisterAdmin([FromBody] RegisterModel model)
+        {
+            try
+            {
+                Response response = await _authService.RegisterAdmin(model);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Data);
             }
         }
     }

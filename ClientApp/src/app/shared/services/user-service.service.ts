@@ -31,18 +31,18 @@ export class UserService {
   searchUser(value: string): Observable<UserItemModel[]> {
     return this.http.get<UserItemModel[]>(this.baseUrl + `user/search/${value}`);
   }
-  validateUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
-    return this.http.post<UserItemModel[]>(this.baseUrl + `user/validate/${page}`, userList);
+  validateUsers(userList: Array<string>): Observable<Response> {
+    return this.http.post<Response>(this.baseUrl + `user/validate`, userList);
   }
-  rejectUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
-    return this.http.post<UserItemModel[]>(this.baseUrl + `user/reject/${page}`, userList);
+  rejectUsers(userList: Array<string>): Observable<Response> {
+    return this.http.post<Response>(this.baseUrl + `user/reject`, userList);
   }
-  deleteUsers(userList: Array<string>, page: number = 1): Observable<UserItemModel[]> {
-    return this.http.post<UserItemModel[]>(this.baseUrl + `user/delete/${page}`, userList);
+  deleteUsers(userList: Array<string>): Observable<Response> {
+    return this.http.post<Response>(this.baseUrl + `user/delete`, userList);
   }
-  updateUserInfo(userInfo: UserInfoModel): Observable<boolean>
+  updateUserInfo(userInfo: UserInfoModel): Observable<Response>
   {
-    return this.http.put<boolean>(this.baseUrl + `user/update/info`, userInfo);
+    return this.http.put<Response>(this.baseUrl + `user/update/info`, userInfo);
   }
   updateEmail(userEmail: EmailUpdateModel) : Observable<Response>
   {

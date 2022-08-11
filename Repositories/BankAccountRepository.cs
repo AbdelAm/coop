@@ -1,5 +1,7 @@
 ﻿using coop2._0.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,9 +24,16 @@ namespace coop2._0.Repositories
             return account.AccountNumber;
         }
 
-        public async Task<BankAccount> SelectByUser(string userId)
+        public async Task<IEnumerable<BankAccount>> SelectByUser(string userId)
         {
-            return await _context.BankAccounts.FirstOrDefaultAsync(b => b.UserId == userId && b.Status == Status.Approuved);
+            return await _context.BankAccounts.Where(b => b.UserId == userId && b.Status == Status.Approuved)
+                .ToListAsync();
+        }
+
+        public async Task Delete(BankAccount account)
+        {
+            _context.BankAccounts.Remove(account);
+            await _context.SaveChangesAsync();
         }
     }
 }

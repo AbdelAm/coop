@@ -16,13 +16,15 @@ namespace coop2._0.Services
         private readonly IJwtService _jwtService;
         private readonly IConfiguration _configuration;
         private readonly IMailService _mailService;
+        private readonly IBankAccountRepository _bankRepository;
 
-        public AuthentificationService(IUserRepository userRepository, IJwtService jwtService, IConfiguration configuration, IMailService mailService)
+        public AuthentificationService(IUserRepository userRepository, IJwtService jwtService, IConfiguration configuration, IMailService mailService, IBankAccountRepository bankRepository)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
             _configuration = configuration;
             _mailService = mailService;
+            _bankRepository = bankRepository;
         }
         public async Task<Response> Register(RegisterModel model)
         {
@@ -58,13 +60,12 @@ namespace coop2._0.Services
             }
 
             string token = await _userRepository.GenerateConfirmationToken(user);
-            MailModel mailModel = new MailModel()
+            
+            if(!await _mailService.SendConfirmMail(user, token))
             {
-                Email = model.Email,
-                Subject = "Email Confirmation",
-                Body = user.Name + '-' + token + '-' + user.Email,
-            };
-            await _mailService.SendConfirmMail(mailModel);
+                e.Data.Add("user", "There is problem with sending confirmation Mail, please verify your email");
+                throw e;
+            }
 
             return new Response
             {
@@ -111,23 +112,22 @@ namespace coop2._0.Services
         }
         public async Task<Response> ForgetPassword(ForgetPasswordModel model)
         {
-            var u = await _userRepository.SelectByEmail(model.Email);
+            var user = await _userRepository.SelectByEmail(model.Email);
             Exception e = new();
-            if (u == null)
+            if (user == null)
             {
                 e.Data.Add("email_error", "email does not existe, please verify your information");
                 throw e;
             }
 
-            string token = await _userRepository.GenerateResetToken(u);
+            string token = await _userRepository.GenerateResetToken(user);
             token = System.Web.HttpUtility.UrlEncode(token);
-            MailModel mailModel = new MailModel()
+
+            if(!await _mailService.SendForgetMail(user, token))
             {
-                Email = model.Email,
-                Subject = "Reset Password",
-                Body = u.Name + '-' + token + '-' + u.Email,
-            };
-            await _mailService.SendForgetMail(mailModel);
+                e.Data.Add("email_error", "There is problem with sending Reset Password Mail, please verify your email");
+                throw e;
+            }
 
             return new Response
             {
@@ -156,5 +156,68 @@ namespace coop2._0.Services
                 Message = "The password has been changed successfully"
             };
         }
+
+        public async Task<Response> RegisterAdmin(RegisterModel model)
+        {
+            Exception e = new();
+            var u = await _userRepository.SelectByEmail(model.Email);
+            if (u != null)
+            {
+                e.Data.Add("email_error", "email is already existe");
+                throw e;
+            }
+            u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
+            if (u != null)
+            {
+                e.Data.Add("socialNumber_error", "Social Number is already existe");
+                throw e;
+            }
+
+            User user = new()
+            {
+                Name = model.Name,
+                Email = model.Email,
+                UserName = Regex.Replace(model.Name.ToLower(), @"\s+", ""),
+                PhoneNumber = model.Phone,
+                SocialNumber = model.SocialNumber,
+                IsAdmin = true,
+                DateCreated = DateTime.Now,
+                SecurityStamp = Guid.NewGuid().ToString(),
+            };
+            var result = await _userRepository.InsertAdmin(user, model.Password);
+            if (result == null)
+            {
+                e.Data.Add("user", "There is problem with registering user, please try again");
+                throw e;
+            }
+            BankAccount account = new BankAccount()
+            {
+                AccountNumber = Guid.NewGuid().ToString("D"),
+                Balance = 350.0,
+                DateCreated = DateTime.Now,
+                UserId = user.Id
+            };
+            string bankAccount = await _bankRepository.InsertBankAccount(account);
+
+            if (bankAccount == null)
+            {
+                e.Data.Add("user", "There is problem with creating bankaccount of user, please try again");
+                throw e;
+            }
+            string token = await _userRepository.GenerateConfirmationToken(user);
+
+            if (!await _mailService.SendConfirmMail(user, token))
+            {
+                e.Data.Add("user", "There is problem with sending confirmation Mail, please verify your email");
+                throw e;
+            }
+
+            return new Response
+            {
+                Status = "success",
+                Message = "To complete your registration, An email has been sent to confirm your registration"
+            };
+        }
+
     }
 }

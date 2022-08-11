@@ -13,6 +13,7 @@ namespace coop2._0.Repositories
         Task<User> SelectByEmail(string email);
         Task<User> SelectBySocialNumber(string socialNumber);
         Task<string> InsertUser(User user, string password);
+        Task<string> InsertAdmin(User user, string password);
         Task<User> SelectUser(LoginModel model);
         Task<List<string>> SelectUserRoles(User user);
         Task<string> GenerateConfirmationToken(User user);

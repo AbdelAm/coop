@@ -57,10 +57,10 @@
                                       <td>{{user.isConfirmed}}</td>
                                       <td [innerHTML]="this.status[user.status]"></td>
                                       <td class="icons d-flex justify-content-center">
-                                          <button class="border-0 bg-transparent align-middle" (click)="validateUser(user.cif)">
+                                          <button class="border-0 bg-transparent align-middle" (click)="validateUser(user.cif)" [disabled]="user.status == 1">
                                             <i class="fa-regular fa-circle-check" style="color: green; font-size: 20px; font-weight: 500; margin: 0;"></i>
                                           </button>
-                                          <button class="border-0 bg-transparent align-middle" (click)="rejectUser(user.cif)">
+                                          <button class="border-0 bg-transparent align-middle" (click)="rejectUser(user.cif)" [disabled]="user.status == 2">
                                             <i class="fa-regular fa-circle-xmark" style=" margin: 0; font-size: 20px; font-weight: 500; color: chocolate"></i>
                                           </button>
                                           <button class="border-0 bg-transparent align-middle" (click)="deleteUser(user.cif)">

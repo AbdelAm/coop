@@ -23,9 +23,9 @@ namespace coop2._0.Services
             return _requestRepository.GetRequest(id);
         }
 
-        public Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
         {
-            return _requestRepository.GetRequests();
+            return await _requestRepository.GetRequests();
         }
         public async Task<bool> RemoveRequest(List<int> requests)
         {

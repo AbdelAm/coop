@@ -23,15 +23,9 @@ export class UserListComponent implements OnInit {
     '<strong>In Progress</strong>',
     '<strong class="text-success">Approuved</strong>',
     '<strong class="text-danger text-capitalize">Rejected</strong>'
-  ];
-
-  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private userService: UserService) {
-    if (!this.jwt.isConnected()) {
-      this.router.navigateByUrl('/login');
-    }
-    if (!this.jwt.isAdmin() || !this.jwt.switchBtn) {
-      this.router.navigateByUrl('/dashboard/global');
-    }
+  ]
+  
+  constructor(public dialog:MatDialog, private jwt:JwtService, private router: Router, private userService: UserService) {
     this.listUser = new Array<string>();
     this.userItems = new ItemsModel<UserItemModel>();
     this.pageNumber = [];
@@ -131,11 +125,18 @@ export class UserListComponent implements OnInit {
         });
         this.listUser.length = 0;
         Swal.fire({
-          title: 'User Validated successfully!!!',
+          title: 'Success!!!',
+          text: res['message'],
           icon: 'success',
         });
       },
-      err => console.log(err)
+      err => {
+        Swal.fire({
+          title: 'There is probleme !!!',
+          text: err['error'],
+          icon: 'error',
+        });
+      }
     );
   }
 
@@ -149,11 +150,18 @@ export class UserListComponent implements OnInit {
         });
         this.listUser.length = 0;
         Swal.fire({
-          title: 'User Rejected successfully!!!',
+          title: 'Success!!!',
+          text: res['message'],
           icon: 'success',
         });
       },
-      err => console.log(err)
+      err => {
+        Swal.fire({
+          title: 'There is probleme !!!',
+          text: err['error'],
+          icon: 'error',
+        });
+      }
     );
   }
 
@@ -165,11 +173,18 @@ export class UserListComponent implements OnInit {
         });
         this.listUser.length = 0;
         Swal.fire({
-          title: 'User Deleted successfully!!!',
+          title: 'Success!!!',
+          text: res['message'],
           icon: 'success',
         });
       },
-      err => console.log(err)
+      err => {
+        Swal.fire({
+          title: 'There is probleme !!!',
+          text: err['error'],
+          icon: 'error',
+        });
+      }
     );
   }
 
