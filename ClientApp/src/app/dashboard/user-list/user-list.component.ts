@@ -23,13 +23,13 @@ export class UserListComponent implements OnInit {
     '<strong>In Progress</strong>',
     '<strong class="text-success">Approuved</strong>',
     '<strong class="text-danger text-capitalize">Rejected</strong>'
-  ]
-  
-  constructor(public dialog:MatDialog, private jwt:JwtService, private router: Router, private userService: UserService) {
-    if(!this.jwt.isConnected()) {
+  ];
+
+  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private userService: UserService) {
+    if (!this.jwt.isConnected()) {
       this.router.navigateByUrl('/login');
     }
-    if(!this.jwt.isAdmin() || !this.jwt.switchBtn) {
+    if (!this.jwt.isAdmin() || !this.jwt.switchBtn) {
       this.router.navigateByUrl('/dashboard/global');
     }
     this.listUser = new Array<string>();

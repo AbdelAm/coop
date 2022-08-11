@@ -6,7 +6,8 @@ import {TransactionModel} from '../../shared/models/transaction-model';
 import {TransactionService} from '../../shared/services/transaction.service';
 import Swal from 'sweetalert2';
 import {TransactionPopupComponent} from '../transaction-popup/transaction-popup.component';
-import { BankAccountService } from 'src/app/shared/services/bank-account.service';
+import {BankAccountService} from 'src/app/shared/services/bank-account.service';
+import {UserService} from '../../shared/services/user-service.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -23,12 +24,15 @@ export class TransactionListComponent implements OnInit {
   isConnected = false;
   hasAdminRole = false;
   userBankAccountId: number;
+  switchBtn: boolean;
+  userName: string;
 
-  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private transactionService: TransactionService, private bankService: BankAccountService) {
+  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private transactionService: TransactionService, private bankService: BankAccountService, private userService: UserService) {
     this.transactions = [];
     this.listTransaction = [];
     this.isConnected = this.jwt.isConnected();
     this.hasAdminRole = this.jwt.isAdmin();
+    this.switchBtn = this.jwt.switchBtn;
   }
 
   addTransaction(): void {
@@ -42,16 +46,19 @@ export class TransactionListComponent implements OnInit {
     window.scrollTo(0, 0);
     this.bankService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
       res => {
-        console.log(res);
-        this.userBankAccountId = res;
+        this.userBankAccountId = res.id;
+        this.loadTransactionsByRole();
       },
       err => console.log(err)
     );
-    this.loadTransactionsByRole();
+    this.userService.getUser(this.jwt.getConnectedUserId()).subscribe(
+      res => this.userName = res.name
+    );
   }
 
   loadTransactionsByRole() {
-    if (this.isConnected && this.hasAdminRole) {
+    console.log(this.switchBtn, this.hasAdminRole);
+    if (this.isConnected && this.hasAdminRole && this.switchBtn) {
       this.getTransactions();
     }
     if (this.isConnected) {
@@ -100,7 +107,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   getTransactionsByUser() {
-    this.transactionService.getTransactionsByUser(this.userBankAccountId, this.pageNumber).subscribe(this.processResult()
+    this.transactionService.getTransactionsByUser(this.userBankAccountId, this.pageNumber, this.pageSize).subscribe(this.processResult()
     );
   }
 
@@ -123,11 +130,13 @@ export class TransactionListComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000
         });
+        this.transactions = [];
+        this.loadTransactionsByRole();
       },
       error => {
         Swal.fire({
           icon: 'error',
-          title: 'Transaction is already validated',
+          title: 'Transaction cannot be validated',
           showConfirmButton: false,
           timer: 1000
         });
@@ -144,11 +153,13 @@ export class TransactionListComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000
         });
+        this.transactions = [];
+        this.loadTransactionsByRole();
       },
       error => {
         Swal.fire({
           icon: 'error',
-          title: 'Validated Transactions cannot be rejecte',
+          title: 'Transaction cannot be rejected',
           showConfirmButton: false,
           timer: 1000
         });
@@ -165,11 +176,13 @@ export class TransactionListComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000
         });
+        this.transactions = [];
+        this.loadTransactionsByRole();
       },
       error => {
         Swal.fire({
           icon: 'error',
-          title: 'Validated Transactions cannot be deleted',
+          title: 'Transaction cannot be deleted',
           showConfirmButton: false,
           timer: 1000
         });
@@ -178,10 +191,7 @@ export class TransactionListComponent implements OnInit {
 
   }
 
-  /*updateTransaction() {
-    this.transactionService.updateTransaction();
-  }
-*/
+
   validateAllTransactions(listTransaction: Array<number>) {
     this.transactionService.validateAllTransaction(listTransaction).subscribe(
       next => {
@@ -215,7 +225,7 @@ export class TransactionListComponent implements OnInit {
   handleTransactionSearch(keyword: string) {
 
     if (keyword !== '') {
-      this.transactionService.handleTransactionSearch(keyword).subscribe(
+      this.transactionService.handleTransactionSearch(keyword, this.pageNumber, this.pageSize).subscribe(
         this.processResult()
       );
     } else {
@@ -231,6 +241,16 @@ export class TransactionListComponent implements OnInit {
         return 'Approved';
       case 2:
         return 'Rejected';
+
+    }
+  }
+
+  statusColor(status: number) {
+    switch (status) {
+      case 1:
+        return 'green';
+      case 2:
+        return 'red';
 
     }
   }

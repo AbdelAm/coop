@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { JwtService } from '../../shared/services/jwt.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {JwtService} from '../../shared/services/jwt.service';
+import {BankAccountService} from '../../shared/services/bank-account.service';
+import {TransactionModel} from '../../shared/models/transaction-model';
+import {TransactionService} from '../../shared/services/transaction.service';
 
 @Component({
   selector: 'app-global',
@@ -9,16 +12,65 @@ import { JwtService } from '../../shared/services/jwt.service';
 })
 export class GlobalComponent implements OnInit {
 
-  constructor(private jwt:JwtService, private router: Router) {
-    if(!this.jwt.isConnected()) {
+  userBalance = 0.0;
+  userBankAccountId: number;
+  transactions: TransactionModel[];
+
+  constructor(private jwt: JwtService, private router: Router, private bankAccountService: BankAccountService, private transactionService: TransactionService) {
+    if (!this.jwt.isConnected()) {
       this.router.navigateByUrl('/login');
     }
-    if(this.jwt.isAdmin() && this.jwt.switchBtn) {
+    if (this.jwt.isAdmin() && this.jwt.switchBtn) {
       this.router.navigateByUrl('/dashboard/users');
     }
   }
 
   ngOnInit(): void {
+    this.getUserBalance();
+
   }
 
+  getUserBalance() {
+    this.bankAccountService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
+      next => {
+        this.userBalance = next.balance;
+        this.userBankAccountId = next.id;
+        this.getLastFiveTransactions();
+      }
+    );
+  }
+
+  getLastFiveTransactions() {
+    this.transactionService.getTransactionsByUser(this.userBankAccountId, 1, 5).subscribe(this.processResult()
+    );
+  }
+
+
+  processResult() {
+    return data => {
+      this.transactions = data.response;
+    };
+  }
+
+  statusCasting(status: number): string {
+    switch (status) {
+      case 0:
+        return 'Progress';
+      case 1:
+        return 'Approved';
+      case 2:
+        return 'Rejected';
+
+    }
+  }
+
+  statusColor(status: number) {
+    switch (status) {
+      case 1:
+        return 'green';
+      case 2:
+        return 'red';
+
+    }
+  }
 }

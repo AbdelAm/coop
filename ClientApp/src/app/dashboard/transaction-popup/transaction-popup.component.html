@@ -12,10 +12,10 @@
             Mi cuenta CoopHalal
           </label>
         </div>
-        <div class="form-check" style="margin-top:20px;" *ngIf="this.isConnected&& this.hasAdminRole">
+        <div class="form-check" style="margin-top:20px;" *ngIf="this.isConnected&& this.hasAdminRole && this.switchBtn">
           <input class="form-check-input" type="radio" name="origin" (change)="enableReceiverInput($event)">
           <label class="form-check-label">
-            to another account
+            Another account
           </label>
           <input type="text" class="form-control" style="margin-top:10px;" formControlName="receiverAccount" disabled>
         </div>
@@ -35,15 +35,7 @@
           </label>
           <input type="text" class="form-control" style="margin-top:10px;" formControlName="externalAccount" disabled>
         </div>
-        <div
-          *ngIf="externalAccount?.invalid &&(externalAccount?.dirty || externalAccount?.touched)"
-          class="text-danger"
-        >
-          <div
-            *ngIf="externalAccount?.errors?.['required'] || externalAccount?.errors?.['notOnlyWhiteSpace']">
-            concept is required
-          </div>
-        </div>
+
       </div>
 
       <button mat-button matStepperNext type="button" class="btn btn-success" style="margin-top:10px">Siguiente</button>
@@ -53,21 +45,14 @@
 
       <ng-template matStepLabel>cuenta de destino</ng-template>
       <div formGroupName="destination">
-        <div class="form-check" style="margin-top:10px;">
-          <input class="form-check-input" type="radio" name="destination" [value]="this.userBankAccountId"
-                 formControlName="originalAccountDestination"
-                 (change)="disableAllDestinationInputs($event)">
-          <label class="form-check-label">
-            a una de mis historias de CoopHalal
-          </label>
-        </div>
+
         <div class="form-check" style="margin-top:25px;">
           <input class="form-check-input" type="radio" name="destination" (change)="disableExternalInput($event)">
           <label class="form-check-label">
             a otra cuenta CoopHalal
           </label>
           <input type="text" formControlName="destinationAccount" class="form-control" style="margin-top:5px;"
-                 placeholder="Account number">
+                 placeholder="Account number" disabled>
         </div>
 
         <div
@@ -76,7 +61,7 @@
         >
           <div
             *ngIf="destination?.errors?.['required'] || destination?.errors?.['notOnlyWhiteSpace']">
-            concept is required
+            check your input
           </div>
         </div>
         <div class="form-check" style="margin-top:25px;">
@@ -85,7 +70,7 @@
             a otra cuenta de otra entidad
           </label>
           <input type="text" class="form-control" formControlName="externalDestination" style="margin-top:5px;"
-                 placeholder="Account number">
+                 placeholder="Account number" disabled>
         </div>
       </div>
       <div
@@ -94,7 +79,7 @@
       >
         <div
           *ngIf="externalDestination?.errors?.['required'] || externalDestination?.errors?.['notOnlyWhiteSpace']">
-          concept is required
+          check your input
         </div>
       </div>
 
@@ -142,7 +127,7 @@
             </div>
           </div>
           <div class="form-group">
-            <button type="button" class="btn btn-danger" mat-button [mat-dialog-close]="">Anular</button>
+            <button type="button" class="btn btn-danger" mat-button [mat-dialog-close]="" id="closeDialog">Anular</button>
             <button mat-button matStepperPrevious style="margin-left:10px" type="button" class="btn btn-light">espalda
             </button>
           </div>

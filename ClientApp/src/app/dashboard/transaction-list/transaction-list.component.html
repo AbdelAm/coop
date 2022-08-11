@@ -22,8 +22,8 @@
         <div
           class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
         >
-          <div class="dataTable-top" *ngIf="isConnected&&hasAdminRole">
-            <div class="dataTable-dropdown pt-2 d-none">
+          <div class="dataTable-top">
+            <div class="dataTable-dropdown pt-2 d-none" *ngIf="isConnected&&hasAdminRole&&switchBtn">
               <button
                 (click)="validateAllTransactions(this.listTransaction)"
                 class="border-0 bg-transparent align-middle"
@@ -67,7 +67,7 @@
                 ></i>
               </button>
             </div>
-            <div class="dataTable-search" >
+            <div class="dataTable-search">
               <input
                 #searchTransaction
                 class="dataTable-input"
@@ -81,8 +81,8 @@
             <table id="datatablesSimple" class="dataTable-table">
               <thead>
               <tr>
-                <th>
-                  <input *ngIf="isConnected&&hasAdminRole" type="checkbox" (change)="selectAll($event)"/>
+                <th *ngIf="isConnected&&hasAdminRole&&switchBtn">
+                  <input type="checkbox" (change)="selectAll($event)"/>
                 </th>
                 <th data-sortable="">Monto</th>
                 <th data-sortable="">Fetcha</th>
@@ -90,28 +90,30 @@
                 <th data-sortable="">Cuenta original</th>
                 <th data-sortable="">Cuenta de destino</th>
                 <th data-sortable="">Estado</th>
-                <th *ngIf="isConnected&&hasAdminRole" data-sortable="">Acción</th>
+                <th *ngIf="isConnected&&hasAdminRole&&switchBtn" data-sortable="">Acción</th>
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let transaction of transactions">
-                <td>
+                <td *ngIf="isConnected&&hasAdminRole&&switchBtn">
                   <input
                     (change)="setTransaction(transaction.id, $event)"
                     class="items"
                     type="checkbox"
                     value="1"
+
                   />
                 </td>
                 <td style="color: red">{{ transaction.amount }}</td>
                 <td>{{ transaction.dateTransaction | date:"dd-MM-yyyy"}}</td>
                 <td>{{transaction.motif}}</td>
-                <td>{{ transaction.senderBankAccount?.user.name }}</td>
+                <td *ngIf="!this.switchBtn;else other">{{ this.userName }}</td>
+                <ng-template #other>{{ transaction.senderBankAccount?.user.name }}</ng-template>
                 <td>
                   {{ transaction.receiverBankAccount?.user.name}}
                 </td>
-                <td>{{ statusCasting(transaction.status)}}</td>
-                <td *ngIf="isConnected&&hasAdminRole" class="icons">
+                <td [style.color]="statusColor(transaction.status)">{{ statusCasting(transaction.status)}}</td>
+                <td *ngIf="isConnected&&hasAdminRole&&switchBtn" class="icons">
                   <button
                     (click)="validateTransaction(transaction.id)"
                     class="border-0 bg-transparent align-middle"
@@ -179,7 +181,7 @@
             [pageSize]="pageSize"
             [collectionSize]="totalElements"
             [boundaryLinks]="true"
-            (pageChange)="getTransactionsByUser()"
+            (pageChange)="loadTransactionsByRole()"
           >
           </ngb-pagination>
 

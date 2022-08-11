@@ -24,7 +24,7 @@ namespace coop2._0.Repositories
 
         public async Task<BankAccount> SelectByUser(string userId)
         {
-            return await _context.BankAccounts.Where(b => b.UserId == userId && b.Status == Status.Approuved).FirstOrDefaultAsync();
+            return await _context.BankAccounts.FirstOrDefaultAsync(b => b.UserId == userId && b.Status == Status.Approuved);
         }
     }
 }
