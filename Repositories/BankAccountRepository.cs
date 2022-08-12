@@ -26,7 +26,7 @@ namespace coop2._0.Repositories
 
         public async Task<IEnumerable<BankAccount>> SelectByUser(string userId)
         {
-            return await _context.BankAccounts.Where(b => b.UserId == userId && b.Status == Status.Approuved)
+            return await _context.BankAccounts.Where(b => b.UserId == userId)
                 .ToListAsync();
         }
 

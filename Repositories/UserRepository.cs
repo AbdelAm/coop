@@ -107,6 +107,7 @@ namespace coop2._0.Repositories
         public async Task<IEnumerable<UserItemModel>> SelectAll(int page)
         {
             return await _userManager.Users.Where(u => !u.IsAdmin)
+                                           .OrderByDescending(u => u.DateCreated)
                                            .Skip(page*PageSize)
                                            .Take(PageSize)
                                            .Select(u => new UserItemModel(u))

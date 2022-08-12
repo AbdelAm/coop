@@ -186,7 +186,7 @@ namespace coop2._0.Services
             var result = await _userRepository.InsertAdmin(user, model.Password);
             if (result == null)
             {
-                e.Data.Add("user", "Hay un problema al registrar el usuario, intente nuevamente");
+                e.Data.Add("user", "Hay un problema con el registro del usuario, por favor verifica tus datos");
                 throw e;
             }
             BankAccount account = new BankAccount()

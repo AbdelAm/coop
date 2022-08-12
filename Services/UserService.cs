@@ -151,16 +151,19 @@ namespace coop2._0.Services
                 var bankAccounts = await _bankRepository.SelectByUser(id);
                 if (bankAccounts != null)
                 {
-                    if(bankAccounts.Where(b => b.Status == Status.Approuved).Any())
+                    if(bankAccounts.Where(b => b.Status == Status.Approuved && b.Balance > 0).Any())
                     {
                         throw new Exception("Este usuario tiene un BankAccount apropiado, y May ha realizado algunas transacciones con él, debe verificar su situación de cuenta bancaria antes de eliminar al usuario");
+                    } else
+                    {
+                        foreach (var bankAccount in bankAccounts)
+                        {
+                            await _bankRepository.Delete(bankAccount);
+                        }
                     }
                 }
                 var requests = await _requestRepository.SelectByUser(id);
-                foreach(var bankAccount in bankAccounts)
-                {
-                    await _bankRepository.Delete(bankAccount);
-                }
+                
                 foreach (var request in requests)
                 {
                     await _requestRepository.RemoveRequest(request);
