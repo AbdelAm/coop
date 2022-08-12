@@ -77,13 +77,14 @@ export class RequestListComponent implements OnInit {
 
 
   loadRequestsByRole() {
-    console.log(this.isConnected, this.hasAdminRole, this.switchBtn);
 
-    if (this.isConnected && this.hasAdminRole && this.switchBtn) {
-      this.getRequests();
+    if (this.isConnected && this.hasAdminRole) {
+      if (this.switchBtn) {
+        this.getRequests();
+      }
+      this.getRequestsByUser();
     } else {
-      if (this.isConnected && !this.switchBtn) {
-
+      if (this.isConnected && !this.hasAdminRole) {
         this.getRequestsByUser();
       } else {
         this.router.navigateByUrl('/login');

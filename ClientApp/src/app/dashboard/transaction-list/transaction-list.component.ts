@@ -7,7 +7,6 @@ import {TransactionService} from '../../shared/services/transaction.service';
 import Swal from 'sweetalert2';
 import {TransactionPopupComponent} from '../transaction-popup/transaction-popup.component';
 import {BankAccountService} from 'src/app/shared/services/bank-account.service';
-import {UserService} from '../../shared/services/user-service.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -32,7 +31,6 @@ export class TransactionListComponent implements OnInit {
     private router: Router,
     private transactionService: TransactionService,
     private bankService: BankAccountService,
-    private userService: UserService
   ) {
     this.transactions = [];
     this.listTransaction = [];
@@ -60,10 +58,15 @@ export class TransactionListComponent implements OnInit {
   }
 
   loadTransactionsByRole() {
-    if (this.isConnected && this.hasAdminRole && this.switchBtn) {
-      this.getTransactions();
+
+    if (this.isConnected && this.hasAdminRole) {
+      if (this.switchBtn) {
+        this.getTransactions();
+      } else {
+        this.getTransactionsByUser();
+      }
     } else {
-      if (this.isConnected && !this.switchBtn) {
+      if (this.isConnected && !this.hasAdminRole) {
         this.getTransactionsByUser();
       } else {
         this.router.navigateByUrl('login');
@@ -118,6 +121,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   processResult() {
+    this.transactions = [];
     return (data) => {
       this.transactions = data.response;
       this.pageNumber = data.pagination?.pageNumber;
