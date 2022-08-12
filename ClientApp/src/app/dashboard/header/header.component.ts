@@ -25,6 +25,11 @@ export class HeaderComponent implements OnInit {
   toggleMenu() {
     document.querySelector('.dropdown-menu').classList.toggle('show');
   }
+  setActiveClass(e: Event)
+  {
+    let current = document.querySelector(".active");
+    current.classList.remove("active");
+  }
   switchAccount(e: Event)
   {
     this.jwt.switchBtn = (<HTMLInputElement> e.target).checked;

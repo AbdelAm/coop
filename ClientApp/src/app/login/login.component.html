@@ -27,11 +27,11 @@
           <form class="login" #loginForm="ngForm" (submit)="onSubmit()">
             <div class="login__field">
               <i class="login__icon fas fa-user"></i>
-              <input type="text" name="email" #email="ngModel" [(ngModel)]="this.loginModel.email" class="login__input" placeholder="Email...">
+              <input type="text" name="email" #email="ngModel" [(ngModel)]="this.loginModel.email" class="login__input" placeholder="Introduce tu correo electrónico...">
             </div>
             <div class="login__field">
               <i class="login__icon fas fa-lock"></i>
-              <input type="password" name="password" #passoword="ngModel" [(ngModel)]="this.loginModel.password" class="login__input" placeholder="clave">
+              <input type="password" name="password" #passoword="ngModel" [(ngModel)]="this.loginModel.password" class="login__input" placeholder="Ingresa tu contraseña...">
             </div>
             <button type="submit" class="button login__submit">
               <span class="button__text">Iniciar sesión</span>

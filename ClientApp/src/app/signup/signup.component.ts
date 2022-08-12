@@ -14,8 +14,8 @@ export class SignupComponent implements OnInit {
   registerModel: RegisterModel;
   role : string;
   items = {
-    "/signup": "Users",
-    "/administrateur/register": "Admin"
+    "/signup": "Usuarias",
+    "/administrateur/register": "Administración"
   }
 
   constructor(private authService: AuthentificationService, private router: Router) {
@@ -46,7 +46,6 @@ export class SignupComponent implements OnInit {
           }
         )
       } else {
-        console.log("hello admin");
         this.authService.registerAdmin(this.registerModel).subscribe(
           res => {
             Swal.fire({
