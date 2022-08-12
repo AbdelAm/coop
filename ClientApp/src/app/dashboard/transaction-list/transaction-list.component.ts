@@ -62,11 +62,9 @@ export class TransactionListComponent implements OnInit {
   loadTransactionsByRole() {
     if (this.isConnected && this.hasAdminRole && this.switchBtn) {
       this.getTransactions();
-      console.log('admin');
     } else {
       if (this.isConnected && !this.switchBtn) {
         this.getTransactionsByUser();
-        console.log('user');
       } else {
         this.router.navigateByUrl('login');
       }

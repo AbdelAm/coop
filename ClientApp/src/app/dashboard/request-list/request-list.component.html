@@ -10,7 +10,7 @@
     <button
       style="margin-bottom: 30px"
       type="button"
-      *ngIf="isConnected && !hasAdminRole"
+      *ngIf="isConnected && !switchBtn"
       class="btn btn-success"
       (click)="open(content)"
     >
@@ -30,7 +30,7 @@
             <div
               class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
             >
-              <div *ngIf="isConnected && hasAdminRole" class="dataTable-top">
+              <div class="dataTable-top" *ngIf="isConnected && hasAdminRole && switchBtn">
                 <div class="dataTable-dropdown pt-2 d-none">
                   <button
                     class="border-0 bg-transparent align-middle"
@@ -82,98 +82,98 @@
               <div class="dataTable-container">
                 <table id="datatablesSimple" class="dataTable-table">
                   <thead>
-                    <tr>
-                      <th>
-                        <input
-                          type="checkbox"
-                          *ngIf="isConnected && hasAdminRole"
-                          (change)="selectAll($event)"
-                        />
-                      </th>
-                      <th data-sortable="">Id</th>
-                      <th data-sortable="">User</th>
-                      <th data-sortable="">Type</th>
-                      <th data-sortable="">Message</th>
-                      <th data-sortable="">DateRequest</th>
-                      <th data-sortable="">Status</th>
-                      <th *ngIf="isConnected && hasAdminRole" data-sortable="">
-                        Action
-                      </th>
-                    </tr>
+                  <tr>
+                    <th *ngIf="isConnected && hasAdminRole && switchBtn">
+                      <input
+                        type="checkbox"
+
+                        (change)="selectAll($event)"
+                      />
+                    </th>
+                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn" >Id</th>
+                    <th data-sortable=""*ngIf="isConnected && hasAdminRole && switchBtn" >User</th>
+                    <th data-sortable="">Type</th>
+                    <th data-sortable="">Message</th>
+                    <th data-sortable="">DateRequest</th>
+                    <th data-sortable="">Status</th>
+                    <th *ngIf="isConnected && hasAdminRole && switchBtn" data-sortable="">
+                      Action
+                    </th>
+                  </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let request of requests">
-                      <td>
-                        <input
-                          (change)="setRequest(request.id, $event)"
-                          class="items"
-                          type="checkbox"
-                          value="{{ request.id }}"
-                        />
-                      </td>
-                      <td>{{ request.id }}</td>
-                      <td>{{ request.userId }}</td>
-                      <td>{{ request.type }}</td>
-                      <td>{{ request.message }}</td>
-                      <td>{{ request.dateRequest }}</td>
-                      <td [innerHTML]="this.status[request.status]"></td>
-                      <td
-                        *ngIf="isConnected && hasAdminRole"
-                        class="icons d-flex justify-i-center align-items-center h-100"
+                  <tr *ngFor="let request of requests">
+                    <td *ngIf="isConnected && hasAdminRole && switchBtn">
+                      <input
+                        (change)="setRequest(request.id, $event)"
+                        class="items"
+                        type="checkbox"
+                        value="{{ request.id }}"
+                      />
+                    </td>
+                    <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.id }}</td>
+                    <td *ngIf="isConnected && hasAdminRole && switchBtn" >{{ request.userId }}</td>
+                    <td>{{ request.type }}</td>
+                    <td>{{ request.message }}</td>
+                    <td>{{ request.dateRequest }}</td>
+                    <td [innerHTML]="this.status[request.status]"></td>
+                    <td
+                      *ngIf="isConnected && hasAdminRole && switchBtn"
+                      class="icons d-flex justify-i-center align-items-center h-100"
+                    >
+                      <button
+                        class="border-0 bg-transparent align-middle"
+                        (click)="validateRequest(request.id)"
                       >
-                        <button
-                          class="border-0 bg-transparent align-middle"
-                          (click)="validateRequest(request.id)"
-                        >
-                          <i
-                            class="fa-regular fa-circle-check"
-                            style="
+                        <i
+                          class="fa-regular fa-circle-check"
+                          style="
                               color: green;
                               font-size: 20px;
                               font-weight: 500;
                               margin: 0 10px;
                             "
-                          ></i>
-                        </button>
-                        <button
-                          class="border-0 bg-transparent align-middle"
-                          (click)="rejectRequest(request.id)"
-                        >
-                          <i
-                            class="fa-regular fa-circle-xmark"
-                            style="
+                        ></i>
+                      </button>
+                      <button
+                        class="border-0 bg-transparent align-middle"
+                        (click)="rejectRequest(request.id)"
+                      >
+                        <i
+                          class="fa-regular fa-circle-xmark"
+                          style="
                               margin: 0 10px;
                               font-size: 20px;
                               font-weight: 500;
                               color: chocolate;
                             "
-                          ></i>
-                        </button>
-                        <button
-                          class="border-0 bg-transparent align-middle"
-                          (click)="deleteRequest(request.id)"
-                        >
-                          <i
-                            class="fa-regular fa-trash-can"
-                            style="
+                        ></i>
+                      </button>
+                      <button
+                        class="border-0 bg-transparent align-middle"
+                        (click)="deleteRequest(request.id)"
+                      >
+                        <i
+                          class="fa-regular fa-trash-can"
+                          style="
                               margin: 0 10px;
                               font-size: 20px;
                               font-weight: 500;
                               color: red;
                             "
-                          ></i>
-                        </button>
-                      </td>
-                    </tr>
+                        ></i>
+                      </button>
+                    </td>
+                  </tr>
                   </tbody>
                 </table>
               </div>
               <ngb-pagination
-                [(page)]="pg"
+                [(page)]="pageNumber"
                 [pageSize]="pageSize"
                 [collectionSize]="totalElements"
                 [boundaryLinks]="true"
-                (pageChange)="getRequestsByUser()"
+                (pageChange)="loadRequestsByRole()"
               >
               </ngb-pagination>
               <!--<div class="dataTable-bottom">
@@ -182,10 +182,10 @@
                       <li *ngFor="let i of pageNumber; let isFirst = first" [class.active]="isFirst" class="pagination-items" (click)="setActiveClass(i)">
                         <a style="cursor: pointer;" (click)="getItems(i)">{{i+1}}</a>
                       </li>
-                                          
+
                     </ul>
                 </nav>
-                              
+
               </div>-->
             </div>
           </div>
@@ -213,23 +213,23 @@
         <div class="input-group">
           <div class="col-lg-12">
             <select
-              [[ngMode]]="selected"
+              [(ngModel)]="selected"
               (change)="selectOption($event.target.value)"
               class="form-control"
               id="optdata"
               name="typeDemande"
             >
-              <option [[value]]="o.value" *ngFor="let o of options">
+              <option [value]="o.value" *ngFor="let o of options">
                 {{ o.name }}
               </option>
             </select>
           </div>
-          <br />
+          <br/>
 
           <div class="col-lg-12">
             <label>Mensaje</label>
             <textarea
-              [[ngMode]]="this.msg"
+              [(ngModel)]="this.msg"
               id="msg"
               class="form-control"
               name="description"

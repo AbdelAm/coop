@@ -1,20 +1,16 @@
 import {
   Component,
-  ElementRef,
   OnInit,
-  QueryList,
-  ViewChildren,
 } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {JwtService} from 'src/app/shared/services/jwt.service';
 import {RequestServiceService} from 'src/app/shared/services/request-service.service';
 import {RequestModel} from '../../shared/models/request-model';
 import {StatusModel} from '../../shared/models/status-model';
 import Swal from 'sweetalert2';
-import { ItemsModel } from '../../shared/models/items-model';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../../shared/services/user-service.service';
+import {ItemsModel} from '../../shared/models/items-model';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {UserService} from '../../shared/services/user-service.service';
 
 @Component({
   selector: 'app-request-list',
@@ -24,40 +20,32 @@ import { UserService } from '../../shared/services/user-service.service';
 export class RequestListComponent implements OnInit {
   ConnectedUserId: string;
 
-  listRequest: Array<number>
+  listRequest: Array<number>;
   requests: RequestModel[];
-  pg = 1;
-  pageSize = 5;
+  pageNumber = 1;
+  pageSize = 10;
   totalElements = 100;
-  isConnected = false;
-  hasAdminRole = false;
-  userId: string;
+  isConnected: boolean;
+  hasAdminRole: boolean;
   switchBtn: boolean;
-  userName: string;
-  inprog;
-
-
-
   request: RequestModel;
-  pageNumber = [];
   requestItems: ItemsModel<RequestModel>;
   status = [
     '<strong>In Progress</strong>',
     '<strong class="text-success">Approuved</strong>',
     '<strong class="text-danger text-capitalize">Rejected</strong>'
-  ]
-  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private userService: UserService, private modalService: NgbModal) {
+  ];
+
+  constructor(private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private userService: UserService, private modalService: NgbModal) {
+
     this.listRequest = [];
     this.requests = [];
     this.isConnected = this.jwt.isConnected();
     this.hasAdminRole = this.jwt.isAdmin();
     this.switchBtn = this.jwt.switchBtn;
-
-
     this.requestItems = new ItemsModel<RequestModel>();
     this.ConnectedUserId = this.jwt.getConnectedUserId();
     this.request = new RequestModel();
-    this.pageNumber = Array<number>();
 
   }
 
@@ -67,38 +55,44 @@ export class RequestListComponent implements OnInit {
   }
 
   getRequests() {
-    this.requestService.getRequests(this.pg, this.pageSize).subscribe(
+    this.requestService.getRequests(this.pageNumber, this.pageSize).subscribe(
       this.processResult()
     );
   }
+
   getRequestsByUser() {
-    this.requestService.getRequestsByUser(this.ConnectedUserId, this.pg, this.pageSize).subscribe(
+    this.requestService.getRequestsByUser(this.ConnectedUserId, this.pageNumber, this.pageSize).subscribe(
       this.processResult()
     );
   }
+
   processResult() {
     return data => {
       this.requests = data.response;
-      this.pg = data.pagination?.pg;
+      this.pageNumber = data.pagination?.pageNumber;
       this.pageSize = data.pagination?.pageSize;
       this.totalElements = data.pagination?.totalRecords;
     };
   }
-  
+
 
   loadRequestsByRole() {
-    if (this.isConnected && this.hasAdminRole) {
+    console.log(this.isConnected, this.hasAdminRole, this.switchBtn);
+
+    if (this.isConnected && this.hasAdminRole && this.switchBtn) {
       this.getRequests();
-    }
-    if (this.isConnected) {
-      this.getRequestsByUser();
     } else {
-      this.router.navigateByUrl('login');
+      if (this.isConnected && !this.switchBtn) {
+
+        this.getRequestsByUser();
+      } else {
+        this.router.navigateByUrl('/login');
+      }
     }
   }
-  
 
-  //getItems(num: number) {
+
+  // getItems(num: number) {
   //  this.requestService.getRequests(num).subscribe(
   //    res => {
   //      Object.assign(this.requestItems, res);
@@ -121,18 +115,17 @@ export class RequestListComponent implements OnInit {
   //    }
   //  );
   //  window.scrollTo(0, 0);
-  //}
-
+  // }
 
 
   setRequest() {
-    //this.toggleItem(id, (<HTMLInputElement>e.target).checked);
+    // this.toggleItem(id, (<HTMLInputElement>e.target).checked);
 
     const input = document.getElementById('msg') as HTMLTextAreaElement | null;
-    var elem = document.getElementById('optdata') as HTMLSelectElement;
+    const elem = document.getElementById('optdata') as HTMLSelectElement;
 
-    var sel = elem.selectedIndex;
-    var opt = elem.options[sel];
+    const sel = elem.selectedIndex;
+    const opt = elem.options[sel];
 
     this.request.type = opt.value.toString();
     this.request.message = input.value;
@@ -146,7 +139,7 @@ export class RequestListComponent implements OnInit {
           title: 'Request added successfully!!!',
           icon: 'success',
         });
-        //this.router.navigate(['requests']);
+        // this.router.navigate(['requests']);
         location.reload();
       },
       (err) => console.log(err)
@@ -154,14 +147,14 @@ export class RequestListComponent implements OnInit {
   }
 
   toggleItem(id: number, isChecked: boolean) {
-    let elt = document.querySelector('.dataTable-dropdown');
+    const elt = document.querySelector('.dataTable-dropdown');
     if (isChecked) {
       this.listRequest.push(id);
     } else {
-      let index = this.listRequest.indexOf(id);
+      const index = this.listRequest.indexOf(id);
       this.listRequest.splice(index, 1);
     }
-    if (this.listRequest.length != 0) {
+    if (this.listRequest.length !== 0) {
       elt.classList.remove('d-none');
     } else {
       elt.classList.add('d-none');
@@ -169,18 +162,20 @@ export class RequestListComponent implements OnInit {
   }
 
   selectAll(e: Event) {
-    let items = document.querySelectorAll('.items');
+    const items = document.querySelectorAll('.items');
     for (let i = 0; i < items.length; i++) {
       (<HTMLInputElement>items[i]).checked = (<HTMLInputElement>e.target).checked;
-      let id = parseInt((<HTMLInputElement>items[i]).value);
+      const id = parseInt((<HTMLInputElement>items[i]).value);
       this.toggleItem(id, (<HTMLInputElement>e.target).checked);
     }
   }
-  uncheckAll() {
-    this.checkboxes.forEach((element) => {
-      element.nativeElement.checked = false;
-    });
-  }
+
+  /*
+    uncheckAll() {
+      this.checkboxes.forEach((element) => {
+        element.nativeElement.checked = false;
+      });
+    }*/
 
   validateRequest(id: number) {
     this.listRequest.push(id);
@@ -250,14 +245,14 @@ export class RequestListComponent implements OnInit {
       (err) => console.log(err)
     );
   }
-  
-  //searchItem(e: Event) {
+
+  // searchItem(e: Event) {
   //  let value =(<HTMLInputElement>e.target).value;
   //  this.requestService.searchRequest(value).subscribe(
   //    res => console.log(res),
   //    err => console.log(err)
   //  )
-  //}
+  // }
 
 
   // ------------------------------ POPUP METHODES ------------------------------
@@ -278,15 +273,17 @@ export class RequestListComponent implements OnInit {
 
   getElement() {
     const input = document.getElementById('msg') as HTMLTextAreaElement | null;
-    var e = document.getElementById('TypeRequest') as HTMLSelectElement;
+    const e = document.getElementById('TypeRequest') as HTMLSelectElement;
 
-    var sel = e.selectedIndex;
-    var opt = e.options[sel];
+    const sel = e.selectedIndex;
+    const opt = e.options[sel];
 
     console.log(input.value);
     console.log(opt.value);
   }
+
   closeResult = '';
+
   open(content) {
     this.modalService
       .open(content, {ariaLabelledBy: 'modal-basic-title'})
@@ -299,6 +296,7 @@ export class RequestListComponent implements OnInit {
       }
     );
   }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -308,5 +306,6 @@ export class RequestListComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+
   // ------------------------------ ------------ ------------------------------
 }
