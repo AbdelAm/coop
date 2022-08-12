@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import Swal from 'sweetalert2';
-import { ForgetPasswordModel } from '../shared/models/forget-password-model';
-import { AuthentificationService } from '../shared/services/authentification.service';
+import {ForgetPasswordModel} from '../shared/models/forget-password-model';
+import {AuthentificationService} from '../shared/services/authentification.service';
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.css']
+  styleUrls: ['./forgot-password.component.css'],
 })
 export class ForgotPasswordComponent implements OnInit {
-
   forgetModel: ForgetPasswordModel;
 
   constructor(private authService: AuthentificationService) {
@@ -19,24 +18,23 @@ export class ForgotPasswordComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit()
-  {
+  onSubmit() {
     this.authService.forgetPassword(this.forgetModel).subscribe(
-      res => {
+      (res) => {
         Swal.fire({
-          title: "Email has been sent successfully!!!",
-          text: res["message"],
-          icon: "success",
+          title: 'Email has been sent successfully!!!',
+          text: res['message'],
+          icon: 'success',
         });
       },
-      err => {
-        document.getElementById("email_error").textContent = err["error"]["email_error"];
+      (err) => {
+        document.getElementById('email_error').textContent =
+          err['error']['email_error'];
       }
-    )
-  }
-  emptyError(field: string)
-  {
-    document.getElementById(field).textContent = "";
+    );
   }
 
+  emptyError(field: string) {
+    document.getElementById(field).textContent = '';
+  }
 }

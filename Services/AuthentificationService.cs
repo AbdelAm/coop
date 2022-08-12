@@ -11,14 +11,14 @@ namespace coop2._0.Services
 {
     public class AuthentificationService : IAuthentificationService
     {
-
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
         private readonly IConfiguration _configuration;
         private readonly IMailService _mailService;
         private readonly IBankAccountRepository _bankRepository;
 
-        public AuthentificationService(IUserRepository userRepository, IJwtService jwtService, IConfiguration configuration, IMailService mailService, IBankAccountRepository bankRepository)
+        public AuthentificationService(IUserRepository userRepository, IJwtService jwtService,
+            IConfiguration configuration, IMailService mailService, IBankAccountRepository bankRepository)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
@@ -26,6 +26,7 @@ namespace coop2._0.Services
             _mailService = mailService;
             _bankRepository = bankRepository;
         }
+
         public async Task<Response> Register(RegisterModel model)
         {
             Exception e = new();
@@ -35,6 +36,7 @@ namespace coop2._0.Services
                 e.Data.Add("email_error", "El correo electrónico ya existe");
                 throw e;
             }
+
             u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
             if (u != null)
             {
@@ -60,8 +62,8 @@ namespace coop2._0.Services
             }
 
             string token = await _userRepository.GenerateConfirmationToken(user);
-            
-            if(!await _mailService.SendConfirmMail(user, token))
+
+            if (!await _mailService.SendConfirmMail(user, token))
             {
                 e.Data.Add("user", "Hay un problema al enviar correo de confirmación, verifique su correo electrónico");
                 throw e;
@@ -96,6 +98,7 @@ namespace coop2._0.Services
             {
                 throw new Exception("El usuario ya está confirmado");
             }
+
             string token = values[0].Replace(' ', '+');
             IdentityResult res = await _userRepository.ConfirmEmail(user, token);
             if (!res.Succeeded)
@@ -109,6 +112,7 @@ namespace coop2._0.Services
                 Message = "El usuario se confirma con éxito"
             };
         }
+
         public async Task<Response> ForgetPassword(ForgetPasswordModel model)
         {
             var user = await _userRepository.SelectByEmail(model.Email);
@@ -122,16 +126,18 @@ namespace coop2._0.Services
             string token = await _userRepository.GenerateResetToken(user);
             token = System.Web.HttpUtility.UrlEncode(token);
 
-            if(!await _mailService.SendForgetMail(user, token))
+            if (!await _mailService.SendForgetMail(user, token))
             {
-                e.Data.Add("email_error", "Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
+                e.Data.Add("email_error",
+                    "Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
                 throw e;
             }
 
             return new Response
             {
                 Status = "success",
-                Message = "Haga clic en el enlace enviado a su correo electrónico para restablecer su contraseña, el enlace es válido por solo 48 horas, por lo que necesita realizar la operación antes del final de su validez"
+                Message =
+                    "Haga clic en el enlace enviado a su correo electrónico para restablecer su contraseña, el enlace es válido por solo 48 horas, por lo que necesita realizar la operación antes del final de su validez"
             };
         }
 
@@ -142,6 +148,7 @@ namespace coop2._0.Services
             {
                 throw new Exception("El usuario no existe");
             }
+
             string token = System.Web.HttpUtility.UrlDecode(model.Token);
             IdentityResult res = await _userRepository.ResetPassword(user, token, model.Password);
             if (!res.Succeeded)
@@ -165,6 +172,7 @@ namespace coop2._0.Services
                 e.Data.Add("email_error", "El correo electrónico ya existe");
                 throw e;
             }
+
             u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
             if (u != null)
             {
@@ -189,6 +197,7 @@ namespace coop2._0.Services
                 e.Data.Add("user", "Hay un problema con el registro del usuario, por favor verifica tus datos");
                 throw e;
             }
+
             BankAccount account = new BankAccount()
             {
                 AccountNumber = Guid.NewGuid().ToString("D"),
@@ -203,6 +212,7 @@ namespace coop2._0.Services
                 e.Data.Add("user", "Hay un problema con la creación de BankAccount of User, intente nuevamente");
                 throw e;
             }
+
             string token = await _userRepository.GenerateConfirmationToken(user);
 
             if (!await _mailService.SendConfirmMail(user, token))
@@ -217,6 +227,5 @@ namespace coop2._0.Services
                 Message = "Para completar su registro, se ha enviado un correo electrónico para confirmar su registro"
             };
         }
-
     }
 }

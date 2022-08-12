@@ -5,10 +5,9 @@ import {environment} from 'src/environments/environment';
 import {TransactionModel} from '../models/transaction-model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TransactionService {
-
   readonly baseUrl = environment.apiUrl + 'transactions';
   transaction: TransactionModel;
 
@@ -20,13 +19,29 @@ export class TransactionService {
     return this.httpClient.post(this.baseUrl, transaction);
   }
 
-  getTransactionsByUser(userBankAccountId: number, pageNumber = 1, pageSize: number): Observable<GetTransactionsByUserResponse> {
-
-    return this.httpClient.get<GetTransactionsByUserResponse>(this.baseUrl + '/user/' + userBankAccountId + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
+  getTransactionsByUser(
+    userBankAccountId: number,
+    pageNumber = 1,
+    pageSize: number
+  ): Observable<GetTransactionsByUserResponse> {
+    return this.httpClient.get<GetTransactionsByUserResponse>(
+      this.baseUrl +
+      '/user/' +
+      userBankAccountId +
+      '?pageNumber=' +
+      pageNumber +
+      '&pageSize=' +
+      pageSize
+    );
   }
 
-  getTransactions(pageNumber: number, pageSize: number): Observable<GetTransactionsResponse> {
-    return this.httpClient.get<GetTransactionsResponse>(this.baseUrl + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
+  getTransactions(
+    pageNumber: number,
+    pageSize: number
+  ): Observable<GetTransactionsResponse> {
+    return this.httpClient.get<GetTransactionsResponse>(
+      this.baseUrl + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize
+    );
   }
 
   validateTransaction(transactionId: number) {
@@ -41,11 +56,12 @@ export class TransactionService {
     return this.httpClient.delete(this.baseUrl + '/ ' + transactionId);
   }
 
-
   validateAllTransaction(transactionsIds: number[]) {
-    return this.httpClient.post(this.baseUrl + '/validate-all', transactionsIds);
+    return this.httpClient.post(
+      this.baseUrl + '/validate-all',
+      transactionsIds
+    );
   }
-
 
   rejectAllTransaction(transactionsIds: number[]) {
     return this.httpClient.post(this.baseUrl + '/reject-all', transactionsIds);
@@ -55,20 +71,31 @@ export class TransactionService {
     return this.httpClient.post(this.baseUrl + '/remove-all', transactionsIds);
   }
 
-  handleTransactionSearch(keyword: string, pageNumber: number, pageSize: number): Observable<GetTransactionsResponse> {
-    return this.httpClient.get<GetTransactionsResponse>(this.baseUrl + /search/ + keyword + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
+  handleTransactionSearch(
+    keyword: string,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<GetTransactionsResponse> {
+    return this.httpClient.get<GetTransactionsResponse>(
+      this.baseUrl +
+      /search/ +
+      keyword +
+      '?pageNumber=' +
+      pageNumber +
+      '&pageSize=' +
+      pageSize
+    );
   }
 }
-
 
 interface GetTransactionsResponse {
   response: {
     transactions: TransactionModel[];
-  },
+  };
   pagination: {
-    pageNumber: number,
-    pageSize: number,
-    totalRecords: number
+    pageNumber: number;
+    pageSize: number;
+    totalRecords: number;
   };
 }
 
@@ -76,10 +103,10 @@ interface GetTransactionsByUserResponse {
   response: {
     TransactionsSent: TransactionModel[];
     TransactionsReceived: TransactionModel[];
-  },
+  };
   pagination: {
-    pageNumber: number,
-    pageSize: number,
-    totalRecords: number
+    pageNumber: number;
+    pageSize: number;
+    totalRecords: number;
   };
 }

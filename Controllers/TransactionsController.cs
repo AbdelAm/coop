@@ -22,7 +22,7 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<object> GetTransactions([FromQuery] PaginationFilter filter)
         {
             return await _transactionService.GetAllTransactions(filter);
@@ -39,8 +39,7 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet("user/{userBankAccountId:int}")]
-
-        //[Authorize(Roles = "ADMIN,USER")]
+        [Authorize(Roles = "ADMIN,USER")]
         public async Task<object> GetTransactionsByUser([FromQuery] PaginationFilter filter
             , int userBankAccountId)
         {

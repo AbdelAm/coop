@@ -3,8 +3,6 @@ using coop2._0.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,12 +64,10 @@ namespace coop2._0.Repositories
             var transaction = await _context.Transactions.FindAsync(id);
 
             if (transaction is not { Status: Status.Progress }) return new BadRequestResult();
-            BankAccount senderBankAccount = null;
-            BankAccount receiverBankAccount = null;
 
 
-            senderBankAccount = await _context.BankAccounts.FindAsync(transaction.SenderBankAccountId);
-            receiverBankAccount = await _context.BankAccounts.FindAsync(transaction.ReceiverBankAccountId);
+            var senderBankAccount = await _context.BankAccounts.FindAsync(transaction.SenderBankAccountId);
+            var receiverBankAccount = await _context.BankAccounts.FindAsync(transaction.ReceiverBankAccountId);
 
 
             if (senderBankAccount == null || receiverBankAccount == null)
@@ -96,7 +92,7 @@ namespace coop2._0.Repositories
 
             var response = await _context.Transactions.Include(t => t.SenderBankAccount.User)
                 .Include(t => t.ReceiverBankAccount.User)
-                .OrderBy(d => d.DateTransaction)
+                .OrderByDescending(d => d.DateTransaction)
                 .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                 .Take(validFilter.PageSize).ToListAsync();
 
@@ -120,7 +116,7 @@ namespace coop2._0.Repositories
                 )
                 .Include(t => t.SenderBankAccount.User)
                 .Include(t => t.ReceiverBankAccount.User)
-                .OrderBy(t => t.DateTransaction)
+                .OrderByDescending(t => t.DateTransaction)
                 .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                 .Take(validFilter.PageSize).ToListAsync();
 
@@ -146,11 +142,13 @@ namespace coop2._0.Repositories
                 await _context.Transactions
                     .Where(b => b.ReceiverBankAccountId == userBankAccountId ||
                                 b.SenderBankAccountId == userBankAccountId)
+                    .Include(t => t.SenderBankAccount.User)
                     .Include(b => b.ReceiverBankAccount.User)
-                    .OrderBy(d => d.DateTransaction)
+                    .OrderByDescending(d => d.DateTransaction)
                     .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                     .Take(validFilter.PageSize)
                     .ToListAsync();
+
             var totalRecords = await _context.Transactions.CountAsync(b =>
                 b.ReceiverBankAccountId == userBankAccountId ||
                 b.SenderBankAccountId == userBankAccountId);

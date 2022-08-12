@@ -13,8 +13,8 @@ namespace coop2._0.Entities
         public virtual ICollection<BankAccount> BankAccounts { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
         public DateTime DateCreated { get; set; }
-        [DefaultValue(false)]
-        public bool IsAdmin { get; set; }
+        [DefaultValue(false)] public bool IsAdmin { get; set; }
+
         [Column(TypeName = "nvarchar(50)")]
         [DefaultValue(Status.Progress)]
         public Status Status { get; set; }

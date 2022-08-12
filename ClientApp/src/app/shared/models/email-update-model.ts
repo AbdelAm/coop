@@ -1,5 +1,5 @@
 export class EmailUpdateModel {
-    cif!: string;
-    currentEmail!: string;
-    newEmail!: string;
+  cif!: string;
+  currentEmail!: string;
+  newEmail!: string;
 }

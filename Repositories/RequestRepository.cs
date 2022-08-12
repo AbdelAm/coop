@@ -1,5 +1,4 @@
-﻿using coop2._0.Controllers;
-using coop2._0.Entities;
+﻿using coop2._0.Entities;
 using coop2._0.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +51,6 @@ namespace coop2._0.Repositories
 
         public async Task<ActionResult<Request>> AddRequest(RequestModel model)
         {
-
             var request = new Request()
             {
                 Message = model.Message,
@@ -72,6 +70,5 @@ namespace coop2._0.Repositories
             await _context.SaveChangesAsync();
             return request;
         }
-
     }
 }

@@ -43,7 +43,8 @@ namespace coop2._0.Controllers
             {
                 UserItemModel user = await _userService.FindUser(cif);
                 return Ok(user);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return NotFound(ex.Message);
             }
@@ -57,8 +58,8 @@ namespace coop2._0.Controllers
             {
                 IEnumerable<UserItemModel> users = await _userService.FindBy(value);
                 return Ok(users);
-
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return NotFound(ex.Message);
             }
@@ -72,7 +73,8 @@ namespace coop2._0.Controllers
             {
                 Response response = await _userService.Validate(users);
                 return Ok(response);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -115,7 +117,8 @@ namespace coop2._0.Controllers
             {
                 Response response = await _userService.ChangeInfo(model);
                 return Ok(response);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -128,7 +131,8 @@ namespace coop2._0.Controllers
             {
                 Response response = await _userService.ChangeEmail(model);
                 return Ok(response);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

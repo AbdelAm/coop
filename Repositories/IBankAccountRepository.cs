@@ -1,5 +1,4 @@
 ﻿using coop2._0.Entities;
-using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -2,7 +2,6 @@
 using coop2._0.Model;
 using coop2._0.Repositories;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,8 @@ namespace coop2._0.Services
         private readonly IBankAccountRepository _bankRepository;
         private readonly IRequestRepository _requestRepository;
 
-        public UserService(IUserRepository userRepository, IMailService mailService, IBankAccountRepository bankAccount, IRequestRepository requestRepository)
+        public UserService(IUserRepository userRepository, IMailService mailService, IBankAccountRepository bankAccount,
+            IRequestRepository requestRepository)
         {
             _userRepository = userRepository;
             _mailService = mailService;
@@ -33,12 +33,14 @@ namespace coop2._0.Services
             {
                 throw new Exception("No existe usuarios con estas informaciones.");
             }
+
             return new ItemsModel<UserItemModel>
             {
                 Items = users,
                 ItemsNumber = itemNum
             };
         }
+
         public async Task<UserItemModel> FindUser(string cif)
         {
             User user = await _userRepository.SelectById(cif);
@@ -46,28 +48,30 @@ namespace coop2._0.Services
             {
                 throw new Exception("No existe un usuario con estas informaciones.");
             }
+
             return new UserItemModel(user);
         }
 
         public async Task<IEnumerable<UserItemModel>> FindBy(string value)
         {
             IEnumerable<UserItemModel> users = await _userRepository.SelectBy(value);
-            if(users == null)
+            if (users == null)
             {
                 throw new Exception("No existe usuarios con este valor");
             }
+
             return users;
         }
 
         public async Task<Response> Validate(List<string> users)
         {
             bool temoin = true;
-            foreach(string id in users)
+            foreach (string id in users)
             {
                 var user = await _userRepository.SelectById(id);
                 user.Status = Status.Approuved;
                 var result = await _userRepository.UpdateUser(user);
-                if (result.Succeeded) 
+                if (result.Succeeded)
                 {
                     string message = "Felicitaciones que su cuenta se ha aprobado con éxito";
                     MailModel mailModel = new MailModel()
@@ -76,10 +80,12 @@ namespace coop2._0.Services
                         Subject = "User Approuved",
                         Body = user.Name + '-' + message,
                     };
-                    if(!await _mailService.SendValidationMail(mailModel))
+                    if (!await _mailService.SendValidationMail(mailModel))
                     {
-                        throw new Exception("Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
+                        throw new Exception(
+                            "Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
                     }
+
                     BankAccount account = new BankAccount()
                     {
                         AccountNumber = Guid.NewGuid().ToString("D"),
@@ -88,15 +94,18 @@ namespace coop2._0.Services
                         UserId = user.Id
                     };
                     await _bankRepository.InsertBankAccount(account);
-                } else
+                }
+                else
                 {
                     temoin = false;
                 }
             }
-            if(!temoin)
+
+            if (!temoin)
             {
                 throw new Exception("Algunos usuarios no han sido aprendidos, inténtelo de nuevo más tarde");
             }
+
             return new Response
             {
                 Status = "Success",
@@ -123,7 +132,8 @@ namespace coop2._0.Services
                     };
                     if (!await _mailService.SendValidationMail(mailModel))
                     {
-                        throw new Exception("Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
+                        throw new Exception(
+                            "Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
                     }
                 }
                 else
@@ -131,10 +141,12 @@ namespace coop2._0.Services
                     temoin = false;
                 }
             }
+
             if (!temoin)
             {
                 throw new Exception("Algunos usuarios no han sido rechazados, inténtelo de nuevo más tarde");
             }
+
             return new Response
             {
                 Status = "Success",
@@ -151,10 +163,12 @@ namespace coop2._0.Services
                 var bankAccounts = await _bankRepository.SelectByUser(id);
                 if (bankAccounts != null)
                 {
-                    if(bankAccounts.Where(b => b.Status == Status.Approuved && b.Balance > 0).Any())
+                    if (bankAccounts.Where(b => b.Status == Status.Approuved && b.Balance > 0).Any())
                     {
-                        throw new Exception("Este usuario tiene un BankAccount apropiado, y May ha realizado algunas transacciones con él, debe verificar su situación de cuenta bancaria antes de eliminar al usuario");
-                    } else
+                        throw new Exception(
+                            "Este usuario tiene un BankAccount apropiado, y May ha realizado algunas transacciones con él, debe verificar su situación de cuenta bancaria antes de eliminar al usuario");
+                    }
+                    else
                     {
                         foreach (var bankAccount in bankAccounts)
                         {
@@ -162,15 +176,16 @@ namespace coop2._0.Services
                         }
                     }
                 }
+
                 var requests = await _requestRepository.SelectByUser(id);
-                
+
                 foreach (var request in requests)
                 {
                     await _requestRepository.RemoveRequest(request);
                 }
-                
+
                 var result = await _userRepository.DeleteUser(user);
-                if (result.Succeeded) 
+                if (result.Succeeded)
                 {
                     string message = "Desafortunadamente, su cuenta ha sido eliminada";
                     MailModel mailModel = new MailModel()
@@ -181,14 +196,21 @@ namespace coop2._0.Services
                     };
                     if (!await _mailService.SendValidationMail(mailModel))
                     {
-                        throw new Exception("Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
+                        throw new Exception(
+                            "Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
                     }
-                } else { temoin = false; }
+                }
+                else
+                {
+                    temoin = false;
+                }
             }
+
             if (!temoin)
             {
                 throw new Exception("El usuario no ha sido eliminado, inténtelo de nuevo más tarde");
             }
+
             return new Response
             {
                 Status = "Success",
@@ -202,13 +224,14 @@ namespace coop2._0.Services
             user.Name = model.Name;
             user.SocialNumber = model.SocialNumber;
             user.PhoneNumber = model.Phone;
-            
+
             var result = await _userRepository.UpdateUser(user);
 
-            if(!result.Succeeded)
+            if (!result.Succeeded)
             {
                 throw new Exception("Se produjo un error al actualizar al usuario, intente nuevamente más tarde");
             }
+
             return new Response
             {
                 Status = "Success",
@@ -220,10 +243,11 @@ namespace coop2._0.Services
         {
             var user = await _userRepository.SelectById(model.Cif);
             bool temoin = await _userRepository.EmailExists(model.NewEmail);
-            if(temoin)
+            if (temoin)
             {
                 throw new Exception("Este correo electrónico ya existe, ingrese otro correo electrónico válido");
             }
+
             user.Email = model.NewEmail;
             user.EmailConfirmed = false;
 
@@ -235,13 +259,14 @@ namespace coop2._0.Services
             }
 
             string token = await _userRepository.GenerateConfirmationToken(user);
-            
+
             await _mailService.SendConfirmMail(user, token);
 
             return new Response
             {
                 Status = "success",
-                Message = "El correo electrónico se ha actualizado correctamente, debe confirmar su nuevo correo electrónico haciendo clic en el enlace enviado a su nuevo correo electrónico"
+                Message =
+                    "El correo electrónico se ha actualizado correctamente, debe confirmar su nuevo correo electrónico haciendo clic en el enlace enviado a su nuevo correo electrónico"
             };
         }
 
@@ -255,6 +280,7 @@ namespace coop2._0.Services
                 e.Data.Add("password_error", "La contraseña actual no es correcta");
                 throw e;
             }
+
             string token = await _userRepository.GenerateResetToken(user);
             IdentityResult res = await _userRepository.ResetPassword(user, token, model.NewPassword);
             if (!res.Succeeded)

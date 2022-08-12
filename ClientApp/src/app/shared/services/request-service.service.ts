@@ -1,43 +1,68 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { RequestModel } from '../models/request-model';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {RequestModel} from '../models/request-model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RequestServiceService {
-
   readonly baseUrl = environment.apiUrl;
- /* request: RequestModel;*/
+
+  /* request: RequestModel;*/
   constructor(private http: HttpClient) {
     /*this.request = new RequestModel();*/
   }
+
   setRequest(request: RequestModel): Observable<RequestModel> {
     return this.http.post<RequestModel>(this.baseUrl + 'request/add', request);
   }
-  getRequests( page: number = 1): Observable<RequestModel[]> {
+
+  getRequests(page: number = 1): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${page}`);
   }
-  getRequestsPagination(pageNumber: number, pageSize: number): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(this.baseUrl + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
+
+  getRequestsPagination(
+    pageNumber: number,
+    pageSize: number
+  ): Observable<RequestModel[]> {
+    return this.http.get<RequestModel[]>(
+      this.baseUrl + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize
+    );
   }
-  getRequestsByUser(userId: number, page: number = 1): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${userId}/${page}`);
+
+  getRequestsByUser(
+    userId: number,
+    page: number = 1
+  ): Observable<RequestModel[]> {
+    return this.http.get<RequestModel[]>(
+      this.baseUrl + `request/list/${userId}/${page}`
+    );
   }
+
   searchRequest(value: string): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/${value}`);
   }
+
   validateRequests(requestList: Array<number>): Observable<RequestModel[]> {
-    return this.http.post<RequestModel[]>(this.baseUrl + 'request/validate', requestList);
+    return this.http.post<RequestModel[]>(
+      this.baseUrl + 'request/validate',
+      requestList
+    );
   }
 
   rejectRequests(requestList: Array<number>): Observable<RequestModel[]> {
-    return this.http.post<RequestModel[]>(this.baseUrl + `request/reject`, requestList);
+    return this.http.post<RequestModel[]>(
+      this.baseUrl + `request/reject`,
+      requestList
+    );
   }
+
   deleteRequests(requestList: Array<number>): Observable<RequestModel[]> {
-    return this.http.post<RequestModel[]>(this.baseUrl + 'request/delete', requestList);
+    return this.http.post<RequestModel[]>(
+      this.baseUrl + 'request/delete',
+      requestList
+    );
   }
 }
-

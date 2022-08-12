@@ -1,6 +1,4 @@
-﻿using coop2._0.Entities;
-using coop2._0.Model;
-using Microsoft.AspNetCore.Mvc;
+﻿using coop2._0.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';     // Pour constructor(private router:Router)  : fonctionne
+import {Router} from '@angular/router'; // Pour constructor(private router:Router)  : fonctionne
 import {AuthentificationService} from '../shared/services/authentification.service';
 import {NgForm} from '@angular/forms';
 import {LoginModel} from '../shared/models/login-model';
@@ -10,16 +10,21 @@ import {JwtService} from '../shared/services/jwt.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   loginModel: LoginModel;
 
-  constructor(private authService: AuthentificationService, private router: Router, private jwt: JwtService) {
+  constructor(
+    private authService: AuthentificationService,
+    private router: Router,
+    private jwt: JwtService
+  ) {
     this.loginModel = new LoginModel();
-    if(this.jwt.isConnected()) {
-      (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigateByUrl('/dashboard/users') : this.router.navigateByUrl('/dashboard/global');
+    if (this.jwt.isConnected()) {
+      this.jwt.isAdmin() && this.jwt.switchBtn
+        ? this.router.navigateByUrl('/dashboard/users')
+        : this.router.navigateByUrl('/dashboard/global');
     }
   }
 
@@ -28,14 +33,15 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.authService.login(this.loginModel).subscribe(
-      res => {
+      (res) => {
         let tokenModel = new TokenModel(res);
-        if(this.jwt.saveToken(tokenModel))
-        {
-          (this.jwt.isAdmin() && this.jwt.switchBtn) ? this.router.navigateByUrl('/dashboard/users') : this.router.navigateByUrl('/dashboard/global'); 
+        if (this.jwt.saveToken(tokenModel)) {
+          this.jwt.isAdmin() && this.jwt.switchBtn
+            ? this.router.navigateByUrl('/dashboard/users')
+            : this.router.navigateByUrl('/dashboard/global');
         }
       },
-      err => {
+      (err) => {
         Swal.fire({
           title: 'There is probleme !!!',
           text: err['error'],
@@ -44,6 +50,4 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
 }
-

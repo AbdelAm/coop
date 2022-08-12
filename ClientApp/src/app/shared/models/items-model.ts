@@ -1,5 +1,4 @@
-
 export class ItemsModel<T> {
-    items : Array<T>;
-    itemsNumber : number;
+  items: Array<T>;
+  itemsNumber: number;
 }

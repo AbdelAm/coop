@@ -11,7 +11,5 @@ namespace coop2._0.Model
         public string Message { get; set; }
         public DateTime DateRequest { get; set; }
         public Status Status { get; set; }
-
     }
-    
 }

@@ -26,19 +26,20 @@ export class TransactionPopupComponent implements OnInit {
   readonly isConnected: boolean;
   readonly switchBtn: boolean;
 
-
   transactionFormGroup = this._formBuilder.group({
     origin: this._formBuilder.group({
       originalAccount: new FormControl(''),
       receiverAccount: new FormControl('', [
         Validators.required,
-        CoopValidators.notOnlyWhiteSpace
+        CoopValidators.notOnlyWhiteSpace,
       ]),
-      externalAccount: new FormControl('' ),
+      externalAccount: new FormControl(''),
     }),
     destination: this._formBuilder.group({
-      destinationAccount: new FormControl('', [Validators.required,
-        CoopValidators.notOnlyWhiteSpace]),
+      destinationAccount: new FormControl('', [
+        Validators.required,
+        CoopValidators.notOnlyWhiteSpace,
+      ]),
       externalDestination: new FormControl(''),
     }),
     receiverInfo: this._formBuilder.group({
@@ -49,24 +50,28 @@ export class TransactionPopupComponent implements OnInit {
       ]),
       concept: new FormControl('', [
         Validators.required,
-        CoopValidators.notOnlyWhiteSpace
+        CoopValidators.notOnlyWhiteSpace,
       ]),
     }),
   });
 
-  constructor(private _formBuilder: FormBuilder, private jwt: JwtService, private transactionService: TransactionService, private bankService: BankAccountService) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private jwt: JwtService,
+    private transactionService: TransactionService,
+    private bankService: BankAccountService
+  ) {
     this.isConnected = jwt.isConnected();
     this.hasAdminRole = jwt.isAdmin();
     this.switchBtn = this.jwt.switchBtn;
-
   }
 
   ngOnInit(): void {
     this.bankService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
-      res => {
+      (res) => {
         this.userBankAccountId = res.id;
       },
-      err => console.log(err)
+      (err) => console.log(err)
     );
   }
 
@@ -77,27 +82,37 @@ export class TransactionPopupComponent implements OnInit {
     }
 
     const transaction = new TransactionModel();
-    transaction.senderBankAccountId = this.transactionFormGroup.get('origin.originalAccount').value ? this.transactionFormGroup.get('origin.originalAccount').value : this.transactionFormGroup.get('origin.receiverAccount').value;
-    transaction.receiverBankAccountId = this.transactionFormGroup.get('destination.destinationAccount').value;
-    transaction.amount = this.transactionFormGroup.get('receiverInfo.amount').value;
-    transaction.motif = this.transactionFormGroup.get('receiverInfo.concept').value;
+    transaction.senderBankAccountId = this.transactionFormGroup.get(
+      'origin.originalAccount'
+    ).value
+      ? this.transactionFormGroup.get('origin.originalAccount').value
+      : this.transactionFormGroup.get('origin.receiverAccount').value;
+    transaction.receiverBankAccountId = this.transactionFormGroup.get(
+      'destination.destinationAccount'
+    ).value;
+    transaction.amount = this.transactionFormGroup.get(
+      'receiverInfo.amount'
+    ).value;
+    transaction.motif = this.transactionFormGroup.get(
+      'receiverInfo.concept'
+    ).value;
     console.log(transaction);
     this.transactionService.postTransaction(transaction).subscribe(
-      next => {
+      (next) => {
         Swal.fire({
           icon: 'success',
           title: 'Transaction added successfully',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1000,
         });
         document.getElementById('closeDialog').click();
       },
-      error => {
+      (error) => {
         Swal.fire({
           icon: 'error',
           title: 'Something wrong with your inputs',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1000,
         });
       }
     );
@@ -133,7 +148,6 @@ export class TransactionPopupComponent implements OnInit {
       this.transactionFormGroup.get('origin.receiverAccount').disable();
       this.transactionFormGroup.get('origin.externalAccount').reset();
       this.transactionFormGroup.get('origin.receiverAccount').reset();
-
     }
   }
 
@@ -149,32 +163,21 @@ export class TransactionPopupComponent implements OnInit {
     }
   }
 
-
   disableExternalInput(event) {
     if (event.target.value) {
-      this.transactionFormGroup.get(
-        'destination.destinationAccount'
-      ).enable();
-      this.transactionFormGroup.get(
-        'destination.externalDestination'
-      ).disable();
-      this.transactionFormGroup.get(
-        'destination.externalDestination'
-      ).reset();
+      this.transactionFormGroup.get('destination.destinationAccount').enable();
+      this.transactionFormGroup
+        .get('destination.externalDestination')
+        .disable();
+      this.transactionFormGroup.get('destination.externalDestination').reset();
     }
   }
 
   disableDestinationInput(event) {
     if (event.target.value) {
-      this.transactionFormGroup.get(
-        'destination.externalDestination'
-      ).enable();
-      this.transactionFormGroup.get(
-        'destination.destinationAccount'
-      ).disable();
-      this.transactionFormGroup.get(
-        'destination.destinationAccount'
-      ).reset();
+      this.transactionFormGroup.get('destination.externalDestination').enable();
+      this.transactionFormGroup.get('destination.destinationAccount').disable();
+      this.transactionFormGroup.get('destination.destinationAccount').reset();
     }
   }
 }

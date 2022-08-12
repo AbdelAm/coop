@@ -1,69 +1,75 @@
-<main style="width: calc(100vw - 245px);">
+<main style="width: calc(100vw - 245px)">
   <div class="container-fluid px-4">
     <h1 class="mt-4">Global</h1>
     <ol class="breadcrumb mb-4">
       <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
       <li class="breadcrumb-item active">Global</li>
     </ol>
-    <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+    <div
+      class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
+    >
       <div class="card mb-4">
         <div class="card-header">
           <i class="fa fa-eur" aria-hidden="true"></i>
           Global
         </div>
         <div class="card-body">
-          <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+          <div
+            class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
+          >
             <div class="dataTable-top">
               <div class="dataTable-dropdown">
-                <label style="font-size: 1.5em;">
-                  Cuentas
-                </label>
+                <label style="font-size: 1.5em"> Cuentas </label>
               </div>
-              <div class="solde">{{this.userBalance|currency:"EUR"}}</div>
+              <div class="solde">{{ this.userBalance | currency: "EUR" }}</div>
             </div>
-            <div class="dataTable-container">
-            </div>
+            <div class="dataTable-container"></div>
             <div class="dataTable-bottom">
-
               <nav class="dataTable-pagination">
                 <ul class="dataTable-pagination-list">
                   <li><a class="option-button" href="#">Copiar</a></li>
                   <li class=""><a class="option-button" href="">CSV</a></li>
-                  <li class=""><a class="option-button" href="">Exceller</a></li>
+                  <li class="">
+                    <a class="option-button" href="">Exceller</a>
+                  </li>
                   <li class=""><a class="option-button" href="">PDF</a></li>
-                  <li class=""><a class="option-button" href="">imprimir</a></li>
+                  <li class="">
+                    <a class="option-button" href="">imprimir</a>
+                  </li>
                 </ul>
               </nav>
             </div>
             <div class="dataTable-container">
               <table id="datatablesSimple" class="dataTable-table">
                 <thead>
-                <tr>
-                  <th data-sortable="" style="width: 10%;">Fecha</th>
-                  <th data-sortable="" style="width: 10%;">Concepto</th>
-                  <th data-sortable="" style="width: 10%;">Importation €</th>
-                  <th data-sortable="" style="width: 10%;">receiver</th>
-                  <th data-sortable="" style="width: 10%;">Status</th>
-
-                </tr>
+                  <tr>
+                    <th data-sortable="" style="width: 10%">Fecha</th>
+                    <th data-sortable="" style="width: 10%">Concepto</th>
+                    <th data-sortable="" style="width: 10%">Importation €</th>
+                    <th data-sortable="" style="width: 10%">Receptor</th>
+                    <th data-sortable="" style="width: 10%">Estado</th>
+                  </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let transaction of transactions">
-                  <td style="color:rgb(13, 3, 146);">{{transaction.dateTransaction| date:"dd-MM-yyyy"}}</td>
-                  <td style="color:black;">{{transaction.motif}}</td>
-                  <td style="color:red;">{{transaction.amount}}</td>
-                  <td style="color:green;">{{transaction.receiverBankAccount.user.name}}</td>
-                  <td [style.color]="statusColor(transaction.status)">{{statusCasting(transaction.status)}}</td>
-                </tr>
+                  <tr *ngFor="let transaction of transactions">
+                    <td style="color: rgb(13, 3, 146)">
+                      {{ transaction.dateTransaction | date: "dd-MM-yyyy" }}
+                    </td>
+                    <td style="color: black">{{ transaction.motif }}</td>
+                    <td style="color: red">{{ transaction.amount }}</td>
+                    <td style="color: rgb(0, 0, 0)">
+                      {{ transaction.receiverBankAccount.user.name }}
+                    </td>
+                    <td [style.color]="statusColor(transaction.status)">
+                      {{ statusCasting(transaction.status) }}
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-
-
   </div>
 </main>

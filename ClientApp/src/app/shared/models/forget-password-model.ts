@@ -1,3 +1,3 @@
 export class ForgetPasswordModel {
-    email !: string;
+  email!: string;
 }
