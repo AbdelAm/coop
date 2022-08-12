@@ -31,7 +31,7 @@ namespace coop2._0.Services
             int itemNum = await _userRepository.SelectCount();
             if (users == null)
             {
-                throw new Exception("There is no users existe");
+                throw new Exception("No existe usuarios con estas informaciones.");
             }
             return new ItemsModel<UserItemModel>
             {
@@ -44,7 +44,7 @@ namespace coop2._0.Services
             User user = await _userRepository.SelectById(cif);
             if (user == null)
             {
-                throw new Exception("There is no user existe with these information");
+                throw new Exception("No existe un usuario con estas informaciones.");
             }
             return new UserItemModel(user);
         }
@@ -54,7 +54,7 @@ namespace coop2._0.Services
             IEnumerable<UserItemModel> users = await _userRepository.SelectBy(value);
             if(users == null)
             {
-                throw new Exception("There is no users existe with this value");
+                throw new Exception("No existe usuarios con este valor");
             }
             return users;
         }
@@ -69,7 +69,7 @@ namespace coop2._0.Services
                 var result = await _userRepository.UpdateUser(user);
                 if (result.Succeeded) 
                 {
-                    string message = "Congratulation your account has been approuved successfully";
+                    string message = "Felicitaciones que su cuenta se ha aprobado con éxito";
                     MailModel mailModel = new MailModel()
                     {
                         Email = user.Email,
@@ -78,7 +78,7 @@ namespace coop2._0.Services
                     };
                     if(!await _mailService.SendValidationMail(mailModel))
                     {
-                        throw new Exception("There is problem with sending Reset Password Mail, please verify your email");
+                        throw new Exception("Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
                     }
                     BankAccount account = new BankAccount()
                     {
@@ -95,12 +95,12 @@ namespace coop2._0.Services
             }
             if(!temoin)
             {
-                throw new Exception("some users doesn't approuved, please try again later");
+                throw new Exception("Algunos usuarios no han sido aprendidos, inténtelo de nuevo más tarde");
             }
             return new Response
             {
                 Status = "Success",
-                Message = "the user has been validated successfully"
+                Message = "El usuario ha sido validado con éxito"
             };
         }
 
@@ -114,7 +114,7 @@ namespace coop2._0.Services
                 var result = await _userRepository.UpdateUser(user);
                 if (result.Succeeded)
                 {
-                    string message = "Unfortunately, your account has been rejected";
+                    string message = "Desafortunadamente, su cuenta ha sido rechazada";
                     MailModel mailModel = new MailModel()
                     {
                         Email = user.Email,
@@ -123,7 +123,7 @@ namespace coop2._0.Services
                     };
                     if (!await _mailService.SendValidationMail(mailModel))
                     {
-                        throw new Exception("There is problem with sending Reset Password Mail, please verify your email");
+                        throw new Exception("Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
                     }
                 }
                 else
@@ -133,12 +133,12 @@ namespace coop2._0.Services
             }
             if (!temoin)
             {
-                throw new Exception("some users doesn't rejected, please try again later");
+                throw new Exception("Algunos usuarios no han sido rechazados, inténtelo de nuevo más tarde");
             }
             return new Response
             {
                 Status = "Success",
-                Message = "The user has been Rejected successfully"
+                Message = "El usuario ha sido rechazado con éxito"
             };
         }
 
@@ -153,7 +153,7 @@ namespace coop2._0.Services
                 {
                     if(bankAccounts.Where(b => b.Status == Status.Approuved).Any())
                     {
-                        throw new Exception("This user has an approuved bankaccount, and may has done some transactions with it, you need to verify his bank account situation before delete the user");
+                        throw new Exception("Este usuario tiene un BankAccount apropiado, y May ha realizado algunas transacciones con él, debe verificar su situación de cuenta bancaria antes de eliminar al usuario");
                     }
                 }
                 var requests = await _requestRepository.SelectByUser(id);
@@ -169,7 +169,7 @@ namespace coop2._0.Services
                 var result = await _userRepository.DeleteUser(user);
                 if (result.Succeeded) 
                 {
-                    string message = "Unfortunately, your account has been Deleted";
+                    string message = "Desafortunadamente, su cuenta ha sido eliminada";
                     MailModel mailModel = new MailModel()
                     {
                         Email = user.Email,
@@ -178,18 +178,18 @@ namespace coop2._0.Services
                     };
                     if (!await _mailService.SendValidationMail(mailModel))
                     {
-                        throw new Exception("There is problem with sending Reset Password Mail, please verify your email");
+                        throw new Exception("Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
                     }
                 } else { temoin = false; }
             }
             if (!temoin)
             {
-                throw new Exception("the user doesn't deleted, please try again later");
+                throw new Exception("El usuario no ha sido eliminado, inténtelo de nuevo más tarde");
             }
             return new Response
             {
                 Status = "Success",
-                Message = "The user has been Deleted successfully"
+                Message = "El usuario ha sido eliminado con éxito"
             };
         }
 
@@ -204,12 +204,12 @@ namespace coop2._0.Services
 
             if(!result.Succeeded)
             {
-                throw new Exception("An error occured on updating the user, please try again later");
+                throw new Exception("Se produjo un error al actualizar al usuario, intente nuevamente más tarde");
             }
             return new Response
             {
                 Status = "Success",
-                Message = "The user information has been Changed successfully"
+                Message = "La información del usuario se ha cambiado con éxito"
             };
         }
 
@@ -219,7 +219,7 @@ namespace coop2._0.Services
             bool temoin = await _userRepository.EmailExists(model.NewEmail);
             if(temoin)
             {
-                throw new Exception("This email is Already exists, please enter another valid email");
+                throw new Exception("Este correo electrónico ya existe, ingrese otro correo electrónico válido");
             }
             user.Email = model.NewEmail;
             user.EmailConfirmed = false;
@@ -228,7 +228,7 @@ namespace coop2._0.Services
 
             if (!result.Succeeded)
             {
-                throw new Exception("An error occured on updating the user, please try again later");
+                throw new Exception("Se produjo un error al actualizar al usuario, intente nuevamente más tarde");
             }
 
             string token = await _userRepository.GenerateConfirmationToken(user);
@@ -238,7 +238,7 @@ namespace coop2._0.Services
             return new Response
             {
                 Status = "success",
-                Message = "Email has been updated successfully, you should confirm your new email by clicking in link sent to your new email"
+                Message = "El correo electrónico se ha actualizado correctamente, debe confirmar su nuevo correo electrónico haciendo clic en el enlace enviado a su nuevo correo electrónico"
             };
         }
 
@@ -249,21 +249,21 @@ namespace coop2._0.Services
             bool temoin = await _userRepository.CheckPassword(user, model.CurrentPassword);
             if (!temoin)
             {
-                e.Data.Add("password_error", "The current password is not correct");
+                e.Data.Add("password_error", "La contraseña actual no es correcta");
                 throw e;
             }
             string token = await _userRepository.GenerateResetToken(user);
             IdentityResult res = await _userRepository.ResetPassword(user, token, model.NewPassword);
             if (!res.Succeeded)
             {
-                e.Data.Add("new_password_error", "the password doesn't change, please try again later");
+                e.Data.Add("new_password_error", "La contraseña no cambia, intente nuevamente más tarde");
                 throw e;
             }
 
             return new Response
             {
                 Status = "success",
-                Message = "Password has been changed, you can login with new Password"
+                Message = "Se ha cambiado la contraseña, puede iniciar sesión con una nueva contraseña"
             };
         }
     }

@@ -32,13 +32,13 @@ namespace coop2._0.Services
             var u = await _userRepository.SelectByEmail(model.Email);
             if (u != null)
             {
-                e.Data.Add("email_error", "email is already existe");
+                e.Data.Add("email_error", "El correo electrónico ya existe");
                 throw e;
             }
             u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
             if (u != null)
             {
-                e.Data.Add("socialNumber_error", "Social Number is already existe");
+                e.Data.Add("socialNumber_error", "El número social ya existe");
                 throw e;
             }
 
@@ -55,7 +55,7 @@ namespace coop2._0.Services
             var result = await _userRepository.InsertUser(user, model.Password);
             if (result == null)
             {
-                e.Data.Add("user", "There is problem with registering user, please try again");
+                e.Data.Add("user", "Hay un problema al registrar el usuario, intente nuevamente");
                 throw e;
             }
 
@@ -63,14 +63,14 @@ namespace coop2._0.Services
             
             if(!await _mailService.SendConfirmMail(user, token))
             {
-                e.Data.Add("user", "There is problem with sending confirmation Mail, please verify your email");
+                e.Data.Add("user", "Hay un problema al enviar correo de confirmación, verifique su correo electrónico");
                 throw e;
             }
 
             return new Response
             {
                 Status = "success",
-                Message = "To complete your registration, An email has been sent to confirm your registration"
+                Message = "Para completar su registro, se ha enviado un correo electrónico para confirmar su registro"
             };
         }
 
@@ -79,11 +79,11 @@ namespace coop2._0.Services
             var user = await _userRepository.SelectUser(model);
 
             if (user is null)
-                throw new Exception("The user doesn't exist");
+                throw new Exception("El usuario no existe");
             if (user is not { EmailConfirmed: true })
-                throw new Exception("The user has not been confirmed yet");
+                throw new Exception("El usuario aún no ha sido confirmado");
             if (user is not { Status: Status.Approuved })
-                throw new Exception("The user has not been approved yet");
+                throw new Exception("El usuario aún no ha sido aprobado");
 
             return await _jwtService.GenerateJwtToken(user);
         }
@@ -94,20 +94,19 @@ namespace coop2._0.Services
             var user = await _userRepository.SelectByEmail(values[1]);
             if (user is not { EmailConfirmed: false })
             {
-                throw new Exception("The user is already confirmed");
+                throw new Exception("El usuario ya está confirmado");
             }
             string token = values[0].Replace(' ', '+');
             IdentityResult res = await _userRepository.ConfirmEmail(user, token);
             if (!res.Succeeded)
             {
-                throw new Exception("the email hasn't been confirmed, please try again");
+                throw new Exception("El correo electrónico no ha sido confirmado, intente nuevamente");
             }
 
             return new Response
             {
                 Status = "Success",
-                Message =
-                    "User is confirmed successfully"
+                Message = "El usuario se confirma con éxito"
             };
         }
         public async Task<Response> ForgetPassword(ForgetPasswordModel model)
@@ -116,7 +115,7 @@ namespace coop2._0.Services
             Exception e = new();
             if (user == null)
             {
-                e.Data.Add("email_error", "email does not existe, please verify your information");
+                e.Data.Add("email_error", "El correo electrónico no existe, verifique su información");
                 throw e;
             }
 
@@ -125,14 +124,14 @@ namespace coop2._0.Services
 
             if(!await _mailService.SendForgetMail(user, token))
             {
-                e.Data.Add("email_error", "There is problem with sending Reset Password Mail, please verify your email");
+                e.Data.Add("email_error", "Hay un problema con el envío del correo de contraseña de reinicio, verifique su correo electrónico");
                 throw e;
             }
 
             return new Response
             {
                 Status = "success",
-                Message = "Click on link sended to your email to reset your password, the link is valid for only 48 hours so you need make the operation before the end of its validity"
+                Message = "Haga clic en el enlace enviado a su correo electrónico para restablecer su contraseña, el enlace es válido por solo 48 horas, por lo que necesita realizar la operación antes del final de su validez"
             };
         }
 
@@ -141,19 +140,19 @@ namespace coop2._0.Services
             var user = await _userRepository.SelectByEmail(model.Email);
             if (user is null)
             {
-                throw new Exception("The user does not existe");
+                throw new Exception("El usuario no existe");
             }
             string token = System.Web.HttpUtility.UrlDecode(model.Token);
             IdentityResult res = await _userRepository.ResetPassword(user, token, model.Password);
             if (!res.Succeeded)
             {
-                throw new Exception("the password doesn't change, please try again later");
+                throw new Exception("La contraseña no cambia, intente nuevamente más tarde");
             }
 
             return new Response
             {
-                Status = "Success",
-                Message = "The password has been changed successfully"
+                Status = "success",
+                Message = "La contraseña ha sido cambiada con éxito"
             };
         }
 
@@ -163,13 +162,13 @@ namespace coop2._0.Services
             var u = await _userRepository.SelectByEmail(model.Email);
             if (u != null)
             {
-                e.Data.Add("email_error", "email is already existe");
+                e.Data.Add("email_error", "El correo electrónico ya existe");
                 throw e;
             }
             u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
             if (u != null)
             {
-                e.Data.Add("socialNumber_error", "Social Number is already existe");
+                e.Data.Add("socialNumber_error", "El número social ya existe");
                 throw e;
             }
 
@@ -187,7 +186,7 @@ namespace coop2._0.Services
             var result = await _userRepository.InsertAdmin(user, model.Password);
             if (result == null)
             {
-                e.Data.Add("user", "There is problem with registering user, please try again");
+                e.Data.Add("user", "Hay un problema al registrar el usuario, intente nuevamente");
                 throw e;
             }
             BankAccount account = new BankAccount()
@@ -201,21 +200,21 @@ namespace coop2._0.Services
 
             if (bankAccount == null)
             {
-                e.Data.Add("user", "There is problem with creating bankaccount of user, please try again");
+                e.Data.Add("user", "Hay un problema con la creación de BankAccount of User, intente nuevamente");
                 throw e;
             }
             string token = await _userRepository.GenerateConfirmationToken(user);
 
             if (!await _mailService.SendConfirmMail(user, token))
             {
-                e.Data.Add("user", "There is problem with sending confirmation Mail, please verify your email");
+                e.Data.Add("user", "Hay un problema al enviar correo de confirmación, verifique su correo electrónico");
                 throw e;
             }
 
             return new Response
             {
                 Status = "success",
-                Message = "To complete your registration, An email has been sent to confirm your registration"
+                Message = "Para completar su registro, se ha enviado un correo electrónico para confirmar su registro"
             };
         }
 
