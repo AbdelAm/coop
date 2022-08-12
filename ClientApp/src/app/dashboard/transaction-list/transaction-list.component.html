@@ -23,7 +23,10 @@
           class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
         >
           <div class="dataTable-top">
-            <div class="dataTable-dropdown pt-2 d-none" *ngIf="isConnected&&hasAdminRole&&switchBtn">
+            <div
+              class="dataTable-dropdown pt-2 d-none"
+              *ngIf="isConnected && hasAdminRole && switchBtn"
+            >
               <button
                 (click)="validateAllTransactions(this.listTransaction)"
                 class="border-0 bg-transparent align-middle"
@@ -81,7 +84,7 @@
             <table id="datatablesSimple" class="dataTable-table">
               <thead>
               <tr>
-                <th *ngIf="isConnected&&hasAdminRole&&switchBtn">
+                <th *ngIf="isConnected && hasAdminRole && switchBtn">
                   <input type="checkbox" (change)="selectAll($event)"/>
                 </th>
                 <th data-sortable="">Monto</th>
@@ -90,30 +93,42 @@
                 <th data-sortable="">Cuenta original</th>
                 <th data-sortable="">Cuenta de destino</th>
                 <th data-sortable="">Estado</th>
-                <th *ngIf="isConnected&&hasAdminRole&&switchBtn" data-sortable="">Acción</th>
+                <th
+                  *ngIf="isConnected && hasAdminRole && switchBtn"
+                  data-sortable=""
+                >
+                  Acción
+                </th>
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let transaction of transactions">
-                <td *ngIf="isConnected&&hasAdminRole&&switchBtn">
+                <td *ngIf="isConnected && hasAdminRole && switchBtn">
                   <input
                     (change)="setTransaction(transaction.id, $event)"
                     class="items"
                     type="checkbox"
                     value="1"
-
                   />
                 </td>
                 <td style="color: red">{{ transaction.amount }}</td>
-                <td>{{ transaction.dateTransaction | date:"dd-MM-yyyy"}}</td>
-                <td>{{transaction.motif}}</td>
-                <td *ngIf="!this.switchBtn;else other">{{ this.userName }}</td>
-                <ng-template #other>{{ transaction.senderBankAccount?.user.name }}</ng-template>
                 <td>
-                  {{ transaction.receiverBankAccount?.user.name}}
+                  {{ transaction.dateTransaction | date: "dd-MM-yyyy" }}
                 </td>
-                <td [style.color]="statusColor(transaction.status)">{{ statusCasting(transaction.status)}}</td>
-                <td *ngIf="isConnected&&hasAdminRole&&switchBtn" class="icons">
+                <td>{{ transaction.motif }}</td>
+                <td>
+                  {{ transaction.senderBankAccount?.user.name }}
+                </td>
+                <td>
+                  {{ transaction.receiverBankAccount?.user.name }}
+                </td>
+                <td [style.color]="statusColor(transaction.status)">
+                  {{ statusCasting(transaction.status) }}
+                </td>
+                <td
+                  *ngIf="isConnected && hasAdminRole && switchBtn"
+                  class="icons"
+                >
                   <button
                     (click)="validateTransaction(transaction.id)"
                     class="border-0 bg-transparent align-middle"
@@ -157,19 +172,19 @@
                     ></i>
                   </button>
                   <!--<button
-                    (click)="updateTransaction()"
-                    class="border-0 bg-transparent align-middle"
-                  >
-                    <i
-                      class="fa-regular fa-pen-to-square"
-                      style="
-                          margin: 0 10px;
-                          font-size: 20px;
-                          font-weight: 500;
-                          color: cornflowerblue;
-                        "
-                    ></i>
-                  </button>-->
+                  (click)="updateTransaction()"
+                  class="border-0 bg-transparent align-middle"
+                >
+                  <i
+                    class="fa-regular fa-pen-to-square"
+                    style="
+                        margin: 0 10px;
+                        font-size: 20px;
+                        font-weight: 500;
+                        color: cornflowerblue;
+                      "
+                  ></i>
+                </button>-->
                 </td>
               </tr>
               </tbody>
@@ -184,7 +199,6 @@
             (pageChange)="loadTransactionsByRole()"
           >
           </ngb-pagination>
-
         </div>
       </div>
     </div>

@@ -1,9 +1,7 @@
 ﻿using coop2._0.Entities;
 using coop2._0.Model;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,10 +28,12 @@ namespace coop2._0.Repositories
         {
             return await _userManager.FindByIdAsync(id);
         }
+
         public async Task<User> SelectByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
+
         public async Task<User> SelectBySocialNumber(string socialNumber)
         {
             return await _userManager.Users.Where(u => u.SocialNumber == socialNumber).FirstOrDefaultAsync();
@@ -79,6 +79,7 @@ namespace coop2._0.Repositories
         {
             return await _userManager.CheckPasswordAsync(user, password);
         }
+
         public async Task<List<string>> SelectUserRoles(User user)
         {
             return (List<string>)await _userManager.GetRolesAsync(user);
@@ -107,32 +108,34 @@ namespace coop2._0.Repositories
         public async Task<IEnumerable<UserItemModel>> SelectAll(int page)
         {
             return await _userManager.Users.Where(u => !u.IsAdmin)
-                                           .OrderByDescending(u => u.DateCreated)
-                                           .Skip(page*PageSize)
-                                           .Take(PageSize)
-                                           .Select(u => new UserItemModel(u))
-                                           .ToListAsync();
+                .OrderByDescending(u => u.DateCreated)
+                .Skip(page * PageSize)
+                .Take(PageSize)
+                .Select(u => new UserItemModel(u))
+                .ToListAsync();
         }
 
         public async Task<int> SelectCount()
         {
             return await _userManager.Users.Where(u => !u.IsAdmin)
-                                           .CountAsync();
+                .CountAsync();
         }
 
         public async Task<IEnumerable<UserItemModel>> SelectBy(string value)
         {
-            return await _userManager.Users.Where(u => !u.IsAdmin && (u.Id.Contains(value) || u.Name.Contains(value) || u.Email.Contains(value)))
-                                           .Select(u => new UserItemModel(u))
-                                           .ToListAsync();
+            return await _userManager.Users.Where(u =>
+                    !u.IsAdmin && (u.Id.Contains(value) || u.Name.Contains(value) || u.Email.Contains(value)))
+                .Select(u => new UserItemModel(u))
+                .ToListAsync();
         }
 
         public async Task<bool> EmailExists(string email)
         {
-            int count =  await _userManager.Users.Where(u => u.Email == email)
-                                           .CountAsync();
+            int count = await _userManager.Users.Where(u => u.Email == email)
+                .CountAsync();
             return count > 0;
         }
+
         public async Task<IdentityResult> UpdateUser(User user)
         {
             return await _userManager.UpdateAsync(user);

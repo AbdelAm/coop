@@ -8,15 +8,19 @@ import {TransactionService} from '../../shared/services/transaction.service';
 @Component({
   selector: 'app-global',
   templateUrl: './global.component.html',
-  styleUrls: ['./global.component.css']
+  styleUrls: ['./global.component.css'],
 })
 export class GlobalComponent implements OnInit {
-
   userBalance = 0.0;
   userBankAccountId: number;
   transactions: TransactionModel[];
 
-  constructor(private jwt: JwtService, private router: Router, private bankAccountService: BankAccountService, private transactionService: TransactionService) {
+  constructor(
+    private jwt: JwtService,
+    private router: Router,
+    private bankAccountService: BankAccountService,
+    private transactionService: TransactionService
+  ) {
     if (!this.jwt.isConnected()) {
       this.router.navigateByUrl('/login');
     }
@@ -27,27 +31,26 @@ export class GlobalComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserBalance();
-
   }
 
   getUserBalance() {
-    this.bankAccountService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
-      next => {
+    this.bankAccountService
+      .getBankAccount(this.jwt.getConnectedUserId())
+      .subscribe((next) => {
         this.userBalance = next.balance;
         this.userBankAccountId = next.id;
         this.getLastFiveTransactions();
-      }
-    );
+      });
   }
 
   getLastFiveTransactions() {
-    this.transactionService.getTransactionsByUser(this.userBankAccountId, 1, 5).subscribe(this.processResult()
-    );
+    this.transactionService
+      .getTransactionsByUser(this.userBankAccountId, 1, 5)
+      .subscribe(this.processResult());
   }
 
-
   processResult() {
-    return data => {
+    return (data) => {
       this.transactions = data.response;
     };
   }
@@ -55,12 +58,11 @@ export class GlobalComponent implements OnInit {
   statusCasting(status: number): string {
     switch (status) {
       case 0:
-        return 'Progress';
+        return 'En progreso';
       case 1:
-        return 'Approved';
+        return 'Aprobada';
       case 2:
-        return 'Rejected';
-
+        return 'Rechazada';
     }
   }
 
@@ -70,7 +72,6 @@ export class GlobalComponent implements OnInit {
         return 'green';
       case 2:
         return 'red';
-
     }
   }
 }

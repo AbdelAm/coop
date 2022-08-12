@@ -14,7 +14,6 @@ import {GlobalComponent} from './global/global.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -22,7 +21,6 @@ import {TransactionPopupComponent} from './transaction-popup/transaction-popup.c
 import {RequestPopupComponent} from './request-popup/request-popup.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {TokenInterceptorService} from '../shared/services/token-interceptor.service';
-
 
 @NgModule({
   declarations: [
@@ -35,7 +33,7 @@ import {TokenInterceptorService} from '../shared/services/token-interceptor.serv
     ProfileComponent,
     GlobalComponent,
     TransactionPopupComponent,
-    RequestPopupComponent
+    RequestPopupComponent,
   ],
   imports: [
     CommonModule,
@@ -50,9 +48,13 @@ import {TokenInterceptorService} from '../shared/services/token-interceptor.serv
     MatButtonModule,
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true,
+    },
   ],
-  bootstrap: [DashboardComponent]
+  bootstrap: [DashboardComponent],
 })
 export class DashboardModule {
 }

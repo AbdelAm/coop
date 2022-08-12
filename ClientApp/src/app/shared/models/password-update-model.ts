@@ -1,6 +1,6 @@
 export class PasswordUpdateModel {
-    cif!: string;
-    currentPassword!: string;
-    newPassword!: string;
-    confirmedPassword!: string;
+  cif!: string;
+  currentPassword!: string;
+  newPassword!: string;
+  confirmedPassword!: string;
 }

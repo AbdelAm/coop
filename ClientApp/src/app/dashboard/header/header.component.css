@@ -92,6 +92,6 @@
 }
 
 .switch-toggle:checked ~ .knobs span {
-    left: 4%;
-    background-color: #03a9f4;
+  left: 4%;
+  background-color: #03a9f4;
 }

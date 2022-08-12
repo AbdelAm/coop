@@ -31,6 +31,7 @@ namespace coop2._0.Services
         {
             return await _requestRepository.GetRequests(filter);
         }
+
         public async Task<bool> RemoveRequest(List<int> requests)
         {
             bool temoin = true;
@@ -43,12 +44,13 @@ namespace coop2._0.Services
                 {
                     temoin = false;
                 }
-
             }
+
             if (!temoin)
             {
                 throw new System.Exception("can't delete");
             }
+
             return temoin;
         }
 
@@ -64,12 +66,13 @@ namespace coop2._0.Services
                 {
                     temoin = false;
                 }
-
             }
+
             if (!temoin)
             {
                 throw new System.Exception("some requests doesn't approuved, please try again later");
             }
+
             return temoin;
         }
 
@@ -81,21 +84,22 @@ namespace coop2._0.Services
         public async Task<bool> ValidateRequest(List<int> requests)
         {
             bool temoin = true;
-            foreach(int id in requests)
+            foreach (int id in requests)
             {
                 var request = await _requestRepository.GetRequest(id);
                 request.Status = Status.Approuved;
                 var result = await _requestRepository.ValidateRequest(request);
-                if(result == null)
+                if (result == null)
                 {
                     temoin = false;
                 }
-
             }
-            if(!temoin)
+
+            if (!temoin)
             {
                 throw new System.Exception("some requests doesn't approuved, please try again later");
             }
+
             return temoin;
         }
     }

@@ -1,6 +1,5 @@
 export enum StatusModel {
-    Progress,
-    Approuved,
-    Rejected
-    
+  Progress,
+  Approuved,
+  Rejected,
 }

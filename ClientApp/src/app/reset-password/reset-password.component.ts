@@ -1,20 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import Swal from 'sweetalert2';
-import { ResetPasswordModel } from '../shared/models/reset-password-model';
-import { AuthentificationService } from '../shared/services/authentification.service';
+import {ResetPasswordModel} from '../shared/models/reset-password-model';
+import {AuthentificationService} from '../shared/services/authentification.service';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css']
+  styleUrls: ['./reset-password.component.css'],
 })
 export class ResetPasswordComponent implements OnInit {
-
   resetModel: ResetPasswordModel;
-  constructor(private authService: AuthentificationService, private router: Router) {
+
+  constructor(
+    private authService: AuthentificationService,
+    private router: Router
+  ) {
     this.resetModel = new ResetPasswordModel();
-    let params = this.router.url.split("param=")[1].split("-");
+    const params = this.router.url.split('param=')[1].split('-');
     this.resetModel.email = params[1];
     this.resetModel.token = params[0];
     console.log(this.resetModel.token);
@@ -23,35 +26,32 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit()
-  {
-    if(this.resetModel.password === this.resetModel.confirmPassword) {
+  onSubmit() {
+    if (this.resetModel.password === this.resetModel.confirmPassword) {
       this.authService.resetPassword(this.resetModel).subscribe(
-        res => {
+        (res) => {
           Swal.fire({
-            title: "Password has been changed successfully",
-            text: "Click on button bellow to go to login page",
-            icon: "success",
-            confirmButtonText: 'Login'
+            title: 'Password has been changed successfully',
+            text: 'Click on button bellow to go to login page',
+            icon: 'success',
+            confirmButtonText: 'Login',
           }).then((result) => {
             if (result.value) {
               this.router.navigateByUrl('login');
             }
           });
         },
-        err => {
+        (err) => {
           console.log(err);
         }
-      )
+      );
     } else {
-      document.getElementById("confirmPassword_error").textContent = "the two password should be similar";
+      document.getElementById('confirmPassword_error').textContent =
+        'the two password should be similar';
     }
-
   }
 
-  emptyError(field: string)
-  {
-    document.getElementById(field).textContent = "";
+  emptyError(field: string) {
+    document.getElementById(field).textContent = '';
   }
-
 }

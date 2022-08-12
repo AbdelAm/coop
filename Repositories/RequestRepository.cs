@@ -1,5 +1,4 @@
-﻿using coop2._0.Controllers;
-using coop2._0.Entities;
+﻿using coop2._0.Entities;
 using coop2._0.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +22,12 @@ namespace coop2._0.Repositories
         public async Task<object> GetRequests(PaginationFilter filter)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-            var response= await _context.Requests.ToListAsync();
+            var response = await _context.Requests
+                .OrderByDescending(r => r.DateRequest)
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+
             var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
                 await _context.Transactions.CountAsync());
 
@@ -35,17 +39,23 @@ namespace coop2._0.Repositories
         {
             return await _context.Requests.Include(req => req.User).Where(req => req.Id == id).FirstOrDefaultAsync();
         }
+
         public async Task<object> GetRequestsByUser(string userId, PaginationFilter filter)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-            var response = await _context.Requests.Where(b => b.UserId == userId).ToListAsync();
+            var response = await _context.Requests.Where(b => b.UserId == userId)
+                .OrderByDescending(r => r.DateRequest)
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
             var totalRecords = await _context.Requests.CountAsync(b => b.UserId == userId);
             var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
                 totalRecords);
 
             return new { response, pagination };
         }
+
         public async Task<IEnumerable<Request>> SelectByUser(string userId)
         {
             return await _context.Requests.Where(b => b.UserId == userId).ToListAsync();
@@ -67,7 +77,6 @@ namespace coop2._0.Repositories
 
         public async Task<ActionResult<Request>> AddRequest(RequestModel model)
         {
-
             var request = new Request()
             {
                 Message = model.Message,
@@ -87,6 +96,5 @@ namespace coop2._0.Repositories
             await _context.SaveChangesAsync();
             return request;
         }
-
     }
 }

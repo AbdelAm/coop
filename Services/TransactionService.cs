@@ -1,9 +1,8 @@
 ﻿using coop2._0.Entities;
+using coop2._0.Model;
 using coop2._0.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using coop2._0.Model;
 
 namespace coop2._0.Services
 {
@@ -49,7 +48,7 @@ namespace coop2._0.Services
 
         public async Task<object> GetTransactionsByUser(int userBankAccountId, PaginationFilter filter)
         {
-            return await _transactionRepository.GetTransactionsByUser(userBankAccountId,filter);
+            return await _transactionRepository.GetTransactionsByUser(userBankAccountId, filter);
         }
 
         public async Task<object> SearchForTransactions(string keyword, PaginationFilter filter)

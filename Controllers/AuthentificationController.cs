@@ -1,6 +1,5 @@
 ﻿using coop2._0.Model;
 using coop2._0.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -71,7 +70,6 @@ namespace coop2._0.Controllers
             {
                 Response response = await _authService.ForgetPassword(model);
                 return Ok(response);
-
             }
             catch (Exception ex)
             {
@@ -87,7 +85,6 @@ namespace coop2._0.Controllers
             {
                 Response response = await _authService.ResetPassword(model);
                 return Ok(response);
-
             }
             catch (Exception ex)
             {

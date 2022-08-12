@@ -1,19 +1,19 @@
 p {
-    margin: auto;
+  margin: auto;
   width: 50%;
   border: 3px solid green;
   padding: 10px;
 }
 
 .solde {
-    font-size: 2em;
+  font-size: 2em;
 }
 .card {
-    box-shadow: -1px 2px 17px -8px rgba(0,0,0,0.85);
-    -webkit-box-shadow: -1px 2px 17px -8px rgba(0,0,0,0.85);
-    -moz-box-shadow: -1px 2px 17px -8px rgba(0,0,0,0.85);
+  box-shadow: -1px 2px 17px -8px rgba(0, 0, 0, 0.85);
+  -webkit-box-shadow: -1px 2px 17px -8px rgba(0, 0, 0, 0.85);
+  -moz-box-shadow: -1px 2px 17px -8px rgba(0, 0, 0, 0.85);
 }
 .option-button {
-    background-color: #F7F7F7;
-    color: black;
+  background-color: #f7f7f7;
+  color: black;
 }

@@ -1,9 +1,8 @@
-﻿using coop2._0.Services;
-using Microsoft.AspNetCore.Http;
+﻿using coop2._0.Entities;
+using coop2._0.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using coop2._0.Entities;
 
 namespace coop2._0.Controllers
 {

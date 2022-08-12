@@ -1,37 +1,65 @@
 <div class="topdiv">
-  <div class="logo-container d-flex justify-content-center "> <!-- CSS BOOTSTRAP FOR LOGO -->
-    <a href="https://www.coophalal.eu"><img src="../../assets/logoCoophalal.jpg" class="logo"></a>
+  <div class="logo-container d-flex justify-content-center">
+    <!-- CSS BOOTSTRAP FOR LOGO -->
+    <a href="https://www.coophalal.eu"
+    ><img src="../../assets/logoCoophalal.jpg" class="logo"
+    /></a>
   </div>
 
   <div class="section-container d-flex flex-wrap">
     <!-- CSS BOOTSTRAP FOR SECTION -->
 
-
-
-    <div class=" d-flex flex-grow-1 justify-content-center align-items-center flex-shrink-1 ">
-      <div class="card d-flex justify-content-center align-items-center" style="width:400px">
-        <img class="card-img-top" src="../../assets/Malaga-1-900x500.jpg" alt="project image">
+    <div
+      class="d-flex flex-grow-1 justify-content-center align-items-center flex-shrink-1"
+    >
+      <div
+        class="card d-flex justify-content-center align-items-center"
+        style="width: 400px"
+      >
+        <img
+          class="card-img-top"
+          src="../../assets/Malaga-1-900x500.jpg"
+          alt="project image"
+        />
         <div class="card-body">
           <h4 class="card-title text-black">Financiación vivienda en Málaga</h4>
-          <a href="https://www.coophalal.eu/financiacion-vivienda-en-malaga/" class="ReadMore">Leer más...>></a>
+          <a
+            href="https://www.coophalal.eu/financiacion-vivienda-en-malaga/"
+            class="ReadMore"
+          >Leer más...>></a
+          >
         </div>
       </div>
     </div>
     <div class="clear">
       <p></p>
     </div>
-    <div class=" d-flex flex-grow-1 justify-content-around align-items-center ">
+    <div class="d-flex flex-grow-1 justify-content-around align-items-center">
       <!--      here      -->
       <div class="screen">
         <div class="screen__content">
           <form class="login" #loginForm="ngForm" (submit)="onSubmit()">
             <div class="login__field">
               <i class="login__icon fas fa-user"></i>
-              <input type="text" name="email" #email="ngModel" [(ngModel)]="this.loginModel.email" class="login__input" placeholder="Introduce tu correo electrónico...">
+              <input
+                type="text"
+                name="email"
+                #email="ngModel"
+                [(ngModel)]="this.loginModel.email"
+                class="login__input"
+                placeholder="Introduce tu correo electrónico..."
+              />
             </div>
             <div class="login__field">
               <i class="login__icon fas fa-lock"></i>
-              <input type="password" name="password" #passoword="ngModel" [(ngModel)]="this.loginModel.password" class="login__input" placeholder="Ingresa tu contraseña...">
+              <input
+                type="password"
+                name="password"
+                #passoword="ngModel"
+                [(ngModel)]="this.loginModel.password"
+                class="login__input"
+                placeholder="Ingresa tu contraseña..."
+              />
             </div>
             <button type="submit" class="button login__submit">
               <span class="button__text">Iniciar sesión</span>
@@ -43,22 +71,24 @@
             <h3></h3>
             <div class="social-icons">
               <a routerLink="/forgot-password">¿Contraseña olvidada?</a>
-
             </div>
           </div>
-
         </div>
         <div class="screen__background">
-          <span class="screen__background__shape screen__background__shape4"></span>
-          <span class="screen__background__shape screen__background__shape3"></span>
-          <span class="screen__background__shape screen__background__shape2"></span>
-          <span class="screen__background__shape screen__background__shape1"></span>
+          <span
+            class="screen__background__shape screen__background__shape4"
+          ></span>
+          <span
+            class="screen__background__shape screen__background__shape3"
+          ></span>
+          <span
+            class="screen__background__shape screen__background__shape2"
+          ></span>
+          <span
+            class="screen__background__shape screen__background__shape1"
+          ></span>
         </div>
       </div>
     </div>
-
-
-
   </div>
-  
 </div>

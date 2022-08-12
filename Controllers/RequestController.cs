@@ -1,7 +1,6 @@
 ﻿using coop2._0.Entities;
 using coop2._0.Model;
 using coop2._0.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,8 +12,6 @@ namespace coop2._0.Controllers
     [ApiController]
     public class RequestController : ControllerBase
     {
-        // context is in repository implementation, remove it from controller
-        // every method that interacts with the database should be in the repository implementation 
 
         private readonly IRequestService _requestService;
 
@@ -78,11 +75,11 @@ namespace coop2._0.Controllers
             {
                 var res = await _requestService.ValidateRequest(requests);
                 return Ok(res);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
         [HttpPost("add")]
@@ -90,7 +87,5 @@ namespace coop2._0.Controllers
         {
             return await _requestService.AddRequest(model);
         }
-
- 
     }
 }

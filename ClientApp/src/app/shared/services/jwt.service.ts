@@ -2,15 +2,14 @@ import {Injectable} from '@angular/core';
 import {TokenModel} from '../models/token-model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JwtService {
-
   jwt!: TokenModel;
   switchBtn: boolean;
 
   constructor() {
-    let res = localStorage.getItem('auth');
+    const res = localStorage.getItem('auth');
     if (res) {
       this.jwt = JSON.parse(res);
     }

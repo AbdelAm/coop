@@ -12,7 +12,7 @@ import {UserService} from '../../shared/services/user-service.service';
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
-  styleUrls: ['./transaction-list.component.css']
+  styleUrls: ['./transaction-list.component.css'],
 })
 export class TransactionListComponent implements OnInit {
   listTransaction: number[];
@@ -25,9 +25,15 @@ export class TransactionListComponent implements OnInit {
   hasAdminRole = false;
   userBankAccountId: number;
   switchBtn: boolean;
-  userName: string;
 
-  constructor(public dialog: MatDialog, private jwt: JwtService, private router: Router, private transactionService: TransactionService, private bankService: BankAccountService, private userService: UserService) {
+  constructor(
+    public dialog: MatDialog,
+    private jwt: JwtService,
+    private router: Router,
+    private transactionService: TransactionService,
+    private bankService: BankAccountService,
+    private userService: UserService
+  ) {
     this.transactions = [];
     this.listTransaction = [];
     this.isConnected = this.jwt.isConnected();
@@ -38,45 +44,42 @@ export class TransactionListComponent implements OnInit {
   addTransaction(): void {
     this.dialog.open(TransactionPopupComponent, {
       width: '60%',
-      data: 'right click'
+      data: 'right click',
     });
   }
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
     this.bankService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
-      res => {
+      (res) => {
         this.userBankAccountId = res.id;
         this.loadTransactionsByRole();
       },
-      err => console.log(err)
-    );
-    this.userService.getUser(this.jwt.getConnectedUserId()).subscribe(
-      res => this.userName = res.name
+      (err) => console.log(err)
     );
   }
 
   loadTransactionsByRole() {
-    console.log(this.switchBtn, this.hasAdminRole);
     if (this.isConnected && this.hasAdminRole && this.switchBtn) {
       this.getTransactions();
-    }
-    if (this.isConnected) {
-      this.getTransactionsByUser();
     } else {
-      this.router.navigateByUrl('login');
+      if (this.isConnected && !this.switchBtn) {
+        this.getTransactionsByUser();
+      } else {
+        this.router.navigateByUrl('login');
+      }
     }
   }
-
 
   selectAll(e: Event) {
     const items = document.querySelectorAll('.items');
     for (let i = 0; i < items.length; i++) {
-      (<HTMLInputElement>items[i]).checked = (<HTMLInputElement>e.target).checked;
+      (<HTMLInputElement>items[i]).checked = (<HTMLInputElement>(
+        e.target
+      )).checked;
       const id = parseInt((<HTMLInputElement>items[i]).value);
       this.toggleItem(id, (<HTMLInputElement>e.target).checked);
     }
-
   }
 
   setTransaction(id: number, e: Event) {
@@ -98,22 +101,24 @@ export class TransactionListComponent implements OnInit {
     }
   }
 
-
   getTransactions() {
-    this.transactionService.getTransactions(this.pageNumber, this.pageSize).subscribe(
-      this.processResult()
-    );
-
+    this.transactionService
+      .getTransactions(this.pageNumber, this.pageSize)
+      .subscribe(this.processResult());
   }
 
   getTransactionsByUser() {
-    this.transactionService.getTransactionsByUser(this.userBankAccountId, this.pageNumber, this.pageSize).subscribe(this.processResult()
-    );
+    this.transactionService
+      .getTransactionsByUser(
+        this.userBankAccountId,
+        this.pageNumber,
+        this.pageSize
+      )
+      .subscribe(this.processResult());
   }
 
-
   processResult() {
-    return data => {
+    return (data) => {
       this.transactions = data.response;
       this.pageNumber = data.pagination?.pageNumber;
       this.pageSize = data.pagination?.pageSize;
@@ -123,22 +128,22 @@ export class TransactionListComponent implements OnInit {
 
   validateTransaction(transactionId: number) {
     this.transactionService.validateTransaction(transactionId).subscribe(
-      next => {
+      (next) => {
         Swal.fire({
           icon: 'success',
           title: 'Transaction has successfully validated ',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1000,
         });
         this.transactions = [];
         this.loadTransactionsByRole();
       },
-      error => {
+      (error) => {
         Swal.fire({
           icon: 'error',
           title: 'Transaction cannot be validated',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1000,
         });
       }
     );
@@ -146,22 +151,22 @@ export class TransactionListComponent implements OnInit {
 
   rejectTransaction(transactionId: number) {
     this.transactionService.rejectTransaction(transactionId).subscribe(
-      next => {
+      (next) => {
         Swal.fire({
           icon: 'success',
           title: 'Transaction has successfully rejected ',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1000,
         });
         this.transactions = [];
         this.loadTransactionsByRole();
       },
-      error => {
+      (error) => {
         Swal.fire({
           icon: 'error',
           title: 'Transaction cannot be rejected',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1000,
         });
       }
     );
@@ -169,65 +174,59 @@ export class TransactionListComponent implements OnInit {
 
   removeTransaction(transactionId: number) {
     this.transactionService.removeTransaction(transactionId).subscribe(
-      next => {
+      (next) => {
         Swal.fire({
           icon: 'success',
           title: 'Transaction has successfully removed ',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1000,
         });
         this.transactions = [];
         this.loadTransactionsByRole();
       },
-      error => {
+      (error) => {
         Swal.fire({
           icon: 'error',
           title: 'Transaction cannot be deleted',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1000,
         });
       }
     );
-
   }
 
-
   validateAllTransactions(listTransaction: Array<number>) {
-    this.transactionService.validateAllTransaction(listTransaction).subscribe(
-      next => {
+    this.transactionService
+      .validateAllTransaction(listTransaction)
+      .subscribe((next) => {
         this.transactions = [];
         this.loadTransactionsByRole();
-      }
-    );
-
+      });
   }
 
   rejectAllTransactions(listTransaction: Array<number>) {
-    this.transactionService.rejectAllTransaction(listTransaction).subscribe(
-      next => {
+    this.transactionService
+      .rejectAllTransaction(listTransaction)
+      .subscribe((next) => {
         this.transactions = [];
         this.loadTransactionsByRole();
-      }
-    )
-    ;
+      });
   }
 
   removeAllTransactions(listTransaction: Array<number>) {
-    this.transactionService.removeAllTransaction(listTransaction).subscribe(
-      next => {
+    this.transactionService
+      .removeAllTransaction(listTransaction)
+      .subscribe((next) => {
         this.transactions = [];
         this.loadTransactionsByRole();
-      }
-    );
+      });
   }
 
-
   handleTransactionSearch(keyword: string) {
-
     if (keyword !== '') {
-      this.transactionService.handleTransactionSearch(keyword, this.pageNumber, this.pageSize).subscribe(
-        this.processResult()
-      );
+      this.transactionService
+        .handleTransactionSearch(keyword, this.pageNumber, this.pageSize)
+        .subscribe(this.processResult());
     } else {
       this.getTransactions();
     }
@@ -236,12 +235,11 @@ export class TransactionListComponent implements OnInit {
   statusCasting(status: number): string {
     switch (status) {
       case 0:
-        return 'Progress';
+        return 'En progreso';
       case 1:
-        return 'Approved';
+        return 'Aprobada';
       case 2:
-        return 'Rejected';
-
+        return 'Rechazada';
     }
   }
 
@@ -251,7 +249,6 @@ export class TransactionListComponent implements OnInit {
         return 'green';
       case 2:
         return 'red';
-
     }
   }
 }

@@ -1,38 +1,84 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html"><img src="../../assets/CoopHalal icon 1.png" width="110px" height="60px"/></a>
-    <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" (click)="toggleSideBar()"><i class="fas fa-bars"></i></button>
-    
-    <div style="margin-left: auto !important;" *ngIf="this.isAdmin()">
-        <a class="switch-items">
-            <div class="button">
-                <input type="checkbox" class="switch-toggle" checked (change)="switchAccount($event)"/>
-                <div class="knobs">
-                  <span></span>
-                </div>
-                <div class="layer"></div>
-            </div>
-        </a>
-    </div>
-    <!-- Navbar Search-->
-    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        <div class="input-group">
-            <input class="form-control" type="text" placeholder="Buscar..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-            <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+  <!-- Navbar Brand-->
+  <a class="navbar-brand ps-3" href="index.html"
+    ><img src="../../assets/CoopHalal icon 1.png" width="110px" height="60px"
+  /></a>
+  <!-- Sidebar Toggle-->
+  <button
+    class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+    id="sidebarToggle"
+    (click)="toggleSideBar()"
+  >
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div style="margin-left: auto !important" *ngIf="this.isAdmin()">
+    <a class="switch-items">
+      <div class="button">
+        <input
+          type="checkbox"
+          class="switch-toggle"
+          checked
+          (change)="switchAccount($event)"
+        />
+        <div class="knobs">
+          <span></span>
         </div>
-    </form>
-    <!-- Navbar-->
-    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" (click)="toggleMenu()" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" routerLink="/dashboard/profile" (click)="setActiveClass($event)"><i class="fa-solid fa-user"></i><span style="margin-left: 8px;">Perfil</span></a></li>
-                <li><a class="dropdown-item" href="#!">Ajustes</a></li>
-                <li><a class="dropdown-item" href="#!">Registro de actividades</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><button class="dropdown-item" (click)="logout()">Cerrar sesión</button></li>
-            </ul>
+        <div class="layer"></div>
+      </div>
+    </a>
+  </div>
+  <!-- Navbar Search-->
+  <form
+    class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
+  >
+    <div class="input-group">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Buscar..."
+        aria-label="Search for..."
+        aria-describedby="btnNavbarSearch"
+      />
+      <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </form>
+  <!-- Navbar-->
+  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+    <li class="nav-item dropdown">
+      <a
+        class="nav-link dropdown-toggle"
+        id="navbarDropdown"
+        (click)="toggleMenu()"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        ><i class="fas fa-user fa-fw"></i
+      ></a>
+      <ul
+        class="dropdown-menu dropdown-menu-end"
+        aria-labelledby="navbarDropdown"
+      >
+        <li>
+          <a
+            class="dropdown-item"
+            routerLink="/dashboard/profile"
+            (click)="setActiveClass($event)"
+            ><i class="fa-solid fa-user"></i
+            ><span style="margin-left: 8px">Perfil</span></a
+          >
+        </li>
+        <li><a class="dropdown-item" href="#!">Ajustes</a></li>
+        <li><a class="dropdown-item" href="#!">Registro de actividades</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li>
+          <button class="dropdown-item" (click)="logout()">
+            Cerrar sesión
+          </button>
         </li>
       </ul>
+    </li>
+  </ul>
 </nav>

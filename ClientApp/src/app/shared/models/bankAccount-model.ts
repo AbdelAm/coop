@@ -1,6 +1,5 @@
-import { TransactionModel } from './transaction-model';
-import { UserModel } from './user-model';
-
+import {TransactionModel} from './transaction-model';
+import {UserModel} from './user-model';
 
 export class BankAccountModel {
   id!: number;

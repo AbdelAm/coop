@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace coop2._0.Model
+﻿namespace coop2._0.Model
 {
     public class PaginationResponse
     {

@@ -1,5 +1,4 @@
 ﻿using coop2._0.Entities;
-using System;
 
 namespace coop2._0.Model
 {
@@ -16,7 +15,6 @@ namespace coop2._0.Model
 
         public UserItemModel()
         {
-
         }
 
         public UserItemModel(User u)
