@@ -7,7 +7,7 @@ import {CoopValidators} from '../../shared/validators/coopValidators';
 import {JwtService} from '../../shared/services/jwt.service';
 import {TransactionService} from '../../shared/services/transaction.service';
 import {TransactionModel} from '../../shared/models/transaction-model';
-import { BankAccountService } from 'src/app/shared/services/bank-account.service';
+import {BankAccountService} from 'src/app/shared/services/bank-account.service';
 
 @Component({
   selector: 'app-transaction-popup',
@@ -24,6 +24,7 @@ export class TransactionPopupComponent implements OnInit {
   userBankAccountId: number;
   readonly hasAdminRole: boolean;
   readonly isConnected: boolean;
+  readonly switchBtn: boolean;
 
 
   transactionFormGroup = this._formBuilder.group({
@@ -33,17 +34,12 @@ export class TransactionPopupComponent implements OnInit {
         Validators.required,
         CoopValidators.notOnlyWhiteSpace
       ]),
-      externalAccount: new FormControl('', [
-        Validators.required,
-        CoopValidators.notOnlyWhiteSpace
-      ]),
+      externalAccount: new FormControl('' ),
     }),
     destination: this._formBuilder.group({
-      originalAccountDestination: new FormControl(''),
       destinationAccount: new FormControl('', [Validators.required,
         CoopValidators.notOnlyWhiteSpace]),
-      externalDestination: new FormControl('', [Validators.required,
-        CoopValidators.notOnlyWhiteSpace]),
+      externalDestination: new FormControl(''),
     }),
     receiverInfo: this._formBuilder.group({
       amount: new FormControl('', [
@@ -61,12 +57,14 @@ export class TransactionPopupComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder, private jwt: JwtService, private transactionService: TransactionService, private bankService: BankAccountService) {
     this.isConnected = jwt.isConnected();
     this.hasAdminRole = jwt.isAdmin();
+    this.switchBtn = this.jwt.switchBtn;
+
   }
 
   ngOnInit(): void {
     this.bankService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
       res => {
-        this.userBankAccountId = res;
+        this.userBankAccountId = res.id;
       },
       err => console.log(err)
     );
@@ -77,14 +75,13 @@ export class TransactionPopupComponent implements OnInit {
       this.transactionFormGroup.markAllAsTouched();
       return;
     }
+
     const transaction = new TransactionModel();
-    transaction.senderBankAccountId = this.transactionFormGroup.get('origin.originalAccount').value;
-    transaction.receiverBankAccountId = this.transactionFormGroup.get('destination.destinationAccount').value ?
-      this.transactionFormGroup.get('destination.destinationAccount').value :
-      this.transactionFormGroup.get('destination.originalAccountDestination').value;
+    transaction.senderBankAccountId = this.transactionFormGroup.get('origin.originalAccount').value ? this.transactionFormGroup.get('origin.originalAccount').value : this.transactionFormGroup.get('origin.receiverAccount').value;
+    transaction.receiverBankAccountId = this.transactionFormGroup.get('destination.destinationAccount').value;
     transaction.amount = this.transactionFormGroup.get('receiverInfo.amount').value;
     transaction.motif = this.transactionFormGroup.get('receiverInfo.concept').value;
-
+    console.log(transaction);
     this.transactionService.postTransaction(transaction).subscribe(
       next => {
         Swal.fire({
@@ -93,6 +90,7 @@ export class TransactionPopupComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000
         });
+        document.getElementById('closeDialog').click();
       },
       error => {
         Swal.fire({
@@ -151,22 +149,6 @@ export class TransactionPopupComponent implements OnInit {
     }
   }
 
-  disableAllDestinationInputs(event) {
-    if (event.target.value) {
-      this.transactionFormGroup.get(
-        'destination.destinationAccount'
-      ).disable();
-      this.transactionFormGroup.get(
-        'destination.externalDestination'
-      ).disable();
-      this.transactionFormGroup.get(
-        'destination.destinationAccount'
-      ).reset();
-      this.transactionFormGroup.get(
-        'destination.externalDestination'
-      ).reset();
-    }
-  }
 
   disableExternalInput(event) {
     if (event.target.value) {

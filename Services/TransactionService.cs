@@ -47,9 +47,9 @@ namespace coop2._0.Services
             return await _transactionRepository.ValidateTransaction(id);
         }
 
-        public async Task<object> GetTransactionsByUser(TransactionByUserModel model)
+        public async Task<object> GetTransactionsByUser(int userBankAccountId, PaginationFilter filter)
         {
-            return await _transactionRepository.GetTransactionsByUser(model);
+            return await _transactionRepository.GetTransactionsByUser(userBankAccountId,filter);
         }
 
         public async Task<object> SearchForTransactions(string keyword, PaginationFilter filter)

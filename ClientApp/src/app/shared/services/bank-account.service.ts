@@ -18,8 +18,8 @@ export class BankAccountService {
   getAccounts(): Observable<BankAccountModel[]> {
     return this.http.get<BankAccountModel[]>(this.baseUrl + 'bankaccount/list');
   }
-  getBankAccount(userId: string): Observable<number> {
-    return this.http.get<number>(this.baseUrl + `bankaccount/${userId}`);
+  getBankAccount(userId: string): Observable<BankAccountModel> {
+    return this.http.get<BankAccountModel>(this.baseUrl + `bankaccount/${userId}`);
   }
   validateAccounts(accountList: Array<number>): Observable<BankAccountModel[]> {
     return this.http.post<BankAccountModel[]>(this.baseUrl + 'bankaccount/validate', accountList);

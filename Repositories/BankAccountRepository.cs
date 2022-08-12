@@ -26,8 +26,10 @@ namespace coop2._0.Repositories
 
         public async Task<IEnumerable<BankAccount>> SelectByUser(string userId)
         {
-            return await _context.BankAccounts.Where(b => b.UserId == userId).ToListAsync();
+            return await _context.BankAccounts.Where(b => b.UserId == userId && b.Status == Status.Approuved)
+                .ToListAsync();
         }
+
         public async Task Delete(BankAccount account)
         {
             _context.BankAccounts.Remove(account);

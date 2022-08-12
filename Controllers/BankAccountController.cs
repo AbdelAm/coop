@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using coop2._0.Entities;
 
 namespace coop2._0.Controllers
 {
@@ -18,13 +19,14 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<ActionResult<int>> GetBankAccountByUser(string userId)
+        public async Task<ActionResult<BankAccount>> GetBankAccountByUser(string userId)
         {
             try
             {
-                int bankId = await _bankService.GetBankAccount(userId);
+                var bankId = await _bankService.GetBankAccount(userId);
                 return Ok(bankId);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return NotFound(ex.Message);
             }

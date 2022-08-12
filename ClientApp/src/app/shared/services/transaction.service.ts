@@ -20,9 +20,9 @@ export class TransactionService {
     return this.httpClient.post(this.baseUrl, transaction);
   }
 
-  getTransactionsByUser(userBankAccountId: number, page: number): Observable<GetTransactionsByUserResponse> {
-    const body = {'userBankAccountId': userBankAccountId, 'page': page};
-    return this.httpClient.post<GetTransactionsByUserResponse>(this.baseUrl + '/user', body);
+  getTransactionsByUser(userBankAccountId: number, pageNumber = 1, pageSize: number): Observable<GetTransactionsByUserResponse> {
+
+    return this.httpClient.get<GetTransactionsByUserResponse>(this.baseUrl + '/user/' + userBankAccountId + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }
 
   getTransactions(pageNumber: number, pageSize: number): Observable<GetTransactionsResponse> {
@@ -41,9 +41,6 @@ export class TransactionService {
     return this.httpClient.delete(this.baseUrl + '/ ' + transactionId);
   }
 
-  /*  updateTransaction() {
-      // TO DO
-    }*/
 
   validateAllTransaction(transactionsIds: number[]) {
     return this.httpClient.post(this.baseUrl + '/validate-all', transactionsIds);
@@ -58,8 +55,8 @@ export class TransactionService {
     return this.httpClient.post(this.baseUrl + '/remove-all', transactionsIds);
   }
 
-  handleTransactionSearch(keyword: string): Observable<GetTransactionsResponse> {
-    return this.httpClient.get<GetTransactionsResponse>(this.baseUrl + /search/ + keyword);
+  handleTransactionSearch(keyword: string, pageNumber: number, pageSize: number): Observable<GetTransactionsResponse> {
+    return this.httpClient.get<GetTransactionsResponse>(this.baseUrl + /search/ + keyword + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }
 }
 
