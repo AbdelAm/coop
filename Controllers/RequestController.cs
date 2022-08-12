@@ -21,10 +21,14 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet]
-        [Route("list/{page}")]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequests(int page)
+        public async Task<object> GetRequests([FromQuery] PaginationFilter filter)
         {
-            return await _requestService.GetRequests();
+            return await _requestService.GetRequests(filter);
+        }
+        [HttpGet("user/{userId}")]
+        public async Task<object> GetRequestsByUser(string userId, [FromQuery] PaginationFilter filter)
+        {
+            return await _requestService.GetRequestsByUser(userId, filter);
         }
 
         [HttpPost("list/{id}/{page}")]

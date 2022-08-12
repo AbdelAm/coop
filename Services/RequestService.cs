@@ -18,14 +18,18 @@ namespace coop2._0.Services
         }
 
 
-        public Task<Request> GetRequest(int id)
+        public Task<Request> GetRequest(int id )
         {
             return _requestRepository.GetRequest(id);
         }
-
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        public async Task<object> GetRequestsByUser(string userId, PaginationFilter filter)
         {
-            return await _requestRepository.GetRequests();
+            return await _requestRepository.GetRequestsByUser(userId, filter);
+        }
+
+        public async Task<object> GetRequests(PaginationFilter filter)
+        {
+            return await _requestRepository.GetRequests(filter);
         }
 
         public async Task<bool> RemoveRequest(List<int> requests)

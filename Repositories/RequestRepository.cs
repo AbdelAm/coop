@@ -19,9 +19,14 @@ namespace coop2._0.Repositories
         }
 
 
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        public async Task<object> GetRequests(PaginationFilter filter)
         {
-            return await _context.Requests.ToListAsync();
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var response= await _context.Requests.ToListAsync();
+            var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
+                await _context.Transactions.CountAsync());
+
+            return new { response, pagination };
         }
 
 
@@ -29,7 +34,17 @@ namespace coop2._0.Repositories
         {
             return await _context.Requests.Include(req => req.User).Where(req => req.Id == id).FirstOrDefaultAsync();
         }
+        public async Task<object> GetRequestsByUser(string userId, PaginationFilter filter)
+        {
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
+            var response = await _context.Requests.Where(b => b.UserId == userId).ToListAsync();
+            var totalRecords = await _context.Requests.CountAsync(b => b.UserId == userId);
+            var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
+                totalRecords);
+
+            return new { response, pagination };
+        }
         public async Task<IEnumerable<Request>> SelectByUser(string userId)
         {
             return await _context.Requests.Where(b => b.UserId == userId).ToListAsync();

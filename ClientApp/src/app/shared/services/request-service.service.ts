@@ -10,37 +10,21 @@ import {RequestModel} from '../models/request-model';
 export class RequestServiceService {
   readonly baseUrl = environment.apiUrl;
 
-  /* request: RequestModel;*/
+  readonly baseUrl = environment.apiUrl;
+  request: RequestModel;
   constructor(private http: HttpClient) {
-    /*this.request = new RequestModel();*/
+  this.request = new RequestModel();
   }
 
   setRequest(request: RequestModel): Observable<RequestModel> {
     return this.http.post<RequestModel>(this.baseUrl + 'request/add', request);
   }
-
-  getRequests(page: number = 1): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(this.baseUrl + `request/list/${page}`);
+  getRequests(pageNumber: number, pageSize: number): Observable<GetRequestResponse> {
+    return this.http.get<GetRequestResponse>(this.baseUrl + 'request?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }
-
-  getRequestsPagination(
-    pageNumber: number,
-    pageSize: number
-  ): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(
-      this.baseUrl + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize
-    );
+  getRequestsByUser(userId: string, pageNumber: number = 1, pageSize: number): Observable<GetRequestResponseByUserResponse> {
+    return this.http.get<GetRequestResponseByUserResponse>(this.baseUrl + 'request/user/' + userId + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }
-
-  getRequestsByUser(
-    userId: number,
-    page: number = 1
-  ): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(
-      this.baseUrl + `request/list/${userId}/${page}`
-    );
-  }
-
   searchRequest(value: string): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/${value}`);
   }
@@ -65,4 +49,26 @@ export class RequestServiceService {
       requestList
     );
   }
+}
+
+interface GetRequestResponse {
+  response: {
+    request: RequestModel[];
+  },
+  pagination: {
+    pageNumber: number,
+    pageSize: number,
+    totalRecords: number
+  };
+}
+
+interface GetRequestResponseByUserResponse {
+  response: {
+    request: RequestModel[];
+  },
+  pagination: {
+    pageNumber: number,
+    pageSize: number,
+    totalRecords: number
+  };
 }

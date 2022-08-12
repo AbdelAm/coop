@@ -176,6 +176,17 @@
                 (pageChange)="getRequestsByUser()"
               >
               </ngb-pagination>
+              <!--<div class="dataTable-bottom">
+                <nav class="dataTable-pagination">
+                    <ul class="dataTable-pagination-list">
+                      <li *ngFor="let i of pageNumber; let isFirst = first" [class.active]="isFirst" class="pagination-items" (click)="setActiveClass(i)">
+                        <a style="cursor: pointer;" (click)="getItems(i)">{{i+1}}</a>
+                      </li>
+                                          
+                    </ul>
+                </nav>
+                              
+              </div>-->
             </div>
           </div>
         </div>

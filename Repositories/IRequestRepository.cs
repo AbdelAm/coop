@@ -8,9 +8,10 @@ namespace coop2._0.Repositories
 {
     public interface IRequestRepository
     {
-        Task<ActionResult<IEnumerable<Request>>> GetRequests();
+        Task<object> GetRequests(PaginationFilter filter);
         Task<Request> GetRequest(int id);
         Task<IEnumerable<Request>> SelectByUser(string userId);
+        Task<object> GetRequestsByUser(string userId, PaginationFilter filter);
         Task<bool> RemoveRequest(Request request);
         Task<Request> RejectRequest(Request request);
         Task<Request> ValidateRequest(Request request);
