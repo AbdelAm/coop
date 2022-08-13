@@ -81,8 +81,9 @@ export class RequestListComponent implements OnInit {
     if (this.isConnected && this.hasAdminRole) {
       if (this.switchBtn) {
         this.getRequests();
+      } else {
+        this.getRequestsByUser();
       }
-      this.getRequestsByUser();
     } else {
       if (this.isConnected && !this.hasAdminRole) {
         this.getRequestsByUser();
