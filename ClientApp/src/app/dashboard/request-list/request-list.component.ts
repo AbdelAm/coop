@@ -23,7 +23,7 @@ export class RequestListComponent implements OnInit {
   listRequest: Array<number>;
   requests: RequestModel[];
   pageNumber = 1;
-  pageSize = 10;
+  pageSize = 5;
   totalElements = 100;
   isConnected: boolean;
   hasAdminRole: boolean;

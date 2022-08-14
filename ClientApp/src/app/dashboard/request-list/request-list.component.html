@@ -10,7 +10,7 @@
     <button
       style="margin-bottom: 30px"
       type="button"
-      *ngIf="isConnected && !switchBtn"
+      *ngIf="isConnected && !hasAdminRole"
       class="btn btn-success"
       (click)="open(content)"
     >
