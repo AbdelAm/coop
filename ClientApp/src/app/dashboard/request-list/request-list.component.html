@@ -90,12 +90,12 @@
                         (change)="selectAll($event)"
                       />
                     </th>
-                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn" >Id</th>
-                    <th data-sortable=""*ngIf="isConnected && hasAdminRole && switchBtn" >User</th>
-                    <th data-sortable="">Type</th>
-                    <th data-sortable="">Message</th>
-                    <th data-sortable="">DateRequest</th>
-                    <th data-sortable="">Status</th>
+                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn">identificación</th>
+                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn">usuario</th>
+                    <th data-sortable="">Tipo </th>
+                    <th data-sortable="">mensaje</th>
+                    <th data-sortable="">Fecha</th>
+                    <th data-sortable="">Estado</th>
                     <th *ngIf="isConnected && hasAdminRole && switchBtn" data-sortable="">
                       Action
                     </th>
@@ -113,9 +113,9 @@
                     </td>
                     <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.id }}</td>
                     <td *ngIf="isConnected && hasAdminRole && switchBtn" >{{ request.userId }}</td>
-                    <td>{{ request.type }}</td>
+                    <td>{{request.type}}</td>
                     <td>{{ request.message }}</td>
-                    <td>{{ request.dateRequest }}</td>
+                    <td>{{ request.dateRequest  | date: "dd-MM-yyyy"}}</td>
                     <td [innerHTML]="this.status[request.status]"></td>
                     <td
                       *ngIf="isConnected && hasAdminRole && switchBtn"
@@ -219,8 +219,8 @@
               id="optdata"
               name="typeDemande"
             >
-              <option [value]="o.value" *ngFor="let o of options">
-                {{ o.name }}
+              <option [[value]]="o.value" *ngFor="let o of options">
+                {{o.name}}
               </option>
             </select>
           </div>

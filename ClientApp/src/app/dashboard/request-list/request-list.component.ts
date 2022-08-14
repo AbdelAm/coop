@@ -35,6 +35,13 @@ export class RequestListComponent implements OnInit {
     '<strong class="text-success">Approuved</strong>',
     '<strong class="text-danger text-capitalize">Rejected</strong>'
   ];
+  types = [
+    '<p> Consultarnos dudas </p>',
+    '<p>Informarnos de cambios en tus datos</p>',
+    '<p>Solicitar alta o modificación de aportaciones periodica</p>',
+    '<p>Solicitar la baja como socio</p>',
+    '<p>Solicitar mi historial de cuenta de años anteriores</p>'
+  ];
 
   constructor(private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private userService: UserService, private modalService: NgbModal) {
 
@@ -205,7 +212,7 @@ export class RequestListComponent implements OnInit {
         });
         this.listRequest.length = 0;
         Swal.fire({
-          title: 'Request Validated successfully!!!',
+          title: 'La Solicitud ha sido validada con éxito!',
           icon: 'success',
         });
       },
@@ -224,7 +231,7 @@ export class RequestListComponent implements OnInit {
         });
         this.listRequest.length = 0;
         Swal.fire({
-          title: 'Request Rejected successfully!!!',
+          title: 'La solicitud ha sido rechazada!',
           icon: 'success',
         });
       },
@@ -240,7 +247,7 @@ export class RequestListComponent implements OnInit {
         });
         this.listRequest.length = 0;
         Swal.fire({
-          title: 'Request Deleted successfully!!!',
+          title: 'La solicitud ha sido eliminada!',
           icon: 'success',
         });
       },
@@ -261,10 +268,7 @@ export class RequestListComponent implements OnInit {
   options = [
     {name: 'Consultarnos dudas', value: 1},
     {name: 'Informarnos de cambios en tus datos', value: 2},
-    {
-      name: 'Solicitar alta o modificación de aportaciones periodicas',
-      value: 3,
-    },
+    {name: 'Solicitar alta o modificación de aportaciones periodicas',value: 3},
     {name: 'Solicitar la baja como socio', value: 4},
     {name: 'Solicitar mi historial de cuenta de años anteriores', value: 5},
   ];
