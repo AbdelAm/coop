@@ -26,7 +26,7 @@ namespace coop2._0.Controllers
             return await _requestService.GetRequests(filter);
         }
         [HttpGet("user/{userId}")]
-        public async Task<object> GetRequestsByUser(string userId, [FromQuery] PaginationFilter filter)
+        public async Task<object> GetRequestsByUser([FromQuery] PaginationFilter filter,string userId)
         {
             return await _requestService.GetRequestsByUser(userId, filter);
         }

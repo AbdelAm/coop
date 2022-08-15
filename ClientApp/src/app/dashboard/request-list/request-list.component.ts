@@ -31,9 +31,9 @@ export class RequestListComponent implements OnInit {
   request: RequestModel;
   requestItems: ItemsModel<RequestModel>;
   status = [
-    '<strong>In Progress</strong>',
-    '<strong class="text-success">Approuved</strong>',
-    '<strong class="text-danger text-capitalize">Rejected</strong>'
+    '<strong>Progreso</strong>',
+    '<strong class="text-success">Aprobado</strong>',
+    '<strong class="text-danger text-capitalize">Rechazado</strong>'
   ];
   
 
@@ -114,7 +114,7 @@ export class RequestListComponent implements OnInit {
         this.requests.push(this.request);
         this.modalService.dismissAll();
         Swal.fire({
-          title: 'Request added successfully!!!',
+          title: '¡Solicitud añadida con éxito!',
           icon: 'success',
         });
         // this.router.navigate(['requests']);
