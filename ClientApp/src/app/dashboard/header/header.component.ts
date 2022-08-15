@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   }
 
   setActiveClass(e: Event) {
-    let current = document.querySelector('.active');
+    const current = document.querySelector('.active');
     current.classList.remove('active');
   }
 
@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
       this.jwt.switchBtn
         ? this.router.navigateByUrl('/dashboard/users')
         : this.router.navigateByUrl('/dashboard/global');
-    }, 250);
+    });
   }
 
   logout() {

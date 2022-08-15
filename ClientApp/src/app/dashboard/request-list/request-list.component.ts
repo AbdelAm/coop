@@ -23,7 +23,7 @@ export class RequestListComponent implements OnInit {
   listRequest: Array<number>;
   requests: RequestModel[];
   pageNumber = 1;
-  pageSize = 10;
+  pageSize = 5;
   totalElements = 100;
   isConnected: boolean;
   hasAdminRole: boolean;
@@ -35,6 +35,7 @@ export class RequestListComponent implements OnInit {
     '<strong class="text-success">Approuved</strong>',
     '<strong class="text-danger text-capitalize">Rejected</strong>'
   ];
+  
 
   constructor(private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private userService: UserService, private modalService: NgbModal) {
 
@@ -77,13 +78,15 @@ export class RequestListComponent implements OnInit {
 
 
   loadRequestsByRole() {
-    console.log(this.isConnected, this.hasAdminRole, this.switchBtn);
 
-    if (this.isConnected && this.hasAdminRole && this.switchBtn) {
-      this.getRequests();
+    if (this.isConnected && this.hasAdminRole) {
+      if (this.switchBtn) {
+        this.getRequests();
+      } else {
+        this.getRequestsByUser();
+      }
     } else {
-      if (this.isConnected && !this.switchBtn) {
-
+      if (this.isConnected && !this.hasAdminRole) {
         this.getRequestsByUser();
       } else {
         this.router.navigateByUrl('/login');
@@ -91,31 +94,6 @@ export class RequestListComponent implements OnInit {
     }
   }
 
-
-  // getItems(num: number) {
-  //  this.requestService.getRequests(num).subscribe(
-  //    res => {
-  //      Object.assign(this.requestItems, res);
-  //      let result = Math.trunc(this.requestItems.itemsNumber / this.pageSize);
-  //      if (this.requestItems.itemsNumber % this.pageSize != 0) {
-  //        result++;
-  //      }
-  //      this.pageNumber = Array.from(Array(result).keys());
-  //    },
-  //    err => {
-  //      if ([401, 403].includes(err["status"])) {
-  //        this.router.navigateByUrl('/dashboard/global');
-  //      } else {
-  //        Swal.fire({
-  //          title: "There is a Problem!!!",
-  //          text: err["error"],
-  //          icon: "error",
-  //        })
-  //      }
-  //    }
-  //  );
-  //  window.scrollTo(0, 0);
-  // }
 
 
   setRequest() {
@@ -203,7 +181,7 @@ export class RequestListComponent implements OnInit {
         });
         this.listRequest.length = 0;
         Swal.fire({
-          title: 'Request Validated successfully!!!',
+          title: 'La Solicitud ha sido validada con éxito!',
           icon: 'success',
         });
       },
@@ -222,7 +200,7 @@ export class RequestListComponent implements OnInit {
         });
         this.listRequest.length = 0;
         Swal.fire({
-          title: 'Request Rejected successfully!!!',
+          title: 'La solicitud ha sido rechazada!',
           icon: 'success',
         });
       },
@@ -238,7 +216,7 @@ export class RequestListComponent implements OnInit {
         });
         this.listRequest.length = 0;
         Swal.fire({
-          title: 'Request Deleted successfully!!!',
+          title: 'La solicitud ha sido eliminada!',
           icon: 'success',
         });
       },
@@ -259,10 +237,7 @@ export class RequestListComponent implements OnInit {
   options = [
     {name: 'Consultarnos dudas', value: 1},
     {name: 'Informarnos de cambios en tus datos', value: 2},
-    {
-      name: 'Solicitar alta o modificación de aportaciones periodicas',
-      value: 3,
-    },
+    {name: 'Solicitar alta o modificación de aportaciones periodicas',value: 3},
     {name: 'Solicitar la baja como socio', value: 4},
     {name: 'Solicitar mi historial de cuenta de años anteriores', value: 5},
   ];
