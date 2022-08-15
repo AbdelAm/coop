@@ -8,6 +8,7 @@ namespace coop2._0.Repositories
     {
         Task<string> InsertBankAccount(BankAccount account);
         Task<IEnumerable<BankAccount>> SelectByUser(string userId);
+        Task<bool> HasActivated(string userId);
         Task Delete(BankAccount account);
     }
 }

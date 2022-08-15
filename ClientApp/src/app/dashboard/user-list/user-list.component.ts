@@ -142,6 +142,7 @@ export class UserListComponent implements OnInit {
         });
       },
       (err) => {
+        this.listUser.length = 0;
         Swal.fire({
           title: 'There is probleme !!!',
           text: err['error'],
@@ -167,6 +168,7 @@ export class UserListComponent implements OnInit {
         });
       },
       (err) => {
+        this.listUser.length = 0;
         Swal.fire({
           title: 'There is probleme !!!',
           text: err['error'],
@@ -190,6 +192,7 @@ export class UserListComponent implements OnInit {
         });
       },
       (err) => {
+        this.listUser.length = 0;
         Swal.fire({
           title: 'There is probleme !!!',
           text: err['error'],

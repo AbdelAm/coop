@@ -160,8 +160,7 @@ namespace coop2._0.Services
             foreach (string id in users)
             {
                 var user = await _userRepository.SelectById(id);
-                var bankAccounts = await _bankRepository.SelectByUser(id);
-                if (bankAccounts != null && bankAccounts.Where(b => b.Status == Status.Approuved && b.Balance > 0).Any())
+                if (await _bankRepository.HasActivated(id))
                 {
                     throw new Exception(
                         "Este usuario tiene un BankAccount apropiado, y May ha realizado algunas transacciones con él, debe verificar su situación de cuenta bancaria antes de eliminar al usuario");
