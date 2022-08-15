@@ -35,13 +35,7 @@ export class RequestListComponent implements OnInit {
     '<strong class="text-success">Approuved</strong>',
     '<strong class="text-danger text-capitalize">Rejected</strong>'
   ];
-  types = [
-    '<p> Consultarnos dudas </p>',
-    '<p>Informarnos de cambios en tus datos</p>',
-    '<p>Solicitar alta o modificación de aportaciones periodica</p>',
-    '<p>Solicitar la baja como socio</p>',
-    '<p>Solicitar mi historial de cuenta de años anteriores</p>'
-  ];
+  
 
   constructor(private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private userService: UserService, private modalService: NgbModal) {
 
@@ -100,31 +94,6 @@ export class RequestListComponent implements OnInit {
     }
   }
 
-
-  // getItems(num: number) {
-  //  this.requestService.getRequests(num).subscribe(
-  //    res => {
-  //      Object.assign(this.requestItems, res);
-  //      let result = Math.trunc(this.requestItems.itemsNumber / this.pageSize);
-  //      if (this.requestItems.itemsNumber % this.pageSize != 0) {
-  //        result++;
-  //      }
-  //      this.pageNumber = Array.from(Array(result).keys());
-  //    },
-  //    err => {
-  //      if ([401, 403].includes(err["status"])) {
-  //        this.router.navigateByUrl('/dashboard/global');
-  //      } else {
-  //        Swal.fire({
-  //          title: "There is a Problem!!!",
-  //          text: err["error"],
-  //          icon: "error",
-  //        })
-  //      }
-  //    }
-  //  );
-  //  window.scrollTo(0, 0);
-  // }
 
 
   setRequest() {
