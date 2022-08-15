@@ -189,6 +189,7 @@ namespace coop2._0.Services
                 SocialNumber = model.SocialNumber,
                 IsAdmin = true,
                 DateCreated = DateTime.Now,
+                Status = Status.Approuved,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
             var result = await _userRepository.InsertAdmin(user, model.Password);
@@ -203,7 +204,8 @@ namespace coop2._0.Services
                 AccountNumber = Guid.NewGuid().ToString("D"),
                 Balance = 350.0,
                 DateCreated = DateTime.Now,
-                UserId = user.Id
+                UserId = user.Id,
+                Status = Status.Approuved
             };
             string bankAccount = await _bankRepository.InsertBankAccount(account);
 
