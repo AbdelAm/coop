@@ -10,7 +10,7 @@
     <button
       style="margin-bottom: 30px"
       type="button"
-      *ngIf="isConnected && !hasAdminRole"
+      *ngIf="isConnected && !hasAdminRole "
       class="btn btn-success"
       (click)="open(content)"
     >
@@ -18,18 +18,14 @@
     </button>
     <div class="card mb-4">
       <div
-        class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
-      >
+        class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
         <div class="card mb-4">
           <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Listas de Peticiones
-            <!-------------------transalate------------>
           </div>
           <div class="card-body">
-            <div
-              class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
-            >
+            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
               <div class="dataTable-top" *ngIf="isConnected && hasAdminRole && switchBtn">
                 <div class="dataTable-dropdown pt-2 d-none">
                   <button
@@ -75,9 +71,7 @@
                     ></i>
                   </button>
                 </div>
-                <div class="dataTable-search">
-                  <!--<input class="dataTable-input" (keyup)="searchItem($event)" placeholder="Búsqueda..." type="text">-->
-                </div>
+                <div class="dataTable-search"></div>
               </div>
               <div class="dataTable-container">
                 <table id="datatablesSimple" class="dataTable-table">
@@ -173,8 +167,7 @@
                 [pageSize]="pageSize"
                 [collectionSize]="totalElements"
                 [boundaryLinks]="true"
-                (pageChange)="loadRequestsByRole()"
-              >
+                (pageChange)="loadRequestsByRole()">
               </ngb-pagination>
               
             </div>

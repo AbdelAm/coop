@@ -29,7 +29,7 @@ namespace coop2._0.Repositories
                 .ToListAsync();
 
             var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
-                await _context.Transactions.CountAsync());
+                await _context.Requests.CountAsync());
 
             return new { response, pagination };
         }
