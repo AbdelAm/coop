@@ -209,6 +209,12 @@ body {
   color: #00568e;
 }
 
+@media screen and (max-width: 838px)
+{
+  .small-screen {
+    display: none !important;
+  }
+}
 @media (max-width: 600px) {
   body {
     display: flex;

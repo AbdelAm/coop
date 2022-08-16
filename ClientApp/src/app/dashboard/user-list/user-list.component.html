@@ -36,12 +36,12 @@
                                   <thead>
                                     <tr>
                                       <th><input (change)="selectAll($event)" type="checkbox"></th>
-                                      <th class="text-capitalize">CiF</th>
-                                      <th class="text-capitalize">Nombre completo</th>
+                                      <!--<th class="text-capitalize">CiF</th>-->
+                                      <th class="text-capitalize">Nombre</th>
                                       <th class="text-capitalize">Correo electrónico</th>
                                       <th class="text-capitalize">numeroSocial</th>
-                                      <th class="text-capitalize">Teléfono</th>
-                                      <th class="text-capitalize">Confirmada</th>
+                                      <!--<th class="text-capitalize">Teléfono</th>-->
+                                      <!--<th class="text-capitalize">Confirmada</th>-->
                                       <th class="text-capitalize">Estado</th>
                                       <th class="text-capitalize">Acción</th>
                                     </tr>
@@ -49,12 +49,12 @@
                                   <tbody>
                                     <tr *ngFor="let user of userItems.items">
                                       <td><input (change)="setUser(user.cif, $event)" class="items" type="checkbox" value="{{user.cif}}" /></td>
-                                      <td class="wraped">{{user.cif}}</td>
+                                      <!--<td class="wraped">{{user.cif}}</td>-->
                                       <td>{{user.name}}</td>
                                       <td>{{user.email}}</td>
                                       <td>{{user.socialNumber}}</td>
-                                      <td>{{user.phone}}</td>
-                                      <td>{{user.isConfirmed}}</td>
+                                      <!--<td>{{user.phone}}</td>-->
+                                      <!--<td>{{user.isConfirmed}}</td>-->
                                       <td [innerHTML]="this.status[user.status]"></td>
                                       <td class="icons d-flex justify-content-center">
                                           <button class="border-0 bg-transparent align-middle" (click)="validateUser(user.cif)" *ngIf="user.status != 1">
