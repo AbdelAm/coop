@@ -135,9 +135,9 @@ export class TransactionListComponent implements OnInit {
       (next) => {
         Swal.fire({
           icon: 'success',
-          title: 'Transaction has successfully validated ',
+          title: 'La transacción ha sido validada con éxito',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
         });
         this.transactions = [];
         this.loadTransactionsByRole();
@@ -145,9 +145,9 @@ export class TransactionListComponent implements OnInit {
       (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Transaction cannot be validated',
+          title: 'La transacción no puede ser validada',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
         });
       }
     );
@@ -158,9 +158,9 @@ export class TransactionListComponent implements OnInit {
       (next) => {
         Swal.fire({
           icon: 'success',
-          title: 'Transaction has successfully rejected ',
+          title: 'La transacción ha sido rechazada con éxito',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
         });
         this.transactions = [];
         this.loadTransactionsByRole();
@@ -168,9 +168,9 @@ export class TransactionListComponent implements OnInit {
       (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Transaction cannot be rejected',
+          title: 'La transacción no puede ser rechazada',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
         });
       }
     );
@@ -181,9 +181,9 @@ export class TransactionListComponent implements OnInit {
       (next) => {
         Swal.fire({
           icon: 'success',
-          title: 'Transaction has successfully removed ',
+          title: 'La transacción ha sido eliminada con éxito',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
         });
         this.transactions = [];
         this.loadTransactionsByRole();
@@ -191,9 +191,9 @@ export class TransactionListComponent implements OnInit {
       (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Transaction cannot be deleted',
+          title: 'La transacción no se puede eliminar',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
         });
       }
     );
@@ -253,6 +253,24 @@ export class TransactionListComponent implements OnInit {
         return 'green';
       case 2:
         return 'red';
+    }
+  }
+
+  exportToCSV() {
+    if (this.isConnected && this.hasAdminRole && this.switchBtn) {
+      this.transactionService.importAllTransactionsAsCsv();
+    }
+  }
+
+  exportToExcel() {
+    if (this.isConnected && this.hasAdminRole && this.switchBtn) {
+      this.transactionService.importAllTransactionsAsExcel();
+    }
+  }
+
+  exportToPDF() {
+    if (this.isConnected && this.hasAdminRole && this.switchBtn) {
+      this.transactionService.importAllTransactionsAsPdf();
     }
   }
 }

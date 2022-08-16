@@ -115,7 +115,7 @@
                     <td *ngIf="isConnected && hasAdminRole && switchBtn" >{{ request.userId }}</td>
                     <td>{{ request.type }}</td>
                     <td>{{ request.message }}</td>
-                    <td>{{ request.dateRequest }}</td>
+                    <td>{{ request.dateRequest | date: "dd-MM-yyyy"  }}</td>
                     <td [innerHTML]="this.status[request.status]"></td>
                     <td
                       *ngIf="isConnected && hasAdminRole && switchBtn"

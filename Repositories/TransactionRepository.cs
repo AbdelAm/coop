@@ -3,6 +3,7 @@ using coop2._0.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -103,6 +104,7 @@ namespace coop2._0.Repositories
             return new { response, pagination };
         }
 
+
         public async Task<object> SearchForTransactions(string keyword, PaginationFilter filter)
         {
             if (string.IsNullOrWhiteSpace(keyword)) return null;
@@ -158,5 +160,29 @@ namespace coop2._0.Repositories
 
             return new { response, pagination };
         }
+
+        public async Task<IEnumerable<Transaction>> GetTransactionsByUser(int userBankAccountId)
+        {
+            var response =
+                await _context.Transactions
+                    .Where(b => b.ReceiverBankAccountId == userBankAccountId ||
+                                b.SenderBankAccountId == userBankAccountId)
+                    .Include(t => t.SenderBankAccount.User)
+                    .Include(b => b.ReceiverBankAccount.User)
+                    .OrderByDescending(d => d.DateTransaction)
+                    .ToListAsync();
+
+            return response;
+        }
+
+
+        public async Task<IEnumerable<Transaction>> GetAllTransactions()
+        {
+            var response = await _context.Transactions.Include(t => t.SenderBankAccount.User)
+                .Include(t => t.ReceiverBankAccount.User)
+                .OrderByDescending(d => d.DateTransaction).ToListAsync();
+            return response;
+        }
+
     }
 }

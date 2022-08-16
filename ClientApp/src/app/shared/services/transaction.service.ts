@@ -86,6 +86,63 @@ export class TransactionService {
       pageSize
     );
   }
+
+  importAsCsv(bankAccountId: number) {
+
+    this.httpClient.get(this.baseUrl + '/csv/' + bankAccountId, {responseType: 'arraybuffer'}).subscribe(res =>
+      this.downLoadFile(res, 'text/csv')
+    );
+  }
+
+  importAsExcel(bankAccountId: number) {
+    return this.httpClient.get(this.baseUrl + '/excel/' + bankAccountId, {responseType: 'arraybuffer'}).subscribe(res =>
+      this.downLoadFile(res, 'application/vnd.ms-excel ')
+    );
+
+  }
+
+  importAsPdf(bankAccountId: number) {
+    return this.httpClient.get(this.baseUrl + '/pdf/' + bankAccountId, {responseType: 'arraybuffer'}).subscribe(res =>
+      this.downLoadFile(res, 'application/pdf')
+    );
+
+  }
+
+  importAllTransactionsAsCsv() {
+
+    this.httpClient.get(this.baseUrl + '/admin/csv', {responseType: 'arraybuffer'}).subscribe(res =>
+      this.downLoadFile(res, 'text/csv')
+    );
+  }
+
+  importAllTransactionsAsExcel() {
+    return this.httpClient.get(this.baseUrl + '/admin/excel', {responseType: 'arraybuffer'}).subscribe(res =>
+      this.downLoadFile(res, 'application/vnd.ms-excel ')
+    );
+
+  }
+
+  importAllTransactionsAsPdf() {
+    return this.httpClient.get(this.baseUrl + '/admin/pdf', {responseType: 'arraybuffer'}).subscribe(res =>
+      this.downLoadFile(res, 'application/pdf')
+    );
+
+  }
+
+  /**
+   * Method is used to download file.
+   * @param data - Array Buffer data
+   * @param type - type of the document.
+   */
+  downLoadFile(data: any, type: string) {
+    const blob = new Blob([data], {type: type});
+    const url = window.URL.createObjectURL(blob);
+    const pwa = window.open(url);
+    if (!pwa || pwa.closed || typeof pwa.closed === 'undefined') {
+      alert('Please disable your Pop-up blocker and try again.');
+    }
+  }
+
 }
 
 interface GetTransactionsResponse {

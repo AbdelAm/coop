@@ -1,4 +1,5 @@
-﻿using coop2._0.Entities;
+﻿using System.Collections.Generic;
+using coop2._0.Entities;
 using coop2._0.Model;
 using coop2._0.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,16 @@ namespace coop2._0.Services
         public async Task<object> SearchForTransactions(string keyword, PaginationFilter filter)
         {
             return await _transactionRepository.SearchForTransactions(keyword, filter);
+        }
+
+        public Task<IEnumerable<Transaction>> GetAllTransactions()
+        {
+            return _transactionRepository.GetAllTransactions();
+        }
+
+        public Task<IEnumerable<Transaction>> GetTransactionsByUser(int userBankAccountId)
+        {
+            return _transactionRepository.GetTransactionsByUser(userBankAccountId);
         }
     }
 }

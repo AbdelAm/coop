@@ -71,13 +71,26 @@
               </button>
             </div>
             <div class="dataTable-search">
-              <input
-                #searchTransaction
-                class="dataTable-input"
-                placeholder="Búsqueda..."
-                type="search"
-                (keyup)="handleTransactionSearch(searchTransaction.value)"
+              <input style="width: auto !important;"
+                     #searchTransaction
+                     class="dataTable-input"
+                     placeholder="Búsqueda..."
+                     type="search"
+                     (keyup)="handleTransactionSearch(searchTransaction.value)"
               />
+            </div>
+            <div class="dataTable-bottom" *ngIf="isConnected && hasAdminRole && switchBtn">
+              <nav class="dataTable-pagination">
+                <ul class="dataTable-pagination-list">
+
+                  <li class=""><a class="option-button" (click)="exportToCSV()">CSV</a></li>
+                  <li class="">
+                    <a class="option-button" (click)="exportToExcel()">Exceller</a>
+                  </li>
+                  <li class=""><a class="option-button" (click)="exportToPDF()">PDF</a></li>
+
+                </ul>
+              </nav>
             </div>
           </div>
           <div class="dataTable-container">
