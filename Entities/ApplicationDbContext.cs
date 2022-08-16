@@ -22,10 +22,24 @@ namespace coop2._0.Entities
                 .HasOne(d => d.SenderBankAccount)
                 .WithMany(ds => ds.TransactionsSent)
                 .HasForeignKey(ds => ds.SenderBankAccountId);
+
             builder.Entity<Transaction>()
                 .HasOne(s => s.ReceiverBankAccount)
                 .WithMany(ds => ds.TransactionsReceived)
                 .HasForeignKey(ds => ds.ReceiverBankAccountId);
+
+            builder.Entity<User>()
+                   .HasMany(pt => pt.BankAccounts)
+                   .WithOne(pt => pt.User)
+                   .HasForeignKey(pt => pt.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<User>()
+                   .HasMany(pt => pt.Requests)
+                   .WithOne(pt => pt.User)
+                   .HasForeignKey(pt => pt.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
             this.SeedRoles(builder);
             base.OnModelCreating(builder);
         }

@@ -10,7 +10,7 @@
     <button
       style="margin-bottom: 30px"
       type="button"
-      *ngIf="isConnected && !switchBtn"
+      *ngIf="isConnected && !hasAdminRole "
       class="btn btn-success"
       (click)="open(content)"
     >
@@ -18,18 +18,14 @@
     </button>
     <div class="card mb-4">
       <div
-        class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
-      >
+        class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
         <div class="card mb-4">
           <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Listas de Peticiones
-            <!-------------------transalate------------>
           </div>
           <div class="card-body">
-            <div
-              class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"
-            >
+            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
               <div class="dataTable-top" *ngIf="isConnected && hasAdminRole && switchBtn">
                 <div class="dataTable-dropdown pt-2 d-none">
                   <button
@@ -75,9 +71,7 @@
                     ></i>
                   </button>
                 </div>
-                <div class="dataTable-search">
-                  <!--<input class="dataTable-input" (keyup)="searchItem($event)" placeholder="Búsqueda..." type="text">-->
-                </div>
+                <div class="dataTable-search"></div>
               </div>
               <div class="dataTable-container">
                 <table id="datatablesSimple" class="dataTable-table">
@@ -90,12 +84,12 @@
                         (change)="selectAll($event)"
                       />
                     </th>
-                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn" >Id</th>
-                    <th data-sortable=""*ngIf="isConnected && hasAdminRole && switchBtn" >User</th>
-                    <th data-sortable="">Type</th>
-                    <th data-sortable="">Message</th>
-                    <th data-sortable="">DateRequest</th>
-                    <th data-sortable="">Status</th>
+                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn">identificación</th>
+                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn">usuario</th>
+                    <th data-sortable="">Tipo </th>
+                    <th data-sortable="">mensaje</th>
+                    <th data-sortable="">Fecha</th>
+                    <th data-sortable="">Estado</th>
                     <th *ngIf="isConnected && hasAdminRole && switchBtn" data-sortable="">
                       Action
                     </th>
@@ -113,9 +107,9 @@
                     </td>
                     <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.id }}</td>
                     <td *ngIf="isConnected && hasAdminRole && switchBtn" >{{ request.userId }}</td>
-                    <td>{{ request.type }}</td>
+                    <td>{{request.type}}</td>
                     <td>{{ request.message }}</td>
-                    <td>{{ request.dateRequest | date: "dd-MM-yyyy"  }}</td>
+                    <td>{{ request.dateRequest  | date: "dd-MM-yyyy"}}</td>
                     <td [innerHTML]="this.status[request.status]"></td>
                     <td
                       *ngIf="isConnected && hasAdminRole && switchBtn"
@@ -173,20 +167,9 @@
                 [pageSize]="pageSize"
                 [collectionSize]="totalElements"
                 [boundaryLinks]="true"
-                (pageChange)="loadRequestsByRole()"
-              >
+                (pageChange)="loadRequestsByRole()">
               </ngb-pagination>
-              <!--<div class="dataTable-bottom">
-                <nav class="dataTable-pagination">
-                    <ul class="dataTable-pagination-list">
-                      <li *ngFor="let i of pageNumber; let isFirst = first" [class.active]="isFirst" class="pagination-items" (click)="setActiveClass(i)">
-                        <a style="cursor: pointer;" (click)="getItems(i)">{{i+1}}</a>
-                      </li>
-
-                    </ul>
-                </nav>
-
-              </div>-->
+              
             </div>
           </div>
         </div>
@@ -219,8 +202,8 @@
               id="optdata"
               name="typeDemande"
             >
-              <option [value]="o.value" *ngFor="let o of options">
-                {{ o.name }}
+              <option [[value]]="o.value" *ngFor="let o of options">
+                {{o.name}}
               </option>
             </select>
           </div>
