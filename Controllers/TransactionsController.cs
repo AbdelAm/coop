@@ -204,7 +204,7 @@ namespace coop2._0.Controllers
             if (transactions.Rows.Count <= 0) return null;
 
             int pdfRowIndex = 1;
-            string filename = "ProductDetails-" + DateTime.Now.ToString("dd-MM-yyyy hh_mm_s_tt");
+            string filename = "transactions-" + DateTime.Now.ToString("dd-MM-yyyy hh_mm_s_tt");
             string filepath = _webHostEnvironment.WebRootPath + "" + filename + ".pdf";
             Document document = new Document(PageSize.A4, 5f, 5f, 10f, 10f);
             FileStream fs = new FileStream(filepath, FileMode.Create);
@@ -255,7 +255,8 @@ namespace coop2._0.Controllers
             fs.Close();
             fs.Dispose();
 
-            FileStream sourceFile = new FileStream(filepath, FileMode.Open);
+            FileStream sourceFile = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.None, 4096,
+                FileOptions.DeleteOnClose);
 
             return sourceFile;
         }
@@ -325,7 +326,7 @@ namespace coop2._0.Controllers
             if (transactions.Rows.Count <= 0) return null;
 
             int pdfRowIndex = 1;
-            string filename = "ProductDetails-" + DateTime.Now.ToString("dd-MM-yyyy hh_mm_s_tt");
+            string filename = "transactions-" + DateTime.Now.ToString("dd-MM-yyyy hh_mm_s_tt");
             string filepath = _webHostEnvironment.WebRootPath + "" + filename + ".pdf";
             Document document = new Document(PageSize.A4, 5f, 5f, 10f, 10f);
             FileStream fs = new FileStream(filepath, FileMode.Create);
@@ -378,10 +379,10 @@ namespace coop2._0.Controllers
             fs.Close();
             fs.Dispose();
 
-            FileStream sourceFile = new FileStream(filepath, FileMode.Open);
+            FileStream sourceFile = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.None, 4096,
+                FileOptions.DeleteOnClose);
 
             return sourceFile;
-
         }
 
         private async Task<DataTable> GetUserTransactionsAsDataTable(int bankAccountId)
