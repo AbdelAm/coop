@@ -74,4 +74,17 @@ export class GlobalComponent implements OnInit {
         return 'red';
     }
   }
+
+  importAsCsv() {
+    this.transactionService.importAsCsv(this.userBankAccountId);
+  }
+
+  importAsExcel() {
+    this.transactionService.importAsExcel(this.userBankAccountId);
+  }
+
+  importAsPDF() {
+    this.transactionService.importAsPdf(this.userBankAccountId);
+  }
+
 }

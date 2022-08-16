@@ -1,24 +1,34 @@
-﻿using coop2._0.Entities;
-using coop2._0.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ClosedXML.Excel;
+using coop2._0.Entities;
 using coop2._0.Model;
+using coop2._0.Services;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging.EventSource;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace coop2._0.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public TransactionsController(ITransactionService transactionService)
+        public TransactionsController(ITransactionService transactionService, IWebHostEnvironment webHostEnvironment)
         {
             this._transactionService = transactionService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -127,6 +137,307 @@ namespace coop2._0.Controllers
         public async Task<object> SearchForTransactions([FromQuery] PaginationFilter filter, string keyword)
         {
             return await _transactionService.SearchForTransactions(keyword, filter);
+        }
+
+        [HttpGet("csv/{bankAccountId:int}")]
+        [Authorize(Roles = "ADMIN,USER")]
+        public async Task<IActionResult> ExportToCsv(int bankAccountId)
+        {
+            StringBuilder sb = new StringBuilder();
+            var transactions = await GetUserTransactionsAsDataTable(bankAccountId);
+            IEnumerable<string> columnNames =
+                transactions.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
+
+            sb.AppendLine(string.Join(",", columnNames));
+
+            foreach (DataRow row in transactions.Rows)
+            {
+                IEnumerable<string> fields = row.ItemArray.Select(field =>
+                    string.Concat("\"", field.ToString().Replace("\"", "\"\""), "\""));
+                sb.AppendLine(string.Join(",", fields));
+            }
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Transaction.csv");
+        }
+
+        [HttpGet("excel/{bankAccountId:int}")]
+        [Authorize(Roles = "ADMIN,USER")]
+        public async Task<IActionResult> ExportToExcel(int bankAccountId)
+        {
+            var transactions = await GetUserTransactionsAsDataTable(bankAccountId);
+
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Transactions");
+            var currentRow = 1;
+            worksheet.Cell(currentRow, 1).Value = "Monto";
+            worksheet.Cell(currentRow, 2).Value = "Fetcha";
+            worksheet.Cell(currentRow, 3).Value = "Concepto";
+            worksheet.Cell(currentRow, 4).Value = "Cuenta original";
+            worksheet.Cell(currentRow, 5).Value = "Cuenta de destino";
+            worksheet.Cell(currentRow, 6).Value = "Estado";
+
+
+            foreach (DataRow transaction in transactions.Rows)
+            {
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = transaction["Monto"].ToString();
+                worksheet.Cell(currentRow, 2).Value = transaction["Fetcha"].ToString();
+                worksheet.Cell(currentRow, 3).Value = transaction["Concepto"].ToString();
+                worksheet.Cell(currentRow, 4).Value = transaction["Cuenta original"].ToString();
+                worksheet.Cell(currentRow, 5).Value = transaction["Cuenta de destino"].ToString();
+                worksheet.Cell(currentRow, 6).Value = TranslateStatus(transaction["Estado"].ToString());
+            }
+
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            var content = stream.ToArray();
+            return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "Transactions.xlsx");
+        }
+
+        [HttpGet("pdf/{bankAccountId:int}")]
+        [Authorize(Roles = "ADMIN,USER")]
+        public async Task<FileStream> ExportToPdf(int bankAccountId)
+        {
+            var transactions = await GetUserTransactionsAsDataTable(bankAccountId);
+
+            if (transactions.Rows.Count <= 0) return null;
+
+            int pdfRowIndex = 1;
+            string filename = "transactions-" + DateTime.Now.ToString("dd-MM-yyyy hh_mm_s_tt");
+            string filepath = _webHostEnvironment.WebRootPath + "" + filename + ".pdf";
+            Document document = new Document(PageSize.A4, 5f, 5f, 10f, 10f);
+            FileStream fs = new FileStream(filepath, FileMode.Create);
+            PdfWriter writer = PdfWriter.GetInstance(document, fs);
+            document.Open();
+
+            Font font1 = FontFactory.GetFont(FontFactory.COURIER_BOLD, 10);
+            Font font2 = FontFactory.GetFont(FontFactory.COURIER, 8);
+
+            float[] columnDefinitionSize = { 2F, 3F, 2F, 2F, 2F, 2F };
+
+            var table = new PdfPTable(columnDefinitionSize)
+            {
+                WidthPercentage = 100
+            };
+
+            var cell = new PdfPCell
+            {
+                BackgroundColor = new BaseColor(0xC0, 0xC0, 0xC0)
+            };
+
+            table.AddCell(new Phrase("Monto", font1));
+            table.AddCell(new Phrase("Fetcha", font1));
+            table.AddCell(new Phrase("Concepto", font1));
+            table.AddCell(new Phrase("Cuenta original", font1));
+            table.AddCell(new Phrase("Cuenta de destino", font1));
+            table.AddCell(new Phrase("Estado", font1));
+            table.HeaderRows = 1;
+
+            foreach (DataRow data in transactions.Rows)
+            {
+                table.AddCell(new Phrase(data["Monto"].ToString(), font2));
+                table.AddCell(new Phrase(data["Fetcha"].ToString(), font2));
+                table.AddCell(new Phrase(data["Concepto"].ToString(), font2));
+                table.AddCell(new Phrase(data["Cuenta original"].ToString(), font2));
+                table.AddCell(new Phrase(data["Cuenta de destino"].ToString(), font2));
+                table.AddCell(new Phrase(TranslateStatus(data["Estado"].ToString()), font2));
+
+                pdfRowIndex++;
+            }
+
+            document.Add(table);
+            document.Close();
+            document.CloseDocument();
+            document.Dispose();
+            writer.Close();
+            writer.Dispose();
+            fs.Close();
+            fs.Dispose();
+
+            FileStream sourceFile = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.None, 4096,
+                FileOptions.DeleteOnClose);
+
+            return sourceFile;
+        }
+
+        [HttpGet("admin/csv")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> ExportToCsv()
+        {
+            StringBuilder sb = new StringBuilder();
+            var transactions = await GetAllTransactionsAsDataTable();
+            IEnumerable<string> columnNames =
+                transactions.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
+
+            sb.AppendLine(string.Join(",", columnNames));
+
+            foreach (DataRow row in transactions.Rows)
+            {
+                IEnumerable<string> fields = row.ItemArray.Select(field =>
+                    string.Concat("\"", field.ToString().Replace("\"", "\"\""), "\""));
+                sb.AppendLine(string.Join(",", fields));
+            }
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Transaction.csv");
+        }
+
+        [HttpGet("admin/excel")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var transactions = await GetAllTransactionsAsDataTable();
+
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Transactions");
+            var currentRow = 1;
+            worksheet.Cell(currentRow, 1).Value = "Monto";
+            worksheet.Cell(currentRow, 2).Value = "Fetcha";
+            worksheet.Cell(currentRow, 3).Value = "Concepto";
+            worksheet.Cell(currentRow, 4).Value = "Cuenta original";
+            worksheet.Cell(currentRow, 5).Value = "Cuenta de destino";
+            worksheet.Cell(currentRow, 6).Value = "Estado";
+
+
+            foreach (DataRow transaction in transactions.Rows)
+            {
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = transaction["Monto"].ToString();
+                worksheet.Cell(currentRow, 2).Value = transaction["Fetcha"].ToString();
+                worksheet.Cell(currentRow, 3).Value = transaction["Concepto"].ToString();
+                worksheet.Cell(currentRow, 4).Value = transaction["Cuenta original"].ToString();
+                worksheet.Cell(currentRow, 5).Value = transaction["Cuenta de destino"].ToString();
+                worksheet.Cell(currentRow, 6).Value = TranslateStatus(transaction["Estado"].ToString());
+            }
+
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            var content = stream.ToArray();
+            return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "Transactions.xlsx");
+        }
+
+        [HttpGet("admin/pdf")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<FileStream> ExportToPdf()
+        {
+            var transactions = await GetAllTransactionsAsDataTable();
+
+            if (transactions.Rows.Count <= 0) return null;
+
+            int pdfRowIndex = 1;
+            string filename = "transactions-" + DateTime.Now.ToString("dd-MM-yyyy hh_mm_s_tt");
+            string filepath = _webHostEnvironment.WebRootPath + "" + filename + ".pdf";
+            Document document = new Document(PageSize.A4, 5f, 5f, 10f, 10f);
+            FileStream fs = new FileStream(filepath, FileMode.Create);
+            PdfWriter writer = PdfWriter.GetInstance(document, fs);
+            document.Open();
+
+            Font font1 = FontFactory.GetFont(FontFactory.COURIER_BOLD, 10);
+            Font font2 = FontFactory.GetFont(FontFactory.COURIER, 8);
+
+            float[] columnDefinitionSize = { 2F, 3F, 2F, 2F, 2F, 2F };
+            PdfPTable table;
+            PdfPCell cell;
+
+            table = new PdfPTable(columnDefinitionSize)
+            {
+                WidthPercentage = 100
+            };
+
+            cell = new PdfPCell
+            {
+                BackgroundColor = new BaseColor(0xC0, 0xC0, 0xC0)
+            };
+
+            table.AddCell(new Phrase("Monto", font1));
+            table.AddCell(new Phrase("Fetcha", font1));
+            table.AddCell(new Phrase("Concepto", font1));
+            table.AddCell(new Phrase("Cuenta original", font1));
+            table.AddCell(new Phrase("Cuenta de destino", font1));
+            table.AddCell(new Phrase("Estado", font1));
+            table.HeaderRows = 1;
+
+            foreach (DataRow data in transactions.Rows)
+            {
+                table.AddCell(new Phrase(data["Monto"].ToString(), font2));
+                table.AddCell(new Phrase(data["Fetcha"].ToString(), font2));
+                table.AddCell(new Phrase(data["Concepto"].ToString(), font2));
+                table.AddCell(new Phrase(data["Cuenta original"].ToString(), font2));
+                table.AddCell(new Phrase(data["Cuenta de destino"].ToString(), font2));
+                table.AddCell(new Phrase(TranslateStatus(data["Estado"].ToString()), font2));
+
+                pdfRowIndex++;
+            }
+
+            document.Add(table);
+            document.Close();
+            document.CloseDocument();
+            document.Dispose();
+            writer.Close();
+            writer.Dispose();
+            fs.Close();
+            fs.Dispose();
+
+            FileStream sourceFile = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.None, 4096,
+                FileOptions.DeleteOnClose);
+
+            return sourceFile;
+        }
+
+        private async Task<DataTable> GetUserTransactionsAsDataTable(int bankAccountId)
+        {
+            var transactions = await _transactionService.GetTransactionsByUser(bankAccountId);
+
+            DataTable dtTransactions = new DataTable("Transactions");
+
+            dtTransactions.Columns.AddRange(new DataColumn[6]
+            {
+                new DataColumn("Monto"), new DataColumn("Fetcha"), new DataColumn("Concepto"),
+                new DataColumn("Cuenta original"), new DataColumn("Cuenta de destino"), new DataColumn("Estado")
+            });
+
+            foreach (var transaction in transactions)
+            {
+                dtTransactions.Rows.Add(transaction.Amount, transaction.DateTransaction, transaction.Motif,
+                    transaction.SenderBankAccount.User.Name, transaction.ReceiverBankAccount.User.Name,
+                    transaction.Status);
+            }
+
+            return dtTransactions;
+        }
+
+        private async Task<DataTable> GetAllTransactionsAsDataTable()
+        {
+            var transactions = await _transactionService.GetAllTransactions();
+
+            DataTable dtTransactions = new DataTable("Transactions");
+
+            dtTransactions.Columns.AddRange(new DataColumn[6]
+            {
+                new DataColumn("Monto"), new DataColumn("Fetcha"), new DataColumn("Concepto"),
+                new DataColumn("Cuenta original"), new DataColumn("Cuenta de destino"), new DataColumn("Estado")
+            });
+
+            foreach (var transaction in transactions)
+            {
+                dtTransactions.Rows.Add(transaction.Amount, transaction.DateTransaction, transaction.Motif,
+                    transaction.SenderBankAccount.User.Name, transaction.ReceiverBankAccount.User.Name,
+                    transaction.Status);
+            }
+
+            return dtTransactions;
+        }
+
+        private string TranslateStatus(string status)
+        {
+            return status switch
+            {
+                "Progress" => "En progreso",
+                "Approuved" => "Aprobado",
+                "Rejected" => "Rechazado",
+                _ => null
+            };
         }
     }
 }

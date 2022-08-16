@@ -1,3 +1,38 @@
 .icons {
   text-align: center;
 }
+
+
+@media (max-width: 990px) {
+  div.card {
+    width: 750px !important;
+  }
+  .icons {
+    text-align: center;
+    flex-direction:column;
+  }
+  
+
+}
+@media (max-width: 576px) {
+  .modal-content {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  div.input-group {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    padding: 1rem !important;
+  }
+
+  .modal-footer {
+    display: flex !important;
+    flex-shrink: 0 !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+  }
+}

@@ -178,7 +178,7 @@
   </div>
 </main>
 
-<ng-template #content let-modal>
+<ng-template #content let-modal >
   <div class="modal-header col-lg-12">
     <h4 class="modal-title" id="modal-basic-title">Agregar petición</h4>
     <button
@@ -191,34 +191,29 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-        <label for="typeRequest">Tipo petición</label>
-
         <div class="input-group">
           <div class="col-lg-12">
-            <select
-              [(ngModel)]="selected"
-              (change)="selectOption($event.target.value)"
-              class="form-control"
-              id="optdata"
-              name="typeDemande"
-            >
+            <label for="typeRequest">Tipo petición</label>
+            <select [(ngModel)]="selected"
+                    (change)="selectOption($event.target.value)"
+                    class="form-control"
+                    id="optdata"
+                    name="typeDemande">
               <option [[value]]="o.value" *ngFor="let o of options">
                 {{o.name}}
               </option>
             </select>
           </div>
-          <br/>
+          <br />
 
-          <div class="col-lg-12">
+        <div class="col-lg-12">
             <label>Mensaje</label>
-            <textarea
-              [(ngModel)]="this.msg"
-              id="msg"
-              class="form-control"
-              name="description"
-              placeholder=""
-              rows="3"
-            ></textarea>
+            <textarea [(ngModel)]="this.msg"
+                      id="msg"
+                      class="form-control"
+                      name="description"
+                      placeholder=""
+                      rows="3"></textarea>
           </div>
         </div>
       </div>
