@@ -55,6 +55,7 @@ export class TransactionListComponent implements OnInit {
       },
       (err) => console.log(err)
     );
+    this.refreshTransactionsList();
   }
 
   loadTransactionsByRole() {
@@ -196,6 +197,12 @@ export class TransactionListComponent implements OnInit {
           timer: 1500,
         });
       }
+    );
+  }
+
+  refreshTransactionsList() {
+    this.transactionService.refreshTransactions.subscribe(
+      res => this.loadTransactionsByRole()
     );
   }
 

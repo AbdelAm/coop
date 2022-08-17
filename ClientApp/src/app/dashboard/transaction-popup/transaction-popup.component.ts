@@ -105,6 +105,7 @@ export class TransactionPopupComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000,
         });
+        this.transactionService.refresh();
         document.getElementById('closeDialog').click();
       },
       (error) => {

@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {TransactionModel} from '../models/transaction-model';
 
@@ -11,12 +11,19 @@ export class TransactionService {
   readonly baseUrl = environment.apiUrl + 'transactions';
   transaction: TransactionModel;
 
+  refreshTransactions;
+
   constructor(private httpClient: HttpClient) {
     this.transaction = new TransactionModel();
+    this.refreshTransactions = new Subject();
   }
 
   postTransaction(transaction: TransactionModel) {
     return this.httpClient.post(this.baseUrl, transaction);
+  }
+
+  refresh() {
+    this.refreshTransactions.next();
   }
 
   getTransactionsByUser(
