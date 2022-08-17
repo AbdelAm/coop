@@ -56,6 +56,7 @@ export class RequestListComponent implements OnInit {
   ngOnInit(): void {
     this.loadRequestsByRole();
     window.scrollTo(0, 0);
+
   }
 
   getRequests() {
@@ -121,10 +122,11 @@ export class RequestListComponent implements OnInit {
           icon: 'success',
         });
         
-        location.reload();
+        this.loadRequestsByRole()
       },
       (err) => console.log(err)
     );
+    
   }
 
   toggleItem(id: number, isChecked: boolean) {
@@ -290,6 +292,6 @@ export class RequestListComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-
   // ------------------------------ ------------ ------------------------------
+
 }
