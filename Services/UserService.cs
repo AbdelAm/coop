@@ -52,6 +52,17 @@ namespace coop2._0.Services
             return new UserItemModel(user);
         }
 
+        public async Task<UserBankItemModel> FindUserWithBank(string cif)
+        {
+            User user = await _userRepository.SelectByIdWithAccount(cif);
+            if (user == null)
+            {
+                throw new Exception("No existe un usuario con estas informaciones.");
+            }
+
+            return new UserBankItemModel(user);
+        }
+
         public async Task<IEnumerable<UserItemModel>> FindBy(string value)
         {
             IEnumerable<UserItemModel> users = await _userRepository.SelectBy(value);

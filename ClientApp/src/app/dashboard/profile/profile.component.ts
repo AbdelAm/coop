@@ -7,6 +7,8 @@ import {JwtService} from '../../shared/services/jwt.service';
 import {UserService} from '../../shared/services/user-service.service';
 import {EmailUpdateModel} from 'src/app/shared/models/email-update-model';
 import {PasswordUpdateModel} from 'src/app/shared/models/password-update-model';
+import { UserBankItemModel } from 'src/app/shared/models/user-bank-item-model';
+import { BankAccountModel } from 'src/app/shared/models/bankAccount-model';
 
 @Component({
   selector: 'app-profile',
@@ -15,10 +17,16 @@ import {PasswordUpdateModel} from 'src/app/shared/models/password-update-model';
 })
 export class ProfileComponent implements OnInit {
   selectedButton: String;
-  user: UserItemModel;
+  user: UserBankItemModel;
   userInfo: UserInfoModel;
   emailUpdate: EmailUpdateModel;
   passwordUpdate: PasswordUpdateModel;
+  bank : BankAccountModel;
+  status = [
+    '<strong>In Progress</strong>',
+    '<strong class="text-success">Approuved</strong>',
+    '<strong class="text-danger text-capitalize">Rejected</strong>',
+  ];
 
   constructor(
     private jwt: JwtService,
@@ -26,15 +34,17 @@ export class ProfileComponent implements OnInit {
     private userService: UserService
   ) {
     this.selectedButton = 'user';
-    this.user = new UserItemModel();
+    this.user = new UserBankItemModel();
     this.userInfo = new UserInfoModel();
     this.emailUpdate = new EmailUpdateModel();
     this.passwordUpdate = new PasswordUpdateModel();
+    this.bank = new BankAccountModel();
   }
 
   ngOnInit(): void {
     this.userService.getUser(this.jwt.getConnectedUserId()).subscribe(
       (res) => {
+        console.log(res);
         Object.assign(this.user, res);
         this.userInfo.setInfo(this.user);
         this.emailUpdate.cif = this.user.cif;

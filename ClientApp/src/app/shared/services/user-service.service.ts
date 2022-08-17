@@ -5,6 +5,7 @@ import {environment} from 'src/environments/environment';
 import {EmailUpdateModel} from '../models/email-update-model';
 import {ItemsModel} from '../models/items-model';
 import {PasswordUpdateModel} from '../models/password-update-model';
+import { UserBankItemModel } from '../models/user-bank-item-model';
 import {UserInfoModel} from '../models/user-info-model';
 import {UserItemModel} from '../models/user-item-model';
 
@@ -23,8 +24,8 @@ export class UserService {
     );
   }
 
-  getUser(cif: string): Observable<UserItemModel> {
-    return this.http.get<UserItemModel>(this.baseUrl + `user/${cif}`);
+  getUser(cif: string): Observable<UserBankItemModel> {
+    return this.http.get<UserBankItemModel>(this.baseUrl + `user/${cif}`);
   }
 
   searchUser(value: string): Observable<UserItemModel[]> {
