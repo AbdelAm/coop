@@ -8,6 +8,7 @@ namespace coop2._0.Services
     {
         Task<ItemsModel<UserItemModel>> FindUsers(int page);
         Task<UserItemModel> FindUser(string cif);
+        Task<UserBankItemModel> FindUserWithBank(string cif);
         Task<IEnumerable<UserItemModel>> FindBy(string value);
         Task<Response> Validate(List<string> users);
         Task<Response> Reject(List<string> users);

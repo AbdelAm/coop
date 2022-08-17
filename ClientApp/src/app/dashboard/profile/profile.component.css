@@ -4,7 +4,7 @@
 }
 
 .tabs-items {
-  width: calc(100% / 3);
+  width: calc(100% / 4);
   text-align: center;
 }
 .tabs-items a {

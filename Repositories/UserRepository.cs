@@ -29,6 +29,10 @@ namespace coop2._0.Repositories
             return await _userManager.FindByIdAsync(id);
         }
 
+        public async Task<User> SelectByIdWithAccount(string id)
+        {
+            return await _userManager.Users.Where(u => u.Id == id).Include(u => u.BankAccounts).FirstOrDefaultAsync();
+        }
         public async Task<User> SelectByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);

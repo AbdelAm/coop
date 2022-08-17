@@ -9,6 +9,7 @@ namespace coop2._0.Repositories
     public interface IUserRepository
     {
         Task<User> SelectById(string id);
+        Task<User> SelectByIdWithAccount(string id);
         Task<User> SelectByEmail(string email);
         Task<User> SelectBySocialNumber(string socialNumber);
         Task<string> InsertUser(User user, string password);

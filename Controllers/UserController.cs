@@ -37,11 +37,11 @@ namespace coop2._0.Controllers
         }
 
         [HttpGet("{cif}")]
-        public async Task<ActionResult<UserItemModel>> GetUser(string cif)
+        public async Task<ActionResult<UserBankItemModel>> GetUser(string cif)
         {
             try
             {
-                UserItemModel user = await _userService.FindUser(cif);
+                UserBankItemModel user = await _userService.FindUserWithBank(cif);
                 return Ok(user);
             }
             catch (Exception ex)

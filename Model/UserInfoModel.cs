@@ -1,4 +1,6 @@
-﻿namespace coop2._0.Model
+﻿using coop2._0.Entities;
+
+namespace coop2._0.Model
 {
     public class UserInfoModel
     {
