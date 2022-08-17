@@ -8,6 +8,7 @@ import {JwtService} from '../../shared/services/jwt.service';
 import {TransactionService} from '../../shared/services/transaction.service';
 import {TransactionModel} from '../../shared/models/transaction-model';
 import {BankAccountService} from 'src/app/shared/services/bank-account.service';
+import {TransactionPostModel} from '../../shared/models/Transaction-post-model';
 
 @Component({
   selector: 'app-transaction-popup',
@@ -21,7 +22,7 @@ import {BankAccountService} from 'src/app/shared/services/bank-account.service';
   ],
 })
 export class TransactionPopupComponent implements OnInit {
-  userBankAccountId: number;
+  userBankAccountNumber: string;
   readonly hasAdminRole: boolean;
   readonly isConnected: boolean;
   readonly switchBtn: boolean;
@@ -69,7 +70,7 @@ export class TransactionPopupComponent implements OnInit {
   ngOnInit(): void {
     this.bankService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
       (res) => {
-        this.userBankAccountId = res.id;
+        this.userBankAccountNumber = res.accountNumber;
       },
       (err) => console.log(err)
     );
@@ -81,13 +82,13 @@ export class TransactionPopupComponent implements OnInit {
       return;
     }
 
-    const transaction = new TransactionModel();
-    transaction.senderBankAccountId = this.transactionFormGroup.get(
+    const transaction = new TransactionPostModel();
+    transaction.senderBankAccountNumber = this.transactionFormGroup.get(
       'origin.originalAccount'
     ).value
       ? this.transactionFormGroup.get('origin.originalAccount').value
       : this.transactionFormGroup.get('origin.receiverAccount').value;
-    transaction.receiverBankAccountId = this.transactionFormGroup.get(
+    transaction.receiverBankAccountNumber = this.transactionFormGroup.get(
       'destination.destinationAccount'
     ).value;
     transaction.amount = this.transactionFormGroup.get(
@@ -96,12 +97,11 @@ export class TransactionPopupComponent implements OnInit {
     transaction.motif = this.transactionFormGroup.get(
       'receiverInfo.concept'
     ).value;
-    console.log(transaction);
     this.transactionService.postTransaction(transaction).subscribe(
       (next) => {
         Swal.fire({
           icon: 'success',
-          title: 'Transaction added successfully',
+          title: 'Transacción agregada con éxito',
           showConfirmButton: false,
           timer: 1000,
         });
@@ -111,7 +111,7 @@ export class TransactionPopupComponent implements OnInit {
       (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Something wrong with your inputs',
+          title: 'Algo anda mal con tus entradas',
           showConfirmButton: false,
           timer: 1000,
         });
