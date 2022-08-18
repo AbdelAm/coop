@@ -43,4 +43,8 @@ export class JwtService {
   getConnectedUserId() {
     return this.jwt.cif;
   }
+  parseDate()
+  {
+    return Date.parse(this.jwt.validTo.toString());
+  }
 }

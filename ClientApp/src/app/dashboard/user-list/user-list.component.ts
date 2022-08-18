@@ -103,11 +103,10 @@ export class UserListComponent implements OnInit {
     console.log(this.listUser);
   }
 
-  @ViewChildren('checkboxes') checkboxes: QueryList<ElementRef>;
 
   uncheckAll() {
-    this.checkboxes.forEach((element) => {
-      element.nativeElement.checked = false;
+    document.querySelectorAll('.dataTable-table input[type=checkbox]').forEach((element) => {
+      (<HTMLInputElement> element).checked = false;
     });
   }
 
@@ -135,6 +134,7 @@ export class UserListComponent implements OnInit {
           }
         });
         this.listUser.length = 0;
+        this.uncheckAll();
         Swal.fire({
           title: 'Success!!!',
           text: res['message'],
@@ -143,6 +143,7 @@ export class UserListComponent implements OnInit {
       },
       (err) => {
         this.listUser.length = 0;
+        this.uncheckAll();
         Swal.fire({
           title: 'There is probleme !!!',
           text: err['error'],
@@ -161,6 +162,7 @@ export class UserListComponent implements OnInit {
           }
         });
         this.listUser.length = 0;
+        this.uncheckAll();
         Swal.fire({
           title: 'Success!!!',
           text: res['message'],
@@ -169,6 +171,7 @@ export class UserListComponent implements OnInit {
       },
       (err) => {
         this.listUser.length = 0;
+        this.uncheckAll();
         Swal.fire({
           title: 'There is probleme !!!',
           text: err['error'],
@@ -185,6 +188,7 @@ export class UserListComponent implements OnInit {
           return !this.listUser.includes(u.cif);
         });
         this.listUser.length = 0;
+        this.uncheckAll();
         Swal.fire({
           title: 'Success!!!',
           text: res['message'],
@@ -193,6 +197,7 @@ export class UserListComponent implements OnInit {
       },
       (err) => {
         this.listUser.length = 0;
+        this.uncheckAll();
         Swal.fire({
           title: 'There is probleme !!!',
           text: err['error'],

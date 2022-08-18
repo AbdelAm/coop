@@ -16,8 +16,9 @@ export class SidebarComponent implements OnInit {
 
   setActiveClass(e: Event) {
     let current = document.querySelector('.active');
-    current.classList.remove('active');
+    if(current != null) current.classList.remove('active');
     (<HTMLInputElement>e.target).classList.add('active');
+    document.querySelector('.mat-typography').classList.remove('sb-sidenav-toggled');
   }
 
   linkShown() {

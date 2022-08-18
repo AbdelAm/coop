@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
 
   toggleSideBar() {
     document.body.classList.toggle('sb-sidenav-toggled');
+    document.getElementById('main-container').classList.toggle('full-width');
   }
 
   toggleMenu() {
@@ -28,7 +29,8 @@ export class HeaderComponent implements OnInit {
 
   setActiveClass(e: Event) {
     const current = document.querySelector('.active');
-    current.classList.remove('active');
+    if(current != null) current.classList.remove('active');
+    document.querySelector('.dropdown-menu.dropdown-menu-end').classList.remove('show');
   }
 
   switchAccount(e: Event) {

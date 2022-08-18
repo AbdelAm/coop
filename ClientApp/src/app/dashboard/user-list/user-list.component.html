@@ -1,4 +1,4 @@
-<main style="width: calc(100vw - 245px);">
+<main id="main-container" style="width: calc(100vw - 245px);">
           <div class="container-fluid px-4">
             <h1 class="mt-4">usuarios</h1>
             <ol class="breadcrumb mb-4">
@@ -35,7 +35,7 @@
                                 <table id="datatablesSimple" class="dataTable-table">
                                   <thead>
                                     <tr>
-                                      <th><input (change)="selectAll($event)" type="checkbox"></th>
+                                      <th><input class="input-check-all" (change)="selectAll($event)" type="checkbox"></th>
                                       <!--<th class="text-capitalize">CiF</th>-->
                                       <th class="text-capitalize">Nombre</th>
                                       <th class="text-capitalize">Correo electrónico</th>
