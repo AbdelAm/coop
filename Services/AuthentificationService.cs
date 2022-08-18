@@ -201,7 +201,7 @@ namespace coop2._0.Services
 
             BankAccount account = new BankAccount()
             {
-                AccountNumber = Guid.NewGuid().ToString("D"),
+                AccountNumber = "Coop" + Guid.NewGuid().ToString("D"),
                 Balance = 350.0,
                 DateCreated = DateTime.Now,
                 UserId = user.Id,

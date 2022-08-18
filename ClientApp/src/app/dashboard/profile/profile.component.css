@@ -24,3 +24,16 @@
 .setting-title {
   font-size: 1.5em;
 }
+
+@media screen and (max-width: 992px)
+{
+  main {
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 680px)
+{
+  .tabs-items {
+    width: 50%;
+  }
+}

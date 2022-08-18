@@ -206,7 +206,7 @@
         >
           <p class="setting-title mb-5">Información de la cuenta bancaria</p>
           <div class="form-group mb-4">
-            <span>Bank Account : </span>
+            <span>la cuenta bancaria : </span>
             <strong
               class="form-text text-danger d-inline"
             >{{this.user.bankAccount.accountNumber}}</strong>
@@ -218,7 +218,7 @@
             >{{this.user.bankAccount.balance}} €</strong>
           </div>
           <div class="form-group mb-4">
-            <span>Status : </span>
+            <span>Estado : </span>
             <strong
               class="form-text text-danger d-inline"
               [innerHTML]="this.status[this.user.bankAccount.status]"

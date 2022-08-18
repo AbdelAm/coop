@@ -84,7 +84,7 @@ namespace coop2._0.Services
                 var result = await _userRepository.UpdateUser(user);
                 if (result.Succeeded)
                 {
-                    string message = "Felicitaciones que su cuenta se ha aprobado con éxito";
+                    string message = "Felicitaciones que su cuenta se ha aprobado con éxito, Se ha creado una cuenta bancaria para usted, para aprobarla, debe pagar 350€, 50€ es por tarifas de servicio y 300€ permanecerán en su cuenta bancaria";
                     MailModel mailModel = new MailModel()
                     {
                         Email = user.Email,
@@ -99,7 +99,7 @@ namespace coop2._0.Services
 
                     BankAccount account = new BankAccount()
                     {
-                        AccountNumber = Guid.NewGuid().ToString("D"),
+                        AccountNumber = "Coop-" + Guid.NewGuid().ToString("D"),
                         Balance = 350.0,
                         DateCreated = DateTime.Now,
                         UserId = user.Id
