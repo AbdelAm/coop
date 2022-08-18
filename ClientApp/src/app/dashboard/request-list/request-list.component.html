@@ -41,7 +41,16 @@
                   </button>
 
                 </div>
-                <div class="dataTable-search"></div>
+                <div class="dataTable-search">
+                  <!--<select [(ngModel)]="selectedOption">
+                    <option *ngFor="let statu of State" [innerHTML]="this.status[this.statu]"
+                            [[value]]="this.statu.value"></option>
+                  </select>-->
+                  <button (click)="filterByProgress()">In Progress</button>
+                  <button (click)="filterByApproved()">Approved</button>
+                  <!--<button routerLink="/dashboard/requests">All</button>-->
+
+                </div>
               </div>
               <div class="dataTable-container">
                 <table id="datatablesSimple" class="dataTable-table">

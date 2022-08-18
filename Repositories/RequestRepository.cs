@@ -33,6 +33,23 @@ namespace coop2._0.Repositories
 
             return new { response, pagination };
         }
+        public async Task<object> FilterRequests(Status status, PaginationFilter filter)
+        {
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var response = await _context.Requests
+                .OrderByDescending(r => r.DateRequest)
+                .Where(r => r.Status == status)
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+
+            var totalRecords = await _context.Requests.CountAsync(r => r.Status == status);
+            var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
+                totalRecords);
+
+            return new { response, pagination };
+        }
+
 
 
         public async Task<Request> GetRequest(int id)
