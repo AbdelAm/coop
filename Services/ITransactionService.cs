@@ -12,7 +12,7 @@ namespace coop2._0.Services
         Task<Transaction> GetTransaction(int id);
         Task<ActionResult> RemoveTransaction(int id);
         Task<ActionResult<Transaction>> RejectTransaction(int id);
-        Task<ActionResult> AddTransaction(Transaction model);
+        Task<ActionResult> AddTransaction(TransactionModel transactionModel);
         Task<ActionResult<Transaction>> ValidateTransaction(int id);
         Task<object> GetTransactionsByUser(int userBankAccountId, PaginationFilter filter);
         Task<object> SearchForTransactions(string keyword, PaginationFilter filter);

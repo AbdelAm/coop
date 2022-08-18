@@ -24,3 +24,12 @@ body {
   overflow-x: hidden;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+@media screen and (max-width: 992px) {
+  #cdk-overlay-0 {
+    width: 90% !important;
+    max-width: 100vh !important;
+  }
+  .mat-horizontal-stepper-header-container{
+    flex-direction: column !important;
+  }
+}

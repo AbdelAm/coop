@@ -1,6 +1,9 @@
 import {
   Component,
+  ElementRef,
   OnInit,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import {Router} from '@angular/router';
 import {JwtService} from 'src/app/shared/services/jwt.service';
@@ -53,6 +56,7 @@ export class RequestListComponent implements OnInit {
   ngOnInit(): void {
     this.loadRequestsByRole();
     window.scrollTo(0, 0);
+
   }
 
   getRequests() {
@@ -94,10 +98,10 @@ export class RequestListComponent implements OnInit {
     }
   }
 
+  
 
 
   setRequest() {
-    // this.toggleItem(id, (<HTMLInputElement>e.target).checked);
 
     const input = document.getElementById('msg') as HTMLTextAreaElement | null;
     const elem = document.getElementById('optdata') as HTMLSelectElement;
@@ -117,43 +121,50 @@ export class RequestListComponent implements OnInit {
           title: '¡Solicitud añadida con éxito!',
           icon: 'success',
         });
-        // this.router.navigate(['requests']);
-        location.reload();
+        
+        this.loadRequestsByRole()
       },
       (err) => console.log(err)
     );
+    
   }
 
   toggleItem(id: number, isChecked: boolean) {
-    const elt = document.querySelector('.dataTable-dropdown');
+    let elt = document.querySelector('.dataTable-dropdown');
     if (isChecked) {
       this.listRequest.push(id);
     } else {
-      const index = this.listRequest.indexOf(id);
+      let index = this.listRequest.indexOf(id);
       this.listRequest.splice(index, 1);
     }
-    if (this.listRequest.length !== 0) {
+    if (this.listRequest.length != 0) {
       elt.classList.remove('d-none');
     } else {
       elt.classList.add('d-none');
     }
+    console.log(this.listRequest);
   }
 
   selectAll(e: Event) {
-    const items = document.querySelectorAll('.items');
+    let items = document.querySelectorAll('.items');
     for (let i = 0; i < items.length; i++) {
-      (<HTMLInputElement>items[i]).checked = (<HTMLInputElement>e.target).checked;
-      const id = parseInt((<HTMLInputElement>items[i]).value);
-      this.toggleItem(id, (<HTMLInputElement>e.target).checked);
+      (<HTMLInputElement>items[i]).checked = (<HTMLInputElement>(
+        e.target
+      )).checked;
+      let id = (<HTMLInputElement>items[i]).value;
+      this.toggleItem(parseInt(id), (<HTMLInputElement>e.target).checked);
     }
   }
 
-  /*
-    uncheckAll() {
-      this.checkboxes.forEach((element) => {
-        element.nativeElement.checked = false;
-      });
-    }*/
+  @ViewChildren('checkboxes') checkboxes: QueryList<ElementRef>;
+  uncheckAll() {
+    this.checkboxes.forEach((element) => {
+      element.nativeElement.checked = false;
+    });
+  }
+  setrequestTogg(id: number, e: Event) {
+    this.toggleItem(id, (<HTMLInputElement>e.target).checked);
+  }
 
   validateRequest(id: number) {
     this.listRequest.push(id);
@@ -281,6 +292,6 @@ export class RequestListComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-
   // ------------------------------ ------------ ------------------------------
+
 }

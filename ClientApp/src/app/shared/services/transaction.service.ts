@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {TransactionModel} from '../models/transaction-model';
+import {TransactionPostModel} from '../models/Transaction-post-model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class TransactionService {
     this.refreshTransactions = new Subject();
   }
 
-  postTransaction(transaction: TransactionModel) {
+  postTransaction(transaction: TransactionPostModel) {
     return this.httpClient.post(this.baseUrl, transaction);
   }
 

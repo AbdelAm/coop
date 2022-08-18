@@ -50,11 +50,29 @@ namespace coop2._0.Repositories
             return transaction;
         }
 
-        public async Task<ActionResult> AddTransaction(Transaction transaction)
+        public async Task<ActionResult> AddTransaction(TransactionModel transactionModel)
         {
-            if (transaction == null) return new BadRequestResult();
+            if (transactionModel == null || (string.Equals(transactionModel.SenderBankAccountNumber.Trim(),
+                    transactionModel.ReceiverBankAccountNumber.Trim()))) return new BadRequestResult();
 
-            transaction.DateTransaction = DateTime.Now;
+            var senderBankAccount = await
+                _context.BankAccounts.FirstOrDefaultAsync(b =>
+                    b.AccountNumber == transactionModel.SenderBankAccountNumber.Trim());
+            var receiverBankAccount =
+                await _context.BankAccounts.FirstOrDefaultAsync(b =>
+                    b.AccountNumber == transactionModel.ReceiverBankAccountNumber.Trim());
+            if (senderBankAccount == null || receiverBankAccount == null)
+                return new BadRequestResult();
+
+            var transaction = new Transaction()
+            {
+                Motif = transactionModel.Motif,
+                SenderBankAccountId = senderBankAccount.Id,
+                ReceiverBankAccountId = receiverBankAccount.Id,
+                Amount = transactionModel.Amount,
+                DateTransaction = DateTime.Now,
+            };
+
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
             return new OkResult();
@@ -183,6 +201,5 @@ namespace coop2._0.Repositories
                 .OrderByDescending(d => d.DateTransaction).ToListAsync();
             return response;
         }
-
     }
 }

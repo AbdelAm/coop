@@ -81,9 +81,9 @@ namespace coop2._0.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN,USER")]
-        public async Task<ActionResult<Transaction>> AddTransaction(Transaction model)
+        public async Task<ActionResult<Transaction>> AddTransaction(TransactionModel transactionModel)
         {
-            return await _transactionService.AddTransaction(model);
+            return await _transactionService.AddTransaction(transactionModel);
         }
 
 

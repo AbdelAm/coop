@@ -36,28 +36,31 @@
   .dataTable-input {
     width: 40% !important;
   }
+
+
 }
 
-.icons {
-  text-align: center;
-}
+  .icons {
+    text-align: center;
+  }
 
-.wraped {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .wraped {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.dataTable-top {
-  display: flex;
-  flex-direction: column;
-}
+  .dataTable-top {
+    display: flex;
+    flex-direction: column;
+  }
 
-.dataTable-bottom {
-  display: inline;
-}
-.dataTable-input {
-  width: auto;
-  display: inline;
-  line-height: normal;
-}
+  .dataTable-bottom {
+    display: inline;
+  }
+
+  .dataTable-input {
+    width: auto;
+    display: inline;
+    line-height: normal;
+  }

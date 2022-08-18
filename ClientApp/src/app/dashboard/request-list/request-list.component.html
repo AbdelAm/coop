@@ -28,48 +28,18 @@
             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
               <div class="dataTable-top" *ngIf="isConnected && hasAdminRole && switchBtn">
                 <div class="dataTable-dropdown pt-2 d-none">
-                  <button
-                    class="border-0 bg-transparent align-middle"
-                    (click)="validateAll()"
-                  >
-                    <i
-                      class="fa-regular fa-circle-check"
-                      style="
-                        color: green;
-                        font-size: 20px;
-                        font-weight: 500;
-                        margin: 0 10px;
-                      "
-                    ></i>
+                  <button class="border-0 bg-transparent align-middle" (click)="validateAll()">
+                    <i class="fa-regular fa-circle-check" style=" color: green;  font-size: 20px; font-weight: 500; margin: 0 10px; " ></i>
                   </button>
-                  <button
-                    class="border-0 bg-transparent align-middle"
-                    (click)="rejectAll()"
-                  >
-                    <i
-                      class="fa-regular fa-circle-xmark"
-                      style="
-                        margin: 0 10px;
-                        font-size: 20px;
-                        font-weight: 500;
-                        color: chocolate;
-                      "
-                    ></i>
+
+                  <button class="border-0 bg-transparent align-middle" (click)="rejectAll()" >
+                    <i class="fa-regular fa-circle-xmark" style="  margin: 0 10px; font-size: 20px;  font-weight: 500; color: chocolate; " ></i>
                   </button>
-                  <button
-                    class="border-0 bg-transparent align-middle"
-                    (click)="deleteAll()"
-                  >
-                    <i
-                      class="fa-regular fa-trash-can"
-                      style="
-                        margin: 0 10px;
-                        font-size: 20px;
-                        font-weight: 500;
-                        color: red;
-                      "
-                    ></i>
+
+                  <button class="border-0 bg-transparent align-middle" (click)="deleteAll()" >
+                    <i  class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px;  font-weight: 500; color: red; " ></i>
                   </button>
+
                 </div>
                 <div class="dataTable-search"></div>
               </div>
@@ -79,86 +49,60 @@
                   <tr>
                     <th *ngIf="isConnected && hasAdminRole && switchBtn">
                       <input
-                        type="checkbox"
-
-                        (change)="selectAll($event)"
-                      />
+                        type="checkbox" (change)="selectAll($event)"/>
                     </th>
-                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn">identificación</th>
-                    <th data-sortable="" *ngIf="isConnected && hasAdminRole && switchBtn">usuario</th>
-                    <th data-sortable="">Tipo </th>
-                    <th data-sortable="">mensaje</th>
-                    <th data-sortable="">Fecha</th>
-                    <th data-sortable="">Estado</th>
-                    <th *ngIf="isConnected && hasAdminRole && switchBtn" data-sortable="">
+                    <th class="text-capitalize" *ngIf="isConnected && hasAdminRole && switchBtn">identificación</th>
+                    <th class="text-capitalize" *ngIf="isConnected && hasAdminRole && switchBtn">usuario</th>
+                    <th class="text-capitalize">Tipo </th>
+                    <th class="text-capitalize">mensaje</th>
+                    <th class="text-capitalize">Fecha</th>
+                    <th class="text-capitalize">Estado</th>
+                    <th *ngIf="isConnected  && switchBtn" >
                       Action
                     </th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let request of requests">
-                    <td *ngIf="isConnected && hasAdminRole && switchBtn">
-                      <input
-                        (change)="setRequest(request.id, $event)"
-                        class="items"
-                        type="checkbox"
-                        value="{{ request.id }}"
-                      />
-                    </td>
-                    <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.id }}</td>
-                    <td *ngIf="isConnected && hasAdminRole && switchBtn" >{{ request.userId }}</td>
-                    <td>{{request.type}}</td>
-                    <td>{{ request.message }}</td>
-                    <td>{{ request.dateRequest  | date: "dd-MM-yyyy"}}</td>
-                    <td [innerHTML]="this.status[request.status]"></td>
-                    <td
-                      *ngIf="isConnected && hasAdminRole && switchBtn"
-                      class="icons d-flex justify-i-center align-items-center h-100"
-                    >
-                      <button
-                        class="border-0 bg-transparent align-middle"
-                        (click)="validateRequest(request.id)"
-                      >
-                        <i
-                          class="fa-regular fa-circle-check"
-                          style="
-                              color: green;
-                              font-size: 20px;
-                              font-weight: 500;
-                              margin: 0 10px;
-                            "
-                        ></i>
-                      </button>
-                      <button
-                        class="border-0 bg-transparent align-middle"
-                        (click)="rejectRequest(request.id)"
-                      >
-                        <i
-                          class="fa-regular fa-circle-xmark"
-                          style="
-                              margin: 0 10px;
-                              font-size: 20px;
-                              font-weight: 500;
-                              color: chocolate;
-                            "
-                        ></i>
-                      </button>
-                      <button
-                        class="border-0 bg-transparent align-middle"
-                        (click)="deleteRequest(request.id)"
-                      >
-                        <i
-                          class="fa-regular fa-trash-can"
-                          style="
-                              margin: 0 10px;
-                              font-size: 20px;
-                              font-weight: 500;
-                              color: red;
-                            "
-                        ></i>
-                      </button>
-                    </td>
-                  </tr>
+                    <tr *ngFor="let request of requests">
+                      <td *ngIf="isConnected && hasAdminRole && switchBtn">
+                        <input (change)="setrequestTogg(request.id, $event)" class="items" type="checkbox" value="{{ request.id }}" />
+                      </td>
+                      <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.id }}</td>
+                      <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.userId }}</td>
+                      <td>{{request.type}}</td>
+                      <td>{{ request.message }}</td>
+                      <td>{{ request.dateRequest  | date: "dd-MM-yyyy"}}</td>
+                      <td [innerHTML]="this.status[request.status]"></td>
+                    <ng-container *ngIf="isConnected && hasAdminRole && switchBtn;else second">
+                      <td class="icons d-flex justify-i-center align-items-center h-100">
+                        <button class="border-0 bg-transparent align-middle" (click)="validateRequest(request.id)" *ngIf="request.status != 1">
+                          <i class="fa-regular fa-circle-check" style=" color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                        </button>
+
+                        <button class="border-0 bg-transparent align-middle" (click)="rejectRequest(request.id)" *ngIf="request.status != 2">
+                          <i class="fa-regular fa-circle-xmark" style="  margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate;"></i>
+                        </button>
+
+                        <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)">
+                          <i class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: red; "></i>
+                        </button>
+                      </td>
+                    </ng-container>
+
+                    <ng-template #second>
+                      <ng-container *ngIf="isConnected && !hasAdminRole && switchBtn">
+                        <td class="icons d-flex justify-i-center align-items-center h-100">
+
+                          <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)" *ngIf="request.status != 1">
+                            <i class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: red; "></i>
+                          </button>
+
+                        </td>
+                      </ng-container>
+                    </ng-template>
+
+
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -192,7 +136,7 @@
     <form>
       <div class="form-group">
         <div class="input-group">
-          <div class="col-lg-12">
+          <div class="col-lg-12 w-100">
             <label for="typeRequest">Tipo petición</label>
             <select [(ngModel)]="selected"
                     (change)="selectOption($event.target.value)"
@@ -206,7 +150,7 @@
           </div>
           <br />
 
-        <div class="col-lg-12">
+        <div class="col-lg-12 w-100">
             <label>Mensaje</label>
             <textarea [(ngModel)]="this.msg"
                       id="msg"

@@ -46,7 +46,7 @@ namespace coop2._0.Controllers
         }
 
         [HttpPost("delete")]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> RemoveRequest([FromBody] List<int> requests)
         {
             try

@@ -37,9 +37,9 @@ namespace coop2._0.Services
             return await _transactionRepository.RejectTransaction(id);
         }
 
-        public async Task<ActionResult> AddTransaction(Transaction model)
+        public async Task<ActionResult> AddTransaction(TransactionModel transactionModel)
         {
-            return await _transactionRepository.AddTransaction(model);
+            return await _transactionRepository.AddTransaction(transactionModel);
         }
 
         public async Task<ActionResult<Transaction>> ValidateTransaction(int id)
