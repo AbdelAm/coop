@@ -62,7 +62,6 @@ export class ProfileComponent implements OnInit {
   submitAcivated() {
     return (
       this.userInfo.name !== this.user.name ||
-      this.userInfo.socialNumber !== this.user.socialNumber ||
       this.userInfo.phone !== this.user.phone
     );
   }
@@ -79,13 +78,13 @@ export class ProfileComponent implements OnInit {
       (res) => {
         console.log(res);
         Swal.fire({
-          title: 'User information updated successfully!!!',
+          title: 'Información del usuario actualizada correctamente !!!',
           icon: 'success',
         });
       },
       (err) => {
         Swal.fire({
-          title: 'There is probleme !!!',
+          title: 'Hay problema !!!',
           text: err['error'],
           icon: 'error',
         });

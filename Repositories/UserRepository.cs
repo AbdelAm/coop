@@ -38,7 +38,7 @@ namespace coop2._0.Repositories
             return await _userManager.FindByEmailAsync(email);
         }
 
-        public async Task<User> SelectBySocialNumber(string socialNumber)
+        public async Task<User> SelectBySocialNumber(long socialNumber)
         {
             return await _userManager.Users.Where(u => u.SocialNumber == socialNumber).FirstOrDefaultAsync();
         }

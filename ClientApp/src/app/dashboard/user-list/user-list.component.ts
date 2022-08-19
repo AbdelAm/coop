@@ -108,6 +108,7 @@ export class UserListComponent implements OnInit {
     document.querySelectorAll('.dataTable-table input[type=checkbox]').forEach((element) => {
       (<HTMLInputElement> element).checked = false;
     });
+    document.querySelector('.dataTable-dropdown').classList.add('d-none');
   }
 
   validateUser(cif: string) {

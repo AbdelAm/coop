@@ -222,7 +222,7 @@ namespace coop2._0.Services
         {
             var user = await _userRepository.SelectById(model.Cif);
             user.Name = model.Name;
-            user.SocialNumber = model.SocialNumber;
+            //user.SocialNumber = model.SocialNumber;
             user.PhoneNumber = model.Phone;
 
             var result = await _userRepository.UpdateUser(user);

@@ -3,7 +3,7 @@ export class UserItemModel {
   name!: string;
   email!: string;
   phone!: string;
-  socialNumber!: string;
+  socialNumber!: number;
   isConfirmed = false;
   status!: string;
 }

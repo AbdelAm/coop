@@ -1,7 +1,7 @@
 export class RegisterModel {
   name!: string;
   phone!: string;
-  socialNumber!: number;
+  //socialNumber!: number;
   email!: string;
   password!: string;
   confirmPassword!: string;

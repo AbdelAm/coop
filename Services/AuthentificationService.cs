@@ -37,12 +37,12 @@ namespace coop2._0.Services
                 throw e;
             }
 
-            u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
+            /*u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
             if (u != null)
             {
                 e.Data.Add("socialNumber_error", "El número social ya existe");
                 throw e;
-            }
+            }*/
 
             User user = new()
             {
@@ -50,7 +50,7 @@ namespace coop2._0.Services
                 Email = model.Email,
                 UserName = Regex.Replace(model.Name.ToLower(), @"\s+", ""),
                 PhoneNumber = model.Phone,
-                SocialNumber = model.SocialNumber,
+                //SocialNumber = model.SocialNumber,
                 DateCreated = DateTime.Now,
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
@@ -173,12 +173,12 @@ namespace coop2._0.Services
                 throw e;
             }
 
-            u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
+            /*u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
             if (u != null)
             {
                 e.Data.Add("socialNumber_error", "El número social ya existe");
                 throw e;
-            }
+            }*/
 
             User user = new()
             {
@@ -186,7 +186,7 @@ namespace coop2._0.Services
                 Email = model.Email,
                 UserName = Regex.Replace(model.Name.ToLower(), @"\s+", ""),
                 PhoneNumber = model.Phone,
-                SocialNumber = model.SocialNumber,
+                //SocialNumber = model.SocialNumber,
                 IsAdmin = true,
                 DateCreated = DateTime.Now,
                 Status = Status.Approuved,
@@ -201,7 +201,7 @@ namespace coop2._0.Services
 
             BankAccount account = new BankAccount()
             {
-                AccountNumber = "Coop" + Guid.NewGuid().ToString("D"),
+                AccountNumber = "Coop-" + Guid.NewGuid().ToString("D"),
                 Balance = 350.0,
                 DateCreated = DateTime.Now,
                 UserId = user.Id,
