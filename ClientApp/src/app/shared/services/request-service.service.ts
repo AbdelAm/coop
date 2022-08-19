@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {RequestModel} from '../models/request-model';
+import { StatusModel } from '../models/status-model';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,9 @@ export class RequestServiceService {
 
   searchRequest(value: string): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.baseUrl + `request/${value}`);
+  }
+  FilterRequest(value: StatusModel, pageNumber: number, pageSize: number): Observable<GetRequestResponse> {
+    return this.http.get<GetRequestResponse>(this.baseUrl + 'request/filter/' + value + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }
 
   validateRequests(requestList: Array<number>): Observable<RequestModel[]> {

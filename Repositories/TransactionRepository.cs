@@ -109,7 +109,8 @@ namespace coop2._0.Repositories
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-            var response = await _context.Transactions.Include(t => t.SenderBankAccount.User)
+            var response = await _context.Transactions
+                .Include(t => t.SenderBankAccount.User)
                 .Include(t => t.ReceiverBankAccount.User)
                 .OrderByDescending(d => d.DateTransaction)
                 .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
@@ -164,7 +165,7 @@ namespace coop2._0.Repositories
                                 b.SenderBankAccountId == userBankAccountId)
                     .Include(t => t.SenderBankAccount.User)
                     .Include(b => b.ReceiverBankAccount.User)
-                    .OrderByDescending(d => d.DateTransaction)
+                    .OrderByDescending(d => d.DateTransaction > DateTime.Today.AddMonths(-3))
                     .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                     .Take(validFilter.PageSize)
                     .ToListAsync();
@@ -183,8 +184,9 @@ namespace coop2._0.Repositories
         {
             var response =
                 await _context.Transactions
-                    .Where(b => b.ReceiverBankAccountId == userBankAccountId ||
-                                b.SenderBankAccountId == userBankAccountId)
+                    .Where(b => (b.ReceiverBankAccountId == userBankAccountId ||
+                                 b.SenderBankAccountId == userBankAccountId) &&
+                                b.DateTransaction >= DateTime.Today.AddMonths(-3))
                     .Include(t => t.SenderBankAccount.User)
                     .Include(b => b.ReceiverBankAccount.User)
                     .OrderByDescending(d => d.DateTransaction)
@@ -196,7 +198,8 @@ namespace coop2._0.Repositories
 
         public async Task<IEnumerable<Transaction>> GetAllTransactions()
         {
-            var response = await _context.Transactions.Include(t => t.SenderBankAccount.User)
+            var response = await _context.Transactions.Where(t => t.DateTransaction >= DateTime.Today.AddMonths(-3))
+                .Include(t => t.SenderBankAccount.User)
                 .Include(t => t.ReceiverBankAccount.User)
                 .OrderByDescending(d => d.DateTransaction).ToListAsync();
             return response;

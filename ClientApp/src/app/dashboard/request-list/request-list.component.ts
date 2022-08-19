@@ -38,7 +38,7 @@ export class RequestListComponent implements OnInit {
     '<strong class="text-success">Aprobado</strong>',
     '<strong class="text-danger text-capitalize">Rechazado</strong>'
   ];
-  
+  state: number;
 
   constructor(private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private userService: UserService, private modalService: NgbModal) {
 
@@ -50,14 +50,30 @@ export class RequestListComponent implements OnInit {
     this.requestItems = new ItemsModel<RequestModel>();
     this.ConnectedUserId = this.jwt.getConnectedUserId();
     this.request = new RequestModel();
-
+    this.state = 2;
   }
 
   ngOnInit(): void {
     this.loadRequestsByRole();
     window.scrollTo(0, 0);
-
   }
+
+ 
+  filterByApproved() {
+    this.requestService.FilterRequest(StatusModel.Approuved, this.pageNumber, this.pageSize).subscribe(
+      this.processResult()
+    );
+    return this.state=1;
+  }
+
+  filterByProgress() {
+    this.requestService.FilterRequest(StatusModel.Progress, this.pageNumber, this.pageSize).subscribe(
+      this.processResult()
+    );
+    return this.state=0;
+  }
+
+  
 
   getRequests() {
     this.requestService.getRequests(this.pageNumber, this.pageSize).subscribe(
@@ -85,19 +101,30 @@ export class RequestListComponent implements OnInit {
 
     if (this.isConnected && this.hasAdminRole) {
       if (this.switchBtn) {
-        this.getRequests();
-      } else {
-        this.getRequestsByUser();
+        if (this.state == 0) {
+          this.filterByProgress();
+        }
+        else if (this.state == 1) {
+          this.filterByApproved();
+        }
+        else if (this.state == 2)
+        {
+          this.getRequests();
+        }
+        else
+          this.getRequests();
       }
-    } else {
+    }
+    else {
       if (this.isConnected && !this.hasAdminRole) {
         this.getRequestsByUser();
-      } else {
+      }
+      else {
         this.router.navigateByUrl('/login');
       }
     }
   }
-
+  
   
 
 
@@ -235,13 +262,6 @@ export class RequestListComponent implements OnInit {
     );
   }
 
-  // searchItem(e: Event) {
-  //  let value =(<HTMLInputElement>e.target).value;
-  //  this.requestService.searchRequest(value).subscribe(
-  //    res => console.log(res),
-  //    err => console.log(err)
-  //  )
-  // }
 
 
   // ------------------------------ POPUP METHODES ------------------------------
