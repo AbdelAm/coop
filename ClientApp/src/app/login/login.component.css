@@ -197,7 +197,6 @@ body {
 .section-container {
   display: flex;
   justify-content: center;
-  gap: 30px;
 }
 
 /* read more css */
@@ -214,19 +213,17 @@ body {
   .small-screen {
     display: none !important;
   }
-}
-@media (max-width: 600px) {
-  body {
+  .section-container {
     display: flex;
     flex-direction: column;
     align-content: center;
     justify-content: space-between;
   }
-
-  section-container {
+}
+@media (max-width: 600px) {
+  body {
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
     align-content: center;
     justify-content: space-between;
   }
