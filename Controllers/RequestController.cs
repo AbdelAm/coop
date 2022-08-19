@@ -27,6 +27,12 @@ namespace coop2._0.Controllers
         {
             return await _requestService.GetRequests(filter);
         }
+        [HttpGet("filter/{status}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<object> FilterRequests( Status status, [FromQuery] PaginationFilter filter)
+        {
+            return await _requestService.FilterRequests(status,filter);
+        }
 
         [HttpGet("user/{userId}")]
         [Authorize(Roles = "ADMIN,USER")]

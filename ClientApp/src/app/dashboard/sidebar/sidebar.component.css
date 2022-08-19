@@ -1,0 +1,3 @@
+#layoutSidenav_content.no-before:before {
+    display: none !important;
+}

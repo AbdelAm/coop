@@ -44,7 +44,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUser(this.jwt.getConnectedUserId()).subscribe(
       (res) => {
-        console.log(res);
         Object.assign(this.user, res);
         this.userInfo.setInfo(this.user);
         this.emailUpdate.cif = this.user.cif;

@@ -31,6 +31,10 @@ namespace coop2._0.Services
         {
             return await _requestRepository.GetRequests(filter);
         }
+        public async Task<object> FilterRequests(Status status, PaginationFilter filter)
+        {
+            return await _requestRepository.FilterRequests(status, filter);
+        }
 
         public async Task<bool> RemoveRequest(List<int> requests)
         {

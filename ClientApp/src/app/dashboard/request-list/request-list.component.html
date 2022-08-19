@@ -41,7 +41,16 @@
                   </button>
 
                 </div>
-                <div class="dataTable-search"></div>
+                <div class="dataTable-search">
+                  <!--<select [(ngModel)]="selectedOption">
+                    <option *ngFor="let statu of State" [innerHTML]="this.status[this.statu]"
+                            [[value]]="this.statu.value"></option>
+                  </select>-->
+                  <button (click)="filterByProgress()">In Progress</button>
+                  <button (click)="filterByApproved()">Approved</button>
+                  <!--<button routerLink="/dashboard/requests">All</button>-->
+
+                </div>
               </div>
               <div class="dataTable-container">
                 <table id="datatablesSimple" class="dataTable-table">
@@ -136,7 +145,7 @@
     <form>
       <div class="form-group">
         <div class="input-group">
-          <div class="col-lg-12">
+          <div class="col-lg-12 w-100">
             <label for="typeRequest">Tipo petición</label>
             <select [(ngModel)]="selected"
                     (change)="selectOption($event.target.value)"
@@ -150,7 +159,7 @@
           </div>
           <br />
 
-        <div class="col-lg-12">
+        <div class="col-lg-12 w-100">
             <label>Mensaje</label>
             <textarea [(ngModel)]="this.msg"
                       id="msg"

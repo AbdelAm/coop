@@ -10,6 +10,7 @@ namespace coop2._0.Services
     {
         Task<Request> GetRequest(int id);
         Task<object> GetRequests(PaginationFilter filter);
+        Task<object> FilterRequests( Status status, PaginationFilter filter);
         Task<object> GetRequestsByUser(string userId, PaginationFilter filter);
         Task<bool> RemoveRequest(List<int> requests);
         Task<bool> RejectRequest(List<int> requests);
