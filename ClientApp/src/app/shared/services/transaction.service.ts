@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {TransactionModel} from '../models/transaction-model';
 import {TransactionPostModel} from '../models/Transaction-post-model';
+import {saveAs} from 'file-saver';
 
 @Injectable({
   providedIn: 'root',
@@ -144,11 +145,7 @@ export class TransactionService {
    */
   downLoadFile(data: any, type: string) {
     const blob = new Blob([data], {type: type});
-    const url = window.URL.createObjectURL(blob);
-    const pwa = window.open(url);
-    if (!pwa || pwa.closed || typeof pwa.closed === 'undefined') {
-      alert('Please disable your Pop-up blocker and try again.');
-    }
+    saveAs(blob, 'Transacciones');
   }
 
 }
