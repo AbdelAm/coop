@@ -7,6 +7,7 @@ import {TransactionService} from '../../shared/services/transaction.service';
 import Swal from 'sweetalert2';
 import {TransactionPopupComponent} from '../transaction-popup/transaction-popup.component';
 import {BankAccountService} from 'src/app/shared/services/bank-account.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-transaction-list',
@@ -30,7 +31,7 @@ export class TransactionListComponent implements OnInit {
     private jwt: JwtService,
     private router: Router,
     private transactionService: TransactionService,
-    private bankService: BankAccountService,
+    private bankService: BankAccountService, private modalService: NgbModal
   ) {
     this.transactions = [];
     this.listTransaction = [];
@@ -256,6 +257,8 @@ export class TransactionListComponent implements OnInit {
 
   statusColor(status: number) {
     switch (status) {
+      case 0 :
+        return 'yellow';
       case 1:
         return 'green';
       case 2:
@@ -280,4 +283,9 @@ export class TransactionListComponent implements OnInit {
       this.transactionService.importAllTransactionsAsPdf();
     }
   }
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', scrollable: true});
+  }
 }
+

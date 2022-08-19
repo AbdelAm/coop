@@ -208,9 +208,13 @@ namespace coop2._0.Controllers
             string filepath = _webHostEnvironment.WebRootPath + "" + filename + ".pdf";
             Document document = new Document(PageSize.A4, 5f, 5f, 10f, 10f);
             FileStream fs = new FileStream(filepath, FileMode.Create);
+            document.AddAuthor("CoopHalal");
+            document.AddCreationDate();
+            document.AddTitle("Lista de transacciones de los últimos 3 meses");
             PdfWriter writer = PdfWriter.GetInstance(document, fs);
             document.Open();
-
+            document.Add(new Phrase("Lista de transacciones de los últimos 3 meses",
+                FontFactory.GetFont(FontFactory.TIMES_BOLD, 12)));
             Font font1 = FontFactory.GetFont(FontFactory.COURIER_BOLD, 10);
             Font font2 = FontFactory.GetFont(FontFactory.COURIER, 8);
 
@@ -330,11 +334,16 @@ namespace coop2._0.Controllers
             string filepath = _webHostEnvironment.WebRootPath + "" + filename + ".pdf";
             Document document = new Document(PageSize.A4, 5f, 5f, 10f, 10f);
             FileStream fs = new FileStream(filepath, FileMode.Create);
+            document.AddAuthor("CoopHalal");
+            document.AddCreationDate();
+            document.AddTitle("Lista de transacciones de los últimos 3 meses");
             PdfWriter writer = PdfWriter.GetInstance(document, fs);
             document.Open();
-
+            document.Add(new Phrase("Lista de transacciones de los últimos 3 meses",
+                FontFactory.GetFont(FontFactory.TIMES_BOLD, 12)));
             Font font1 = FontFactory.GetFont(FontFactory.COURIER_BOLD, 10);
             Font font2 = FontFactory.GetFont(FontFactory.COURIER, 8);
+
 
             float[] columnDefinitionSize = { 2F, 3F, 2F, 2F, 2F, 2F };
             PdfPTable table;

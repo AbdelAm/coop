@@ -69,14 +69,15 @@
                   "
                 ></i>
               </button>
+
             </div>
             <div class="dataTable-search">
               <input
-                     #searchTransaction
-                     class="dataTable-input"
-                     placeholder="Búsqueda..."
-                     type="search"
-                     (keyup)="handleTransactionSearch(searchTransaction.value)"
+                #searchTransaction
+                class="dataTable-input"
+                placeholder="Búsqueda..."
+                type="search"
+                (keyup)="handleTransactionSearch(searchTransaction.value)"
               />
               <div class="dataTable-bottom" *ngIf="isConnected && hasAdminRole && switchBtn">
                 <nav class="dataTable-pagination">
@@ -185,22 +186,42 @@
                         "
                     ></i>
                   </button>
-                  <!--<button
-                  (click)="updateTransaction()"
-                  class="border-0 bg-transparent align-middle"
-                >
-                  <i
-                    class="fa-regular fa-pen-to-square"
-                    style="
-                        margin: 0 10px;
-                        font-size: 20px;
-                        font-weight: 500;
-                        color: cornflowerblue;
-                      "
-                  ></i>
-                </button>-->
+                  <button
+                    (click)="open(content)"
+                    class="border-0 bg-transparent align-middle"
+                  >
+                    <i
+                      class="fa fa-info-circle"
+                      style="
+                          margin: 0 10px;
+                          font-size: 20px;
+                          font-weight: 500;
+                          color: lightskyblue;
+                        "
+                    ></i>
+                  </button>
+                  <ng-template #content let-modal>
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="modal-basic-title">Información de la transacción</h2>
+                      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+                    </div>
+                    <div class="modal-body">
+                      <h3 class="text-black">Monto :<small class="text-danger">{{transaction.amount}}</small> </h3>
+                      <h3 class="text-black">Fetcha :<small> {{transaction.dateTransaction | date:"full"}}</small></h3>
+                      <h3 class="text-black">Concepto :<small>{{transaction.motif}}</small></h3>
+                      <h3 class="text-black">Cueta orginal : <small>{{transaction.senderBankAccount.user.name}}</small></h3>
+                      <h3 class="text-black">Cúmero de cuenta bancaria del remitente : <small>{{transaction.senderBankAccount.accountNumber}}</small></h3>
+                      <h3 class="text-black">Cuenta destino : <small> {{transaction.receiverBankAccount.user.name}}</small></h3>
+                      <h3 class="text-black">Número de cuenta bancaria del receptor : <small> {{transaction.receiverBankAccount.accountNumber}}</small></h3>
+                      <h3 class="text-black">Estado : <small [style.color]="statusColor(transaction.status)" > {{statusCasting(transaction.status)}}</small></h3>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>
+                    </div>
+                  </ng-template>
                 </td>
               </tr>
+
               </tbody>
             </table>
           </div>
@@ -218,3 +239,4 @@
     </div>
   </div>
 </main>
+
