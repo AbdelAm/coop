@@ -413,15 +413,14 @@ namespace coop2._0.Controllers
         {
             var range = "A:H";
             IEnumerable<TransactionResponse> transactions = await _transactionService.GetAllTransactions();
-            var transactionResponses = transactions as TransactionResponse[] ?? transactions.ToArray();
-            var objectList = transactionResponses.Cast<object>().ToList();
-            var rangeData = new List<IList<object>> { transactionResponses.Cast<object>().ToList() };
+            var objectList = transactions.Cast<object>().ToList();
+            var rangeData = new List<IList<object>> { objectList };
             var valueRange = new ValueRange
             {
                 Values = rangeData
             };
 
-            var appendRequest = _googleSheetValues.Append(valueRange, SpreadsheetId, range);
+            var appendRequest = _googleSheetValues.Append( valueRange, SpreadsheetId, range);
             appendRequest.ValueInputOption =
                 SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
             appendRequest.Execute();

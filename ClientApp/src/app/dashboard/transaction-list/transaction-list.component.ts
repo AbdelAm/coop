@@ -262,8 +262,6 @@ export class TransactionListComponent implements OnInit {
 
   statusColor(status: number) {
     switch (status) {
-      case 0 :
-        return 'orange';
       case 1:
         return 'green';
       case 2:
