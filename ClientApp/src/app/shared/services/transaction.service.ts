@@ -44,6 +44,13 @@ export class TransactionService {
     );
   }
 
+  getAllTransactionsByStatus(status: string, pageNumber: number,
+                             pageSize: number): Observable<GetTransactionsResponse> {
+    return this.httpClient.get<GetTransactionsResponse>(
+      this.baseUrl + '/filter/' + status + '?pageNumber=' + pageNumber + '&pageSize=' + pageSize
+    );
+  }
+
   getTransactions(
     pageNumber: number,
     pageSize: number
@@ -79,6 +86,7 @@ export class TransactionService {
   removeAllTransaction(transactionsIds: number[]) {
     return this.httpClient.post(this.baseUrl + '/remove-all', transactionsIds);
   }
+
 
   handleTransactionSearch(
     keyword: string,

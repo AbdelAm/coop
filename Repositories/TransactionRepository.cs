@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,10 +58,11 @@ namespace coop2._0.Repositories
 
             var senderBankAccount = await
                 _context.BankAccounts.FirstOrDefaultAsync(b =>
-                    b.AccountNumber == transactionModel.SenderBankAccountNumber.Trim());
+                    b.AccountNumber == transactionModel.SenderBankAccountNumber.Trim() && b.Status == Status.Approuved);
             var receiverBankAccount =
                 await _context.BankAccounts.FirstOrDefaultAsync(b =>
-                    b.AccountNumber == transactionModel.ReceiverBankAccountNumber.Trim());
+                    b.AccountNumber == transactionModel.ReceiverBankAccountNumber.Trim() &&
+                    b.Status == Status.Approuved);
             if (senderBankAccount == null || receiverBankAccount == null)
                 return new BadRequestResult();
 
@@ -196,13 +198,43 @@ namespace coop2._0.Repositories
         }
 
 
-        public async Task<IEnumerable<Transaction>> GetAllTransactions()
+        public async Task<IEnumerable<TransactionResponse>> GetAllTransactions()
         {
             var response = await _context.Transactions.Where(t => t.DateTransaction >= DateTime.Today.AddMonths(-3))
                 .Include(t => t.SenderBankAccount.User)
                 .Include(t => t.ReceiverBankAccount.User)
-                .OrderByDescending(d => d.DateTransaction).ToListAsync();
+                .OrderByDescending(d => d.DateTransaction)
+                .Select(t => new TransactionResponse()
+                {
+                    Amount = t.Amount,
+                    Motif = t.Motif,
+                    SenderName = t.SenderBankAccount.User.Name,
+                    SenderBankAccountNumber = t.SenderBankAccount.AccountNumber,
+                    ReceiverName = t.ReceiverBankAccount.User.Name,
+                    ReceiverBankAccountNumber = t.ReceiverBankAccount.AccountNumber,
+                    Status = t.Status,
+                    DateTransaction = t.DateTransaction.ToString(CultureInfo.CurrentCulture)
+                }).ToListAsync();
             return response;
+        }
+
+
+        public async Task<object> GetAllTransactionsByStatus(Status status, PaginationFilter filter)
+        {
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+
+            var response = await _context.Transactions.Where(t => t.Status == status)
+                .Include(t => t.SenderBankAccount.User)
+                .Include(t => t.ReceiverBankAccount.User)
+                .OrderByDescending(d => d.DateTransaction)
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize).ToListAsync();
+
+            var pagination = new PaginationResponse(validFilter.PageNumber, validFilter.PageSize,
+                await _context.Transactions.Where(t => t.Status == status).CountAsync());
+
+
+            return new { response, pagination };
         }
     }
 }

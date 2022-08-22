@@ -71,15 +71,16 @@
               </button>
 
             </div>
-            <div class="dataTable-search">
+            <div class="dataTable-search" *ngIf="isConnected && hasAdminRole && switchBtn" >
               <input
                 #searchTransaction
                 class="dataTable-input"
                 placeholder="Búsqueda..."
                 type="search"
+                id="transactionSearch"
                 (keyup)="handleTransactionSearch(searchTransaction.value)"
               />
-              <div class="dataTable-bottom" *ngIf="isConnected && hasAdminRole && switchBtn">
+              <div class="dataTable-bottom">
                 <nav class="dataTable-pagination">
                   <ul class="dataTable-pagination-list">
 
@@ -102,12 +103,25 @@
                 <th *ngIf="isConnected && hasAdminRole && switchBtn">
                   <input type="checkbox" (change)="selectAll($event)"/>
                 </th>
-                <th data-sortable="">Monto</th>
-                <th data-sortable="">Fetcha</th>
-                <th data-sortable="">Concepto</th>
-                <th data-sortable="">Cuenta original</th>
-                <th data-sortable="">Cuenta de destino</th>
-                <th data-sortable="">Estado</th>
+                <th >Monto</th>
+                <th >Fetcha</th>
+                <th >Concepto</th>
+                <th >Cuenta original</th>
+                <th >Cuenta de destino</th>
+                <th  *ngIf="isConnected && hasAdminRole && switchBtn;else normalStatus">
+                  <select #filter (change)="getAllTransactionsByStatus(filter.value)"
+                          class="form-select form-select-sm">
+                    <option selected hidden>Estado</option>
+                    <option value="0">En progreso</option>
+                    <option value="1">Aprobada</option>
+                    <option value="2">Rechazada</option>
+
+                  </select>
+                </th>
+                <ng-template #normalStatus>
+                  <th>Estado</th>
+                </ng-template>
+
                 <th
                   *ngIf="isConnected && hasAdminRole && switchBtn"
                   data-sortable=""
@@ -206,14 +220,20 @@
                       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
                     </div>
                     <div class="modal-body">
-                      <h3 class="text-black">Monto :<small class="text-danger">{{transaction.amount}}</small> </h3>
+                      <h3 class="text-black">Monto :<small class="text-danger">{{transaction.amount}}</small></h3>
                       <h3 class="text-black">Fetcha :<small> {{transaction.dateTransaction | date:"full"}}</small></h3>
                       <h3 class="text-black">Concepto :<small>{{transaction.motif}}</small></h3>
-                      <h3 class="text-black">Cueta orginal : <small>{{transaction.senderBankAccount.user.name}}</small></h3>
-                      <h3 class="text-black">Cúmero de cuenta bancaria del remitente : <small>{{transaction.senderBankAccount.accountNumber}}</small></h3>
-                      <h3 class="text-black">Cuenta destino : <small> {{transaction.receiverBankAccount.user.name}}</small></h3>
-                      <h3 class="text-black">Número de cuenta bancaria del receptor : <small> {{transaction.receiverBankAccount.accountNumber}}</small></h3>
-                      <h3 class="text-black">Estado : <small [style.color]="statusColor(transaction.status)" > {{statusCasting(transaction.status)}}</small></h3>
+                      <h3 class="text-black">Cueta orginal : <small>{{transaction.senderBankAccount.user.name}}</small>
+                      </h3>
+                      <h3 class="text-black">Cúmero de cuenta bancaria del remitente :
+                        <small>{{transaction.senderBankAccount.accountNumber}}</small></h3>
+                      <h3 class="text-black">Cuenta destino :
+                        <small> {{transaction.receiverBankAccount.user.name}}</small></h3>
+                      <h3 class="text-black">Número de cuenta bancaria del receptor :
+                        <small> {{transaction.receiverBankAccount.accountNumber}}</small></h3>
+                      <h3 class="text-black">Estado : <small
+                        [style.color]="statusColor(transaction.status)"> {{statusCasting(transaction.status)}}</small>
+                      </h3>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>
