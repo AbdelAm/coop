@@ -69,5 +69,12 @@ export class SignupComponent implements OnInit {
 
   emptyError(field: string) {
     document.getElementById(field).textContent = '';
+    if(field === "password_error") {
+      document.getElementById('password_pattern').style.display = "block";
+    }
+  }
+  emptyPattern()
+  {
+    document.getElementById('password_pattern').style.display = "none";
   }
 }
