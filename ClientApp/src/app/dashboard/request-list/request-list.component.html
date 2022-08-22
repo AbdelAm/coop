@@ -118,12 +118,14 @@
               <ngb-pagination
                 [(page)]="pageNumber"
                 [pageSize]="pageSize"
+                [maxSize]="3"
                 [collectionSize]="totalElements"
                 [boundaryLinks]="true"
+                [rotate]="true"
+                [ellipses]="false"
                 (pageChange)="loadRequestsByRole()">
               </ngb-pagination>
-              
-            </div>
+              </div>
           </div>
         </div>
       </div>

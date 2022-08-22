@@ -196,6 +196,7 @@ export class RequestListComponent implements OnInit {
   validateRequest(id: number) {
     this.listRequest.push(id);
     this.validateAll();
+
   }
 
   rejectRequest(id: number) {
@@ -206,6 +207,7 @@ export class RequestListComponent implements OnInit {
   deleteRequest(id: number) {
     this.listRequest.push(id);
     this.deleteAll();
+    this.loadRequestsByRole();
   }
 
   validateAll() {
@@ -257,6 +259,7 @@ export class RequestListComponent implements OnInit {
           title: 'La solicitud ha sido eliminada!',
           icon: 'success',
         });
+        this.loadRequestsByRole();
       },
       (err) => console.log(err)
     );
