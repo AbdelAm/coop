@@ -2,6 +2,8 @@
 using coop2._0.Entities;
 using coop2._0.Model;
 using coop2._0.Services;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Authorization;
@@ -19,16 +21,20 @@ namespace coop2._0.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private const string SpreadsheetId = "1Br7-Uapf_0UKB5UrUk1vHko55KKBwfxeztnVydJ7eh8";
+        private const string SheetName = "CoopHalal";
+        SpreadsheetsResource.ValuesResource _googleSheetValues;
 
-        public TransactionsController(ITransactionService transactionService, IWebHostEnvironment webHostEnvironment)
+        public TransactionsController(ITransactionService transactionService, IWebHostEnvironment webHostEnvironment,
+            GoogleSheetsHelper googleSheetsHelper)
         {
             this._transactionService = transactionService;
             _webHostEnvironment = webHostEnvironment;
+            _googleSheetValues = googleSheetsHelper.Service.Spreadsheets.Values;
         }
 
         [HttpGet]
@@ -36,6 +42,14 @@ namespace coop2._0.Controllers
         public async Task<object> GetTransactions([FromQuery] PaginationFilter filter)
         {
             return await _transactionService.GetAllTransactions(filter);
+        }
+
+        [HttpGet("filter/{status}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<object> GetAllTransactionsByStatus([FromQuery] PaginationFilter filter, Status status)
+
+        {
+            return await _transactionService.GetAllTransactionsByStatus(status, filter);
         }
 
         [HttpGet("{id:int}")]
@@ -394,6 +408,26 @@ namespace coop2._0.Controllers
             return sourceFile;
         }
 
+        [HttpGet("sheet")]
+        public async Task ExportToGoogleSheets()
+        {
+            var range = "A:H";
+            IEnumerable<TransactionResponse> transactions = await _transactionService.GetAllTransactions();
+            var transactionResponses = transactions as TransactionResponse[] ?? transactions.ToArray();
+            var objectList = transactionResponses.Cast<object>().ToList();
+            var rangeData = new List<IList<object>> { transactionResponses.Cast<object>().ToList() };
+            var valueRange = new ValueRange
+            {
+                Values = rangeData
+            };
+
+            var appendRequest = _googleSheetValues.Append(valueRange, SpreadsheetId, range);
+            appendRequest.ValueInputOption =
+                SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+            appendRequest.Execute();
+        }
+
+
         private async Task<DataTable> GetUserTransactionsAsDataTable(int bankAccountId)
         {
             var transactions = await _transactionService.GetTransactionsByUser(bankAccountId);
@@ -431,7 +465,7 @@ namespace coop2._0.Controllers
             foreach (var transaction in transactions)
             {
                 dtTransactions.Rows.Add(transaction.Amount, transaction.DateTransaction, transaction.Motif,
-                    transaction.SenderBankAccount.User.Name, transaction.ReceiverBankAccount.User.Name,
+                    transaction.SenderName, transaction.ReceiverName,
                     transaction.Status);
             }
 

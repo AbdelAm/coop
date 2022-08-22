@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using coop2._0.Model;
 
 namespace coop2._0
 {
@@ -88,6 +89,7 @@ namespace coop2._0
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
+            services.AddSingleton(typeof(GoogleSheetsHelper));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

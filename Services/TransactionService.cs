@@ -57,7 +57,7 @@ namespace coop2._0.Services
             return await _transactionRepository.SearchForTransactions(keyword, filter);
         }
 
-        public Task<IEnumerable<Transaction>> GetAllTransactions()
+        public Task<IEnumerable<TransactionResponse>> GetAllTransactions()
         {
             return _transactionRepository.GetAllTransactions();
         }
@@ -65,6 +65,12 @@ namespace coop2._0.Services
         public Task<IEnumerable<Transaction>> GetTransactionsByUser(int userBankAccountId)
         {
             return _transactionRepository.GetTransactionsByUser(userBankAccountId);
+        }
+
+
+        public Task<object> GetAllTransactionsByStatus(Status status, PaginationFilter filter)
+        {
+            return _transactionRepository.GetAllTransactionsByStatus(status,filter);
         }
     }
 }

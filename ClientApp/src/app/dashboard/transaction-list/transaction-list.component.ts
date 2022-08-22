@@ -63,7 +63,12 @@ export class TransactionListComponent implements OnInit {
 
     if (this.isConnected && this.hasAdminRole) {
       if (this.switchBtn) {
-        this.getTransactions();
+        const searchKeyword: string = (<HTMLInputElement>document.getElementById('transactionSearch')).value;
+        if (searchKeyword) {
+          this.handleTransactionSearch(searchKeyword);
+        } else {
+          this.getTransactions();
+        }
       } else {
         this.getTransactionsByUser();
       }
@@ -258,7 +263,7 @@ export class TransactionListComponent implements OnInit {
   statusColor(status: number) {
     switch (status) {
       case 0 :
-        return 'yellow';
+        return 'orange';
       case 1:
         return 'green';
       case 2:
@@ -286,6 +291,10 @@ export class TransactionListComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', scrollable: true});
+  }
+
+  getAllTransactionsByStatus(status: string) {
+    this.transactionService.getAllTransactionsByStatus(status, this.pageNumber, this.pageSize).subscribe(this.processResult());
   }
 }
 
