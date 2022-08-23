@@ -41,7 +41,9 @@ export class HeaderComponent implements OnInit {
         : this.router.navigateByUrl('/dashboard/global');
     });
   }
-
+  showMsg() {
+    document.querySelector('.messages-content').classList.toggle('show');
+}
   logout() {
     this.jwt.removeToken();
     this.router.navigateByUrl('/login');

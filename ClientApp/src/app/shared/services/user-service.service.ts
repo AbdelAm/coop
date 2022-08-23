@@ -14,14 +14,27 @@ import {UserItemModel} from '../models/user-item-model';
 })
 export class UserService {
   readonly baseUrl = environment.apiUrl;
+  progressCount : number;
 
   constructor(private http: HttpClient) {
   }
 
+  setProgressCount(n: number)
+  {
+
+  }
+  getProgressCount()
+  {
+
+  }
   getUsers(page: number = 0): Observable<ItemsModel<UserItemModel>> {
     return this.http.get<ItemsModel<UserItemModel>>(
       this.baseUrl + `user/list/${page}`
     );
+  }
+
+  getProgressUsers(): Observable<number> {
+    return this.http.get<number>(this.baseUrl + `user/progress/list`);
   }
 
   getUser(cif: string): Observable<UserBankItemModel> {

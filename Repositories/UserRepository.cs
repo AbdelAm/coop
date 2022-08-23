@@ -125,6 +125,12 @@ namespace coop2._0.Repositories
                 .CountAsync();
         }
 
+        public async Task<int> SelectProgressCount()
+        {
+            return await _userManager.Users.Where(u => !u.IsAdmin && u.Status == Status.Progress)
+                .CountAsync();
+        }
+
         public async Task<IEnumerable<UserItemModel>> SelectBy(string value)
         {
             return await _userManager.Users.Where(u =>

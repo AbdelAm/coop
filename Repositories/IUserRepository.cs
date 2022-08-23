@@ -22,6 +22,7 @@ namespace coop2._0.Repositories
         Task<IdentityResult> ResetPassword(User user, string token, string password);
         Task<IEnumerable<UserItemModel>> SelectAll(int page);
         Task<int> SelectCount();
+        Task<int> SelectProgressCount();
         Task<IEnumerable<UserItemModel>> SelectBy(string value);
         Task<bool> EmailExists(string email);
         Task<bool> CheckPassword(User user, string password);
