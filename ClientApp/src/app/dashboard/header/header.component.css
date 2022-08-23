@@ -2,6 +2,7 @@
   display: block;
   width: 160px;
   padding: 0.25rem 1rem;
+  margin-left: 50%;
 }
 
 .knobs,
@@ -224,4 +225,10 @@
 }
 .notifications li .fas{
   font-size: 35px;
+}
+
+@media screen and (max-width: 992px) {
+  .switch-items {
+    margin-left: 0;
+  }
 }

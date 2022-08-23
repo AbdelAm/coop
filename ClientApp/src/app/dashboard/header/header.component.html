@@ -5,7 +5,7 @@
   /></a>
   <!-- Sidebar Toggle-->
   <button
-    class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+    class="btn btn-link btn-sm order-1 order-lg-0 me-lg-0"
     id="sidebarToggle"
     (click)="toggleSideBar()"
   >
@@ -46,64 +46,66 @@
     </div>
   </form>-->
   <!-- Navbar-->
-  <ul class="notifications mb-0 p-0" style="margin-right: 20px;">
-    <li class="messages">
-        <div class="messages-header">
-            <button (click)="showMsg()"><i class="fa-solid fa-bell"></i></button>
-            <span class="messages-num">4</span>
-        </div>
-        <div class="messages-content">
-            <div class="content-header">
-                <strong>Notificaciones</strong>
-            </div>
-            <div class="message-items">
-                <div class="message-item">
-                    <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold">2</div>
-                    <div class="user-message">
-                        <p class="mb-0">Se han registrado nuevos usuarios</p>
-                    </div>
-                </div>
-                <div class="message-item">
-                    <div class="user-img">15</div>
-                    <div class="user-message">
-                        <p class="mb-0">Lorem ipsum dolor sit amet consectetur.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </li>
-  </ul>
-  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-    <li class="nav-item dropdown">
-      <a
-        class="nav-link dropdown-toggle"
-        id="navbarDropdown"
-        (click)="toggleMenu()"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        ><i class="fas fa-user fa-fw"></i
-      ></a>
-      <ul
-        class="dropdown-menu dropdown-menu-end"
-        aria-labelledby="navbarDropdown"
-      >
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/dashboard/profile"
-            (click)="setActiveClass($event)"
-            ><i class="fa-solid fa-user"></i
-            ><span style="margin-left: 8px">Perfil</span></a
-          >
-        </li>
-        <li><hr class="dropdown-divider" /></li>
-        <li>
-          <button class="dropdown-item" (click)="logout()">
-            Cerrar sesión
-          </button>
-        </li>
-      </ul>
-    </li>
-  </ul>
+  <div class="d-flex justify-content-center align-items-center" style="margin-left: auto !important">
+    <ul class="notifications mb-0 p-0" style="margin-right: 10px;" *ngIf="this.isAdmin()">
+      <li class="messages">
+          <div class="messages-header">
+              <button (click)="showMsg()"><i class="fa-solid fa-bell"></i></button>
+              <span class="messages-num">4</span>
+          </div>
+          <div class="messages-content">
+              <div class="content-header">
+                  <strong>Notificaciones</strong>
+              </div>
+              <div class="message-items">
+                  <div class="message-item">
+                      <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold">2</div>
+                      <div class="user-message">
+                          <p class="mb-0">Se han registrado nuevos usuarios</p>
+                      </div>
+                  </div>
+                  <div class="message-item">
+                      <div class="user-img">15</div>
+                      <div class="user-message">
+                          <p class="mb-0">Lorem ipsum dolor sit amet consectetur.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </li>
+    </ul>
+    <ul class="navbar-nav ms-auto ms-md-0 me-lg-4">
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdown"
+          (click)="toggleMenu()"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          ><i class="fas fa-user fa-fw"></i
+        ></a>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdown"
+        >
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/dashboard/profile"
+              (click)="setActiveClass($event)"
+              ><i class="fa-solid fa-user"></i
+              ><span style="margin-left: 8px">Perfil</span></a
+            >
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <button class="dropdown-item" (click)="logout()">
+              Cerrar sesión
+            </button>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </nav>
