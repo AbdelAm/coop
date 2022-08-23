@@ -29,12 +29,30 @@ namespace coop2._0.Repositories
         {
             var transaction = await _context.Transactions.FindAsync(id);
 
-            if (transaction == null || transaction.Status == Status.Approuved) return new BadRequestResult();
+            if (transaction == null) return new BadRequestResult();
 
+            if (transaction.Status is Status.Progress or Status.Rejected)
+            {
+                _context.Transactions.Remove(transaction);
+
+                await _context.SaveChangesAsync();
+
+                return new OkResult();
+            }
+
+            var senderBankAccount = await _context.BankAccounts.FindAsync(transaction.SenderBankAccountId);
+            var receiverBankAccount = await _context.BankAccounts.FindAsync(transaction.ReceiverBankAccountId);
+
+            if (senderBankAccount == null || receiverBankAccount == null)
+                return null;
+
+            senderBankAccount.Balance += transaction.Amount;
+            receiverBankAccount.Balance -= transaction.Amount;
+
+            _context.Entry(senderBankAccount).State = EntityState.Modified;
+            _context.Entry(receiverBankAccount).State = EntityState.Modified;
             _context.Transactions.Remove(transaction);
-
             await _context.SaveChangesAsync();
-
             return new OkResult();
         }
 
@@ -212,7 +230,7 @@ namespace coop2._0.Repositories
                     SenderBankAccountNumber = t.SenderBankAccount.AccountNumber,
                     ReceiverName = t.ReceiverBankAccount.User.Name,
                     ReceiverBankAccountNumber = t.ReceiverBankAccount.AccountNumber,
-                    Status = t.Status,
+                    Status =(double) t.Status,
                     DateTransaction = t.DateTransaction.ToString(CultureInfo.CurrentCulture)
                 }).ToListAsync();
             return response;

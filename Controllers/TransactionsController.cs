@@ -412,16 +412,14 @@ namespace coop2._0.Controllers
         public async Task ExportToGoogleSheets()
         {
             var range = "A:H";
-            IEnumerable<TransactionResponse> transactions = await _transactionService.GetAllTransactions();
-            var transactionResponses = transactions as TransactionResponse[] ?? transactions.ToArray();
-            var objectList = transactionResponses.Cast<object>().ToList();
-            var rangeData = new List<IList<object>> { transactionResponses.Cast<object>().ToList() };
+            IList<TransactionResponse> transactions = (IList<TransactionResponse>)await _transactionService.GetAllTransactions();
+            var rangeData = new List<IList<object>> { transactions as List<object> };
             var valueRange = new ValueRange
             {
                 Values = rangeData
             };
 
-            var appendRequest = _googleSheetValues.Append(valueRange, SpreadsheetId, range);
+            var appendRequest = _googleSheetValues.Append( valueRange, SpreadsheetId, range);
             appendRequest.ValueInputOption =
                 SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
             appendRequest.Execute();

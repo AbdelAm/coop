@@ -7,12 +7,11 @@ namespace coop2._0.Model
     {
         public double Amount { get; set; }
         public string Motif { get; set; }
-        public virtual string SenderName { get; set; }
-        public virtual string SenderBankAccountNumber { get; set; }
-        public virtual string ReceiverName { get; set; }
-        public virtual string ReceiverBankAccountNumber { get; set; }
+        public  string SenderName { get; set; }
+        public  string SenderBankAccountNumber { get; set; }
+        public  string ReceiverName { get; set; }
+        public  string ReceiverBankAccountNumber { get; set; }
+        public double Status { get; set; }
         public string DateTransaction { get; set; }
-
-        public Status Status { get; set; }
     }
 }

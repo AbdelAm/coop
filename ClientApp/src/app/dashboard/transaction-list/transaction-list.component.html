@@ -71,7 +71,7 @@
               </button>
 
             </div>
-            <div class="dataTable-search" *ngIf="isConnected && hasAdminRole && switchBtn" >
+            <div class="dataTable-search" *ngIf="isConnected && hasAdminRole && switchBtn">
               <input
                 #searchTransaction
                 class="dataTable-input"
@@ -103,15 +103,15 @@
                 <th *ngIf="isConnected && hasAdminRole && switchBtn">
                   <input type="checkbox" (change)="selectAll($event)"/>
                 </th>
-                <th >Monto</th>
-                <th >Fetcha</th>
-                <th >Concepto</th>
-                <th >Cuenta original</th>
-                <th >Cuenta de destino</th>
-                <th  *ngIf="isConnected && hasAdminRole && switchBtn;else normalStatus">
+                <th>Monto</th>
+                <th>Fetcha</th>
+                <th>Concepto</th>
+                <th>Cuenta original</th>
+                <th>Cuenta de destino</th>
+                <th *ngIf="isConnected && hasAdminRole && switchBtn;else normalStatus">
                   <select #filter (change)="getAllTransactionsByStatus(filter.value)"
                           class="form-select form-select-sm">
-                    <option selected hidden>Estado</option>
+                    <option selected value="3">Normal</option>
                     <option value="0">En progreso</option>
                     <option value="1">Aprobada</option>
                     <option value="2">Rechazada</option>
