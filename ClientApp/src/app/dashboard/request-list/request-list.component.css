@@ -40,4 +40,8 @@
   main {
     width: 100% !important;
   }
+  .icons {
+    text-align: center;
+    flex-direction: column;
+  }
 }

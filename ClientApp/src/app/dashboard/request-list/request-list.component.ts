@@ -39,6 +39,7 @@ export class RequestListComponent implements OnInit {
     '<strong class="text-danger text-capitalize">Rechazado</strong>'
   ];
   state: number;
+  witness: boolean;
 
   constructor(private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private userService: UserService, private modalService: NgbModal) {
 
@@ -51,6 +52,7 @@ export class RequestListComponent implements OnInit {
     this.ConnectedUserId = this.jwt.getConnectedUserId();
     this.request = new RequestModel();
     this.state = 2;
+    this.witness = false;
   }
 
   ngOnInit(): void {
@@ -63,14 +65,16 @@ export class RequestListComponent implements OnInit {
     this.requestService.FilterRequest(StatusModel.Approuved, this.pageNumber, this.pageSize).subscribe(
       this.processResult()
     );
-    return this.state=1;
+    this.state = 1;
+    return this.witness = true;
   }
 
   filterByProgress() {
     this.requestService.FilterRequest(StatusModel.Progress, this.pageNumber, this.pageSize).subscribe(
       this.processResult()
     );
-    return this.state=0;
+    this.state = 0;
+    return this.witness = true;
   }
 
   
@@ -79,6 +83,7 @@ export class RequestListComponent implements OnInit {
     this.requestService.getRequests(this.pageNumber, this.pageSize).subscribe(
       this.processResult()
     );
+    this.witness = false;
   }
 
   getRequestsByUser() {
@@ -101,18 +106,21 @@ export class RequestListComponent implements OnInit {
 
     if (this.isConnected && this.hasAdminRole) {
       if (this.switchBtn) {
-        if (this.state == 0) {
-          this.filterByProgress();
-        }
-        else if (this.state == 1) {
-          this.filterByApproved();
-        }
-        else if (this.state == 2)
-        {
-          this.getRequests();
-        }
-        else
-          this.getRequests();
+          if (this.witness == true && this.state == 0) {
+            this.filterByProgress();
+          }
+          else if (this.witness == true && this.state == 1) {
+            this.filterByApproved();
+          }
+          else if (this.witness == false && this.state != 0 && this.state != 1)
+          {
+            this.getRequests();
+          }
+      else
+          {
+            this.getRequests();
+          }
+        
       }
     }
     else {
