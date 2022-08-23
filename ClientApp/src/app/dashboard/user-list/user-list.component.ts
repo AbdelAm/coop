@@ -25,9 +25,9 @@ export class UserListComponent implements OnInit {
   userItems: ItemsModel<UserItemModel>;
   pageNumber: Array<number>;
   status = [
-    '<strong>In Progress</strong>',
-    '<strong class="text-success">Approuved</strong>',
-    '<strong class="text-danger text-capitalize">Rejected</strong>',
+    '<strong>En progreso</strong>',
+    '<strong class="text-success">Apresurado</strong>',
+    '<strong class="text-danger text-capitalize">Rechazada</strong>',
   ];
 
   constructor(
