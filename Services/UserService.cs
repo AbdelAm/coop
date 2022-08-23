@@ -102,7 +102,8 @@ namespace coop2._0.Services
                         AccountNumber = "Coop-" + Guid.NewGuid().ToString("D"),
                         Balance = 300.0,
                         DateCreated = DateTime.Now,
-                        UserId = user.Id
+                        UserId = user.Id,
+                        Status = Status.Approuved
                     };
                     await _bankRepository.InsertBankAccount(account);
                 }

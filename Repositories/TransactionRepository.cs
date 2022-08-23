@@ -230,7 +230,7 @@ namespace coop2._0.Repositories
                     SenderBankAccountNumber = t.SenderBankAccount.AccountNumber,
                     ReceiverName = t.ReceiverBankAccount.User.Name,
                     ReceiverBankAccountNumber = t.ReceiverBankAccount.AccountNumber,
-                    Status = t.Status,
+                    Status =(double) t.Status,
                     DateTransaction = t.DateTransaction.ToString(CultureInfo.CurrentCulture)
                 }).ToListAsync();
             return response;

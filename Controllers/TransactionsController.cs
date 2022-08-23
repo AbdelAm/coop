@@ -412,9 +412,8 @@ namespace coop2._0.Controllers
         public async Task ExportToGoogleSheets()
         {
             var range = "A:H";
-            IEnumerable<TransactionResponse> transactions = await _transactionService.GetAllTransactions();
-            var objectList = transactions.Cast<object>().ToList();
-            var rangeData = new List<IList<object>> { objectList };
+            IList<TransactionResponse> transactions = (IList<TransactionResponse>)await _transactionService.GetAllTransactions();
+            var rangeData = new List<IList<object>> { transactions as List<object> };
             var valueRange = new ValueRange
             {
                 Values = rangeData

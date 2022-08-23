@@ -25,6 +25,8 @@ export class TransactionListComponent implements OnInit {
   hasAdminRole = false;
   userBankAccountId: number;
   switchBtn: boolean;
+  state = false;
+  status: string;
 
   constructor(
     public dialog: MatDialog,
@@ -60,12 +62,13 @@ export class TransactionListComponent implements OnInit {
   }
 
   loadTransactionsByRole() {
-
     if (this.isConnected && this.hasAdminRole) {
       if (this.switchBtn) {
         const searchKeyword: string = (<HTMLInputElement>document.getElementById('transactionSearch')).value;
         if (searchKeyword) {
           this.handleTransactionSearch(searchKeyword);
+        } else if (this.state) {
+          this.getAllTransactionsByStatus(this.status);
         } else {
           this.getTransactions();
         }
@@ -115,6 +118,7 @@ export class TransactionListComponent implements OnInit {
     this.transactionService
       .getTransactions(this.pageNumber, this.pageSize)
       .subscribe(this.processResult());
+    this.state = false;
   }
 
   getTransactionsByUser() {
@@ -125,6 +129,7 @@ export class TransactionListComponent implements OnInit {
         this.pageSize
       )
       .subscribe(this.processResult());
+    this.state = false;
   }
 
   processResult() {
@@ -247,6 +252,7 @@ export class TransactionListComponent implements OnInit {
     } else {
       this.getTransactions();
     }
+    this.state = false;
   }
 
   statusCasting(status: number): string {
@@ -292,7 +298,14 @@ export class TransactionListComponent implements OnInit {
   }
 
   getAllTransactionsByStatus(status: string) {
-    this.transactionService.getAllTransactionsByStatus(status, this.pageNumber, this.pageSize).subscribe(this.processResult());
+    if (status !== '3') {
+      this.transactionService.getAllTransactionsByStatus(status, this.pageNumber, this.pageSize).subscribe(this.processResult());
+      this.state = true;
+      this.status = status;
+    } else {
+      this.getTransactions();
+      this.state = false;
+    }
   }
 }
 
