@@ -20,7 +20,6 @@ export class TransactionListComponent implements OnInit {
   pageNumber = 1;
   pageSize = 10;
   totalElements = 100;
-  maxSize = 5;
   isConnected = false;
   hasAdminRole = false;
   userBankAccountId: number;
@@ -50,6 +49,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     window.scrollTo(0, 0);
     this.bankService.getBankAccount(this.jwt.getConnectedUserId()).subscribe(
       (res) => {
