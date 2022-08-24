@@ -3,6 +3,8 @@ import {RegisterModel} from '../shared/models/register-model';
 import {AuthentificationService} from '../shared/services/authentification.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
+import { UserService } from '../shared/services/user-service.service';
+import {webSocket} from 'rxjs/webSocket'
 
 @Component({
   selector: 'app-signup',
@@ -12,6 +14,8 @@ import {Router} from '@angular/router';
 export class SignupComponent implements OnInit {
   registerModel: RegisterModel;
   role: string;
+  //readonly socket = webSocket('ws://localhost:44349');
+
   items = {
     '/signup': 'Usuarias',
     '/administrateur/register': 'Administración',
@@ -19,7 +23,8 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private authService: AuthentificationService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {
     this.registerModel = new RegisterModel();
   }
@@ -33,6 +38,11 @@ export class SignupComponent implements OnInit {
       if (this.router.url === '/signup') {
         this.authService.register(this.registerModel).subscribe(
           (res) => {
+            /*this.socket.subscribe();
+            this.socket.next('done');
+            this.socket.complete();
+            this.socket.error({ code: 4000, reason: 'I think our app just broke!' });*/
+            this.userService.progressNumber = this.userService.progressNumber + 1;
             Swal.fire({
               title: 'User created successfully!!!',
               text: res['message'],

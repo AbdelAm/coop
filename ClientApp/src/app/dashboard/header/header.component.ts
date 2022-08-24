@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import { UserService } from 'src/app/shared/services/user-service.service';
 import {JwtService} from '../../shared/services/jwt.service';
 
 @Component({
@@ -8,7 +9,7 @@ import {JwtService} from '../../shared/services/jwt.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private jwt: JwtService, private router: Router) {
+  constructor(private jwt: JwtService, private router: Router, public userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -43,7 +44,11 @@ export class HeaderComponent implements OnInit {
   }
   showMsg() {
     document.querySelector('.messages-content').classList.toggle('show');
-}
+  }
+  removeShow()
+  {
+    document.querySelector('.messages-content').classList.toggle('show');
+  }
   logout() {
     this.jwt.removeToken();
     this.router.navigateByUrl('/login');

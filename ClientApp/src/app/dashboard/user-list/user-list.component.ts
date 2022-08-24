@@ -50,6 +50,8 @@ export class UserListComponent implements OnInit {
     this.userService.getUsers(num).subscribe(
       (res) => {
         Object.assign(this.userItems, res);
+        this.userService.progressNumber = this.userItems.progressNumber;
+        console.log(this.userService.progressNumber);
         let result = Math.trunc(this.userItems.itemsNumber / this.pageSize);
         if (this.userItems.itemsNumber % this.pageSize != 0) {
           result++;
@@ -134,6 +136,7 @@ export class UserListComponent implements OnInit {
             u.status = '1';
           }
         });
+        this.userService.progressNumber = this.userService.progressNumber - this.listUser.length;
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
@@ -162,6 +165,7 @@ export class UserListComponent implements OnInit {
             u.status = '2';
           }
         });
+        this.userService.progressNumber = this.userService.progressNumber - this.listUser.length;
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
