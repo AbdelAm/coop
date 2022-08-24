@@ -42,13 +42,10 @@
 
                 </div>
                 <div class="dataTable-search btn-group" role="group" aria-label="Basic example">
-                  <!--<select [(ngModel)]="selectedOption">
-                    <option *ngFor="let statu of State" [innerHTML]="this.status[this.statu]"
-                            [[value]]="this.statu.value"></option>
-                  </select>-->
+               
                   <button type="button" class="btn btn-outline-primary" (click)="filterByProgress()">En Progreso</button>
                   <button type="button" class="btn btn-outline-success" (click)="filterByApproved()">Aprobado</button>
-                  <!--<button routerLink="/dashboard/requests">All</button>-->
+                  <button type="button" class="btn btn-outline-secondary" (click)="getRequests()">All</button>
 
                 </div>
               </div>
