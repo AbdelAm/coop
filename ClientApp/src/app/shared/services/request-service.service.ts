@@ -12,9 +12,11 @@ export class RequestServiceService {
   readonly baseUrl = environment.apiUrl;
 
   request: RequestModel;
+  progressNumber : number;
 
   constructor(private http: HttpClient) {
     this.request = new RequestModel();
+    this.progressNumber = 0;
   }
 
   setRequest(request: RequestModel): Observable<RequestModel> {
@@ -55,6 +57,15 @@ export class RequestServiceService {
       this.baseUrl + 'request/delete',
       requestList
     );
+  }
+  setProgressNumber(count: number) {
+    this.progressNumber = count;
+  }
+  getProgressNumber() {
+    return this.progressNumber;
+  }
+  getProgressRequests(): Observable<number> {
+    return this.http.get<number>(this.baseUrl + `request/progress/list`);
   }
 }
 

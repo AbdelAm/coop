@@ -16,5 +16,6 @@ namespace coop2._0.Services
         Task<bool> RejectRequest(List<int> requests);
         Task<bool> ValidateRequest(List<int> requests);
         Task<ActionResult<Request>> AddRequest(RequestModel model);
+        Task<ItemsModel<RequestModel>> FindRequests(int page);
     }
 }

@@ -2,6 +2,7 @@
 using coop2._0.Model;
 using coop2._0.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -105,6 +106,21 @@ namespace coop2._0.Services
             }
 
             return temoin;
+        }
+
+        public async Task<ItemsModel<RequestModel>> FindRequests(int page)
+        {
+            IEnumerable<RequestModel> requests = await _requestRepository.SelectAll(page);
+            int progressNumber = await _requestRepository.SelectProgressCount();
+            if (requests == null)
+            {
+                throw new Exception("No existe usuarios con estas informaciones.");
+            }
+            return new ItemsModel<RequestModel>
+            {
+                Items = requests,
+                ProgressNumber = progressNumber
+            };
         }
     }
 }

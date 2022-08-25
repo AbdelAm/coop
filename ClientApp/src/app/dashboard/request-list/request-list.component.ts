@@ -26,6 +26,7 @@ export class RequestListComponent implements OnInit {
   listRequest: Array<number>;
   requests: RequestModel[];
   pageNumber = 1;
+  pgNumber=[]
   pageSize = 5;
   totalElements = 100;
   isConnected: boolean;
@@ -40,8 +41,9 @@ export class RequestListComponent implements OnInit {
   ];
   state: number;
   witness: boolean;
+  currentPage: number;
 
-  constructor(private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private userService: UserService, private modalService: NgbModal) {
+  constructor(private jwt: JwtService, private router: Router, private requestService: RequestServiceService, private modalService: NgbModal) {
 
     this.listRequest = [];
     this.requests = [];
@@ -53,10 +55,39 @@ export class RequestListComponent implements OnInit {
     this.request = new RequestModel();
     this.state = 2;
     this.witness = false;
+    this.pgNumber = [];
   }
 
   ngOnInit(): void {
     this.loadRequestsByRole();
+    window.scrollTo(0, 0);
+  }
+
+  getItems(num: number) {
+    this.requestService.getRequests(num, this.pageSize).subscribe(
+      (res) => {
+        Object.assign(this.requestItems, res);
+        this.requestService.progressNumber = this.requestItems.progressNumber;
+        console.log(this.requestService.progressNumber);
+        let result = Math.trunc(this.requestItems.itemsNumber / this.pageSize);
+        if (this.requestItems.itemsNumber % this.pageSize != 0) {
+          result++;
+        }
+        this.pgNumber = Array.from(Array(result).keys());
+        this.currentPage = num;
+      },
+      (err) => {
+        if ([401, 403].includes(err['status'])) {
+          this.router.navigateByUrl('/dashboard/global');
+        } else {
+          Swal.fire({
+            title: 'There is a Problem!!!',
+            text: err['error'],
+            icon: 'error',
+          });
+        }
+      }
+    );
     window.scrollTo(0, 0);
   }
 
@@ -151,6 +182,7 @@ export class RequestListComponent implements OnInit {
     this.requestService.setRequest(this.request).subscribe(
       (res) => {
         this.requests.push(this.request);
+        this.requestService.progressNumber = this.requestService.progressNumber + 1;
         this.modalService.dismissAll();
         Swal.fire({
           title: '¡Solicitud añadida con éxito!',
@@ -227,6 +259,7 @@ export class RequestListComponent implements OnInit {
             req.status = StatusModel.Approuved;
           }
         });
+        this.requestService.progressNumber = this.requestService.progressNumber - this.listRequest.length;
         this.listRequest.length = 0;
         Swal.fire({
           title: 'La Solicitud ha sido validada con éxito!',
@@ -247,6 +280,7 @@ export class RequestListComponent implements OnInit {
             req.status = StatusModel.Rejected;
           }
         });
+        this.requestService.progressNumber = this.requestService.progressNumber - this.listRequest.length;
         this.listRequest.length = 0;
         Swal.fire({
           title: 'La solicitud ha sido rechazada!',
@@ -264,6 +298,7 @@ export class RequestListComponent implements OnInit {
         this.requests = this.requests.filter((u) => {
           return !this.listRequest.includes(u.id);
         });
+        this.requestService.progressNumber = this.requestService.progressNumber - this.listRequest.length;
         this.listRequest.length = 0;
         Swal.fire({
           title: 'La solicitud ha sido eliminada!',
