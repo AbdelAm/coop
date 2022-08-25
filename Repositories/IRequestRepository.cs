@@ -17,5 +17,7 @@ namespace coop2._0.Repositories
         Task<Request> RejectRequest(Request request);
         Task<Request> ValidateRequest(Request request);
         Task<ActionResult<Request>> AddRequest(RequestModel model);
+        Task<IEnumerable<RequestModel>> SelectAll(int page);
+        Task<int> SelectProgressCount();
     }
 }

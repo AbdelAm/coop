@@ -43,9 +43,9 @@
                 </div>
                 <div class="dataTable-search btn-group" role="group" aria-label="Basic example">
                
-                  <button type="button" class="btn btn-outline-primary" (click)="filterByProgress()">En Progreso</button>
-                  <button type="button" class="btn btn-outline-success" (click)="filterByApproved()">Aprobado</button>
-                  <button type="button" class="btn btn-outline-secondary" (click)="getRequests()">All</button>
+                  <button type="button" class="btn btn-outline-primary" (click)="filterByProgress()">Progreso</button>
+                  <button type="button" class="btn btn-outline-success" (click)="filterByApproved()">Aprobada</button>
+                  <button type="button" class="btn btn-outline-secondary" (click)="getRequests()">Todos</button>
 
                 </div>
               </div>
@@ -81,11 +81,11 @@
                       <td [innerHTML]="this.status[request.status]"></td>
                     <ng-container *ngIf="isConnected && hasAdminRole && switchBtn;else second">
                       <td class="icons d-flex justify-i-center align-items-center h-100">
-                        <button class="border-0 bg-transparent align-middle" (click)="validateRequest(request.id)" *ngIf="request.status != 1">
+                        <button class="border-0 bg-transparent align-middle" (click)="validateRequest(request.id)" *ngIf="request.status != 1 && request.status != 2">
                           <i class="fa-regular fa-circle-check" style=" color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
                         </button>
 
-                        <button class="border-0 bg-transparent align-middle" (click)="rejectRequest(request.id)" *ngIf="request.status != 2">
+                        <button class="border-0 bg-transparent align-middle" (click)="rejectRequest(request.id)" *ngIf="request.status != 1 && request.status != 2">
                           <i class="fa-regular fa-circle-xmark" style="  margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate;"></i>
                         </button>
 

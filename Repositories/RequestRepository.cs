@@ -12,6 +12,8 @@ namespace coop2._0.Repositories
     public class RequestRepository : IRequestRepository
     {
         private readonly ApplicationDbContext _context;
+        private const int PageSize = 5;
+
 
         public RequestRepository(ApplicationDbContext context)
         {
@@ -112,6 +114,20 @@ namespace coop2._0.Repositories
             _context.Entry(request).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return request;
+        }
+        public async Task<IEnumerable<RequestModel>> SelectAll(int page)
+        {
+            return await _context.Requests
+                .OrderByDescending(u => u.DateRequest)
+                .Skip(page * PageSize)
+                .Take(PageSize)
+                .Select(u => new RequestModel())
+                .ToListAsync();
+        }
+        public async Task<int> SelectProgressCount()
+        {
+            return await _context.Requests.Where(r => r.Status == Status.Progress)
+                .CountAsync();
         }
     }
 }

@@ -62,7 +62,7 @@ namespace coop2._0.Services
             return _transactionRepository.GetAllTransactions();
         }
 
-        public Task<IEnumerable<Transaction>> GetTransactionsByUser(int userBankAccountId)
+        public Task<IEnumerable<TransactionResponse>> GetTransactionsByUser(int userBankAccountId)
         {
             return _transactionRepository.GetTransactionsByUser(userBankAccountId);
         }

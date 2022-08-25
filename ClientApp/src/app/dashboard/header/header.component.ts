@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import { UserService } from 'src/app/shared/services/user-service.service';
 import {JwtService} from '../../shared/services/jwt.service';
+import { RequestServiceService } from '../../shared/services/request-service.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,7 @@ import {JwtService} from '../../shared/services/jwt.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private jwt: JwtService, private router: Router, public userService: UserService) {
+  constructor(private jwt: JwtService, private router: Router, public userService: UserService, public requestService: RequestServiceService) {
   }
 
   ngOnInit(): void {

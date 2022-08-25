@@ -200,7 +200,7 @@ namespace coop2._0.Repositories
             return new { response, pagination };
         }
 
-        public async Task<IEnumerable<Transaction>> GetTransactionsByUser(int userBankAccountId)
+        public async Task<IEnumerable<TransactionResponse>> GetTransactionsByUser(int userBankAccountId)
         {
             var response =
                 await _context.Transactions
@@ -210,6 +210,17 @@ namespace coop2._0.Repositories
                     .Include(t => t.SenderBankAccount.User)
                     .Include(b => b.ReceiverBankAccount.User)
                     .OrderByDescending(d => d.DateTransaction)
+                    .Select(t => new TransactionResponse()
+                    {
+                        Amount = t.Amount,
+                        Motif = t.Motif,
+                        SenderName = t.SenderBankAccount.User.Name,
+                        SenderBankAccountNumber = t.SenderBankAccount.AccountNumber,
+                        ReceiverName = t.ReceiverBankAccount.User.Name,
+                        ReceiverBankAccountNumber = t.ReceiverBankAccount.AccountNumber,
+                        Status = t.Status,
+                        DateTransaction = t.DateTransaction.ToString(CultureInfo.CurrentCulture)
+                    })
                     .ToListAsync();
 
             return response;
@@ -230,7 +241,7 @@ namespace coop2._0.Repositories
                     SenderBankAccountNumber = t.SenderBankAccount.AccountNumber,
                     ReceiverName = t.ReceiverBankAccount.User.Name,
                     ReceiverBankAccountNumber = t.ReceiverBankAccount.AccountNumber,
-                    Status =(double) t.Status,
+                    Status = t.Status,
                     DateTransaction = t.DateTransaction.ToString(CultureInfo.CurrentCulture)
                 }).ToListAsync();
             return response;

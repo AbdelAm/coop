@@ -10,6 +10,8 @@ namespace coop2._0.Model
         public string UserId { get; set; }
         public string Message { get; set; }
         public DateTime DateRequest { get; set; }
+
         public Status Status { get; set; }
+        public int ProgressNumber { get; set; }
     }
 }

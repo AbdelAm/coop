@@ -9,4 +9,5 @@ export class RequestModel {
   message!: string;
   status!: StatusModel;
   dateRequest!: Date;
+  progressNumber: number;
 }

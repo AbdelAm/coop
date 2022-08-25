@@ -11,7 +11,7 @@ namespace coop2._0.Model
         public  string SenderBankAccountNumber { get; set; }
         public  string ReceiverName { get; set; }
         public  string ReceiverBankAccountNumber { get; set; }
-        public double Status { get; set; }
+        public Status Status { get; set; }
         public string DateTransaction { get; set; }
     }
 }

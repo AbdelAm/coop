@@ -18,7 +18,7 @@ namespace coop2._0.Repositories
         Task<object> SearchForTransactions(string keyword, PaginationFilter filter);
 
         Task<IEnumerable<TransactionResponse>> GetAllTransactions();
-        Task<IEnumerable<Transaction>> GetTransactionsByUser(int userBankAccountId);
+        Task<IEnumerable<TransactionResponse>> GetTransactionsByUser(int userBankAccountId);
         Task<object> GetAllTransactionsByStatus(Status status, PaginationFilter filter);
     }
 }
