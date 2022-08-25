@@ -29,6 +29,7 @@ namespace coop2._0.Services
         {
             IEnumerable<UserItemModel> users = await _userRepository.SelectAll(page);
             int itemNum = await _userRepository.SelectCount();
+            int progressNumber = await _userRepository.SelectProgressCount();
             if (users == null)
             {
                 throw new Exception("No existe usuarios con estas informaciones.");
@@ -37,7 +38,8 @@ namespace coop2._0.Services
             return new ItemsModel<UserItemModel>
             {
                 Items = users,
-                ItemsNumber = itemNum
+                ItemsNumber = itemNum,
+                ProgressNumber = progressNumber
             };
         }
 

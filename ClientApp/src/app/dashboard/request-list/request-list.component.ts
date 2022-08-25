@@ -35,8 +35,8 @@ export class RequestListComponent implements OnInit {
   requestItems: ItemsModel<RequestModel>;
   status = [
     '<strong>Progreso</strong>',
-    '<strong class="text-success">Aprobado</strong>',
-    '<strong class="text-danger text-capitalize">Rechazado</strong>'
+    '<strong class="text-success">Aprobada</strong>',
+    '<strong class="text-danger text-capitalize">Rechazada</strong>'
   ];
   state: number;
   witness: boolean;
@@ -231,6 +231,7 @@ export class RequestListComponent implements OnInit {
         Swal.fire({
           title: 'La Solicitud ha sido validada con éxito!',
           icon: 'success',
+          confirmButtonText:'OK'
         });
       },
       (err) => console.log(err)
@@ -250,6 +251,7 @@ export class RequestListComponent implements OnInit {
         Swal.fire({
           title: 'La solicitud ha sido rechazada!',
           icon: 'success',
+          confirmButtonText: 'OK'
         });
       },
       (err) => console.log(err)
@@ -266,6 +268,7 @@ export class RequestListComponent implements OnInit {
         Swal.fire({
           title: 'La solicitud ha sido eliminada!',
           icon: 'success',
+          confirmButtonText: 'OK'
         });
         this.loadRequestsByRole();
       },

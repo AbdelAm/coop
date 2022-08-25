@@ -227,6 +227,12 @@
   font-size: 35px;
 }
 
+.notifications .messages .messages-content .message-items .message-item .no-notifications {
+  grid-column: 1/3;
+  text-align: center;
+  color: #adadad;
+}
+
 @media screen and (max-width: 992px) {
   .switch-items {
     margin-left: 0;
