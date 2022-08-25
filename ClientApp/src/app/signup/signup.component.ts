@@ -33,7 +33,7 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    if(!this.registerModel.name.match(/^[a-zA-Z ]{3,30}$/gm))
+    if(!this.registerModel.name.match(/^[a-zA-Z ]{4,}$/gm))
     {
       document.getElementById('name_error').textContent = 'Por favor ingrese un nombre valido';
     } else if(!this.registerModel.phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im))

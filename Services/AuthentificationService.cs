@@ -31,7 +31,7 @@ namespace coop2._0.Services
         public async Task<Response> Register(RegisterModel model)
         {
             Exception e = new();
-            if(!(new Regex(@"[a-zA-Z ]{3,30}").Match(model.Name).Success))
+            if(!(new Regex(@"[a-zA-Z ]{4,}").Match(model.Name).Success))
             {
                 e.Data.Add("name_error", "Por favor ingrese un nombre valido");
                 throw e;
