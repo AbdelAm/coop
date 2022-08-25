@@ -2,7 +2,6 @@
 using coop2._0.Entities;
 using coop2._0.Model;
 using coop2._0.Services;
-using Google.Apis.Sheets.v4;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Authorization;
@@ -25,16 +24,12 @@ namespace coop2._0.Controllers
     {
         private readonly ITransactionService _transactionService;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private const string SpreadsheetId = "1Br7-Uapf_0UKB5UrUk1vHko55KKBwfxeztnVydJ7eh8";
-        private const string SheetName = "CoopHalal";
-        SpreadsheetsResource.ValuesResource _googleSheetValues;
 
-        public TransactionsController(ITransactionService transactionService, IWebHostEnvironment webHostEnvironment,
-            GoogleSheetsHelper googleSheetsHelper)
+
+        public TransactionsController(ITransactionService transactionService, IWebHostEnvironment webHostEnvironment)
         {
             this._transactionService = transactionService;
             _webHostEnvironment = webHostEnvironment;
-            _googleSheetValues = googleSheetsHelper.Service.Spreadsheets.Values;
         }
 
         [HttpGet]
@@ -187,8 +182,10 @@ namespace coop2._0.Controllers
             worksheet.Cell(currentRow, 2).Value = "Fetcha";
             worksheet.Cell(currentRow, 3).Value = "Concepto";
             worksheet.Cell(currentRow, 4).Value = "Cuenta original";
-            worksheet.Cell(currentRow, 5).Value = "Cuenta de destino";
-            worksheet.Cell(currentRow, 6).Value = "Estado";
+            worksheet.Cell(currentRow, 5).Value = "Número de cuenta bancaria del remitente";
+            worksheet.Cell(currentRow, 6).Value = "Cuenta de destino";
+            worksheet.Cell(currentRow, 7).Value = "Número de cuenta bancaria del receptor";
+            worksheet.Cell(currentRow, 8).Value = "Estado";
 
 
             foreach (DataRow transaction in transactions.Rows)
@@ -198,8 +195,10 @@ namespace coop2._0.Controllers
                 worksheet.Cell(currentRow, 2).Value = transaction["Fetcha"].ToString();
                 worksheet.Cell(currentRow, 3).Value = transaction["Concepto"].ToString();
                 worksheet.Cell(currentRow, 4).Value = transaction["Cuenta original"].ToString();
-                worksheet.Cell(currentRow, 5).Value = transaction["Cuenta de destino"].ToString();
-                worksheet.Cell(currentRow, 6).Value = TranslateStatus(transaction["Estado"].ToString());
+                worksheet.Cell(currentRow, 5).Value = transaction["Número de cuenta bancaria del remitente"].ToString();
+                worksheet.Cell(currentRow, 6).Value = transaction["Cuenta de destino"].ToString();
+                worksheet.Cell(currentRow, 7).Value = transaction["Número de cuenta bancaria del receptor"].ToString();
+                worksheet.Cell(currentRow, 8).Value = TranslateStatus(transaction["Estado"].ToString());
             }
 
             using var stream = new MemoryStream();
@@ -232,14 +231,16 @@ namespace coop2._0.Controllers
             Font font1 = FontFactory.GetFont(FontFactory.COURIER_BOLD, 10);
             Font font2 = FontFactory.GetFont(FontFactory.COURIER, 8);
 
-            float[] columnDefinitionSize = { 2F, 3F, 2F, 2F, 2F, 2F };
+            float[] columnDefinitionSize = { 2F, 3F, 2F, 2F, 5F, 2F, 5F, 2F };
+            PdfPTable table;
+            PdfPCell cell;
 
-            var table = new PdfPTable(columnDefinitionSize)
+            table = new PdfPTable(columnDefinitionSize)
             {
                 WidthPercentage = 100
             };
 
-            var cell = new PdfPCell
+            cell = new PdfPCell
             {
                 BackgroundColor = new BaseColor(0xC0, 0xC0, 0xC0)
             };
@@ -248,7 +249,9 @@ namespace coop2._0.Controllers
             table.AddCell(new Phrase("Fetcha", font1));
             table.AddCell(new Phrase("Concepto", font1));
             table.AddCell(new Phrase("Cuenta original", font1));
+            table.AddCell(new Phrase("Número de cuenta bancaria del remitente", font1));
             table.AddCell(new Phrase("Cuenta de destino", font1));
+            table.AddCell(new Phrase("Número de cuenta bancaria del receptor", font1));
             table.AddCell(new Phrase("Estado", font1));
             table.HeaderRows = 1;
 
@@ -258,11 +261,14 @@ namespace coop2._0.Controllers
                 table.AddCell(new Phrase(data["Fetcha"].ToString(), font2));
                 table.AddCell(new Phrase(data["Concepto"].ToString(), font2));
                 table.AddCell(new Phrase(data["Cuenta original"].ToString(), font2));
+                table.AddCell(new Phrase(data["Número de cuenta bancaria del remitente"].ToString(), font2));
                 table.AddCell(new Phrase(data["Cuenta de destino"].ToString(), font2));
+                table.AddCell(new Phrase(data["Número de cuenta bancaria del receptor"].ToString(), font2));
                 table.AddCell(new Phrase(TranslateStatus(data["Estado"].ToString()), font2));
 
                 pdfRowIndex++;
             }
+
 
             document.Add(table);
             document.Close();
@@ -313,8 +319,10 @@ namespace coop2._0.Controllers
             worksheet.Cell(currentRow, 2).Value = "Fetcha";
             worksheet.Cell(currentRow, 3).Value = "Concepto";
             worksheet.Cell(currentRow, 4).Value = "Cuenta original";
-            worksheet.Cell(currentRow, 5).Value = "Cuenta de destino";
-            worksheet.Cell(currentRow, 6).Value = "Estado";
+            worksheet.Cell(currentRow, 5).Value = "Número de cuenta bancaria del remitente";
+            worksheet.Cell(currentRow, 6).Value = "Cuenta de destino";
+            worksheet.Cell(currentRow, 7).Value = "Número de cuenta bancaria del receptor";
+            worksheet.Cell(currentRow, 8).Value = "Estado";
 
 
             foreach (DataRow transaction in transactions.Rows)
@@ -324,8 +332,10 @@ namespace coop2._0.Controllers
                 worksheet.Cell(currentRow, 2).Value = transaction["Fetcha"].ToString();
                 worksheet.Cell(currentRow, 3).Value = transaction["Concepto"].ToString();
                 worksheet.Cell(currentRow, 4).Value = transaction["Cuenta original"].ToString();
-                worksheet.Cell(currentRow, 5).Value = transaction["Cuenta de destino"].ToString();
-                worksheet.Cell(currentRow, 6).Value = TranslateStatus(transaction["Estado"].ToString());
+                worksheet.Cell(currentRow, 5).Value = transaction["Número de cuenta bancaria del remitente"].ToString();
+                worksheet.Cell(currentRow, 6).Value = transaction["Cuenta de destino"].ToString();
+                worksheet.Cell(currentRow, 7).Value = transaction["Número de cuenta bancaria del receptor"].ToString();
+                worksheet.Cell(currentRow, 8).Value = TranslateStatus(transaction["Estado"].ToString());
             }
 
             using var stream = new MemoryStream();
@@ -359,7 +369,7 @@ namespace coop2._0.Controllers
             Font font2 = FontFactory.GetFont(FontFactory.COURIER, 8);
 
 
-            float[] columnDefinitionSize = { 2F, 3F, 2F, 2F, 2F, 2F };
+            float[] columnDefinitionSize = { 2F, 3F, 2F, 2F, 2F, 2F, 3F, 3F };
             PdfPTable table;
             PdfPCell cell;
 
@@ -377,7 +387,9 @@ namespace coop2._0.Controllers
             table.AddCell(new Phrase("Fetcha", font1));
             table.AddCell(new Phrase("Concepto", font1));
             table.AddCell(new Phrase("Cuenta original", font1));
+            table.AddCell(new Phrase("Número de cuenta bancaria del remitente", font1));
             table.AddCell(new Phrase("Cuenta de destino", font1));
+            table.AddCell(new Phrase("Número de cuenta bancaria del receptor", font1));
             table.AddCell(new Phrase("Estado", font1));
             table.HeaderRows = 1;
 
@@ -387,7 +399,9 @@ namespace coop2._0.Controllers
                 table.AddCell(new Phrase(data["Fetcha"].ToString(), font2));
                 table.AddCell(new Phrase(data["Concepto"].ToString(), font2));
                 table.AddCell(new Phrase(data["Cuenta original"].ToString(), font2));
+                table.AddCell(new Phrase(data["Número de cuenta bancaria del remitente"].ToString(), font2));
                 table.AddCell(new Phrase(data["Cuenta de destino"].ToString(), font2));
+                table.AddCell(new Phrase(data["Número de cuenta bancaria del receptor"].ToString(), font2));
                 table.AddCell(new Phrase(TranslateStatus(data["Estado"].ToString()), font2));
 
                 pdfRowIndex++;
@@ -408,24 +422,8 @@ namespace coop2._0.Controllers
             return sourceFile;
         }
 
-        /*
-        [HttpGet("sheet")]
-        public async Task ExportToGoogleSheets()
-        {
-            var range = "A:H";
-            IList<TransactionResponse> transactions = (IList<TransactionResponse>)await _transactionService.GetAllTransactions();
-            var rangeData = new List<IList<object>> { transactions as List<object> };
-            var valueRange = new ValueRange
-            {
-                Values = rangeData
-            };
 
-            var appendRequest = _googleSheetValues.Append( valueRange, SpreadsheetId, range);
-            appendRequest.ValueInputOption =
-                SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
-            appendRequest.Execute();
-        }
-        */
+
 
 
         private async Task<DataTable> GetUserTransactionsAsDataTable(int bankAccountId)
@@ -434,16 +432,20 @@ namespace coop2._0.Controllers
 
             DataTable dtTransactions = new DataTable("Transactions");
 
-            dtTransactions.Columns.AddRange(new DataColumn[6]
+            dtTransactions.Columns.AddRange(new DataColumn[8]
             {
                 new DataColumn("Monto"), new DataColumn("Fetcha"), new DataColumn("Concepto"),
-                new DataColumn("Cuenta original"), new DataColumn("Cuenta de destino"), new DataColumn("Estado")
+                new DataColumn("Cuenta original"), new DataColumn("Número de cuenta bancaria del remitente"),
+                new DataColumn("Cuenta de destino"),
+                new DataColumn("Número de cuenta bancaria del receptor"),
+                new DataColumn("Estado")
             });
 
             foreach (var transaction in transactions)
             {
                 dtTransactions.Rows.Add(transaction.Amount, transaction.DateTransaction, transaction.Motif,
-                    transaction.SenderBankAccount.User.Name, transaction.ReceiverBankAccount.User.Name,
+                    transaction.SenderName, transaction.SenderBankAccountNumber, transaction.ReceiverName,
+                    transaction.ReceiverBankAccountNumber,
                     transaction.Status);
             }
 
@@ -456,16 +458,19 @@ namespace coop2._0.Controllers
 
             DataTable dtTransactions = new DataTable("Transactions");
 
-            dtTransactions.Columns.AddRange(new DataColumn[6]
+            dtTransactions.Columns.AddRange(new DataColumn[8]
             {
                 new DataColumn("Monto"), new DataColumn("Fetcha"), new DataColumn("Concepto"),
-                new DataColumn("Cuenta original"), new DataColumn("Cuenta de destino"), new DataColumn("Estado")
+                new DataColumn("Cuenta original"), new DataColumn("Número de cuenta bancaria del remitente"),
+                new DataColumn("Cuenta de destino"),
+                new DataColumn("Número de cuenta bancaria del receptor"), new DataColumn("Estado")
             });
 
             foreach (var transaction in transactions)
             {
                 dtTransactions.Rows.Add(transaction.Amount, transaction.DateTransaction, transaction.Motif,
-                    transaction.SenderName, transaction.ReceiverName,
+                    transaction.SenderName, transaction.SenderBankAccountNumber, transaction.ReceiverName,
+                    transaction.ReceiverBankAccountNumber,
                     transaction.Status);
             }
 

@@ -96,14 +96,14 @@
               </div>
               <div *ngIf="isConnected && hasAdminRole && switchBtn" class="d-xl-none d-md-none d-lg-none d-flex justify-content-evenly my-3" role="group"
                    aria-label="Basic example">
-                <button type="button" class="btn btn-outline-info" (click)="getAllTransactionsByStatus('0')">En
+                <button type="button" class="btn btn-outline-info" (click)="getAllTransactionsByStatus('0')">
                   Progreso
                 </button>
                 <button type="button" class="btn btn-outline-success" (click)="getAllTransactionsByStatus('1')">
-                  Aprobada
+                  Aprobado
                 </button>
                 <button type="button" class="btn btn-outline-danger" (click)="getAllTransactionsByStatus('2')">
-                  Rechazada
+                  Rechazado
                 </button>
                 <button type="button" class="btn btn-outline-secondary" (click)="getTransactions()">Todos
                 </button>
@@ -128,8 +128,8 @@
                           class="d-none d-md-block d-xl-block d-lg-block  form-select form-select-sm">
                     <option selected value="3">Normal</option>
                     <option value="0">En progreso</option>
-                    <option value="1">Aprobada</option>
-                    <option value="2">Rechazada</option>
+                    <option value="1">Aprobado</option>
+                    <option value="2">Rechazado</option>
                   </select>
                   <span class="d-md-none d-lg-none d-xl-none">Estado</span>
 
