@@ -4,6 +4,7 @@ using coop2._0.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -30,17 +31,41 @@ namespace coop2._0.Services
         public async Task<Response> Register(RegisterModel model)
         {
             Exception e = new();
+            if(!(new Regex(@"[a-zA-Z ]{3,30}").Match(model.Name).Success))
+            {
+                e.Data.Add("name_error", "Por favor ingrese un nombre valido");
+                throw e;
+            }
+            else if (!(new Regex(@"[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}").Match(model.Phone).Success))
+            {
+                e.Data.Add("phone_error", "Por favor ingrese un número de teléfono válido");
+                throw e;
+            }
+            else if (!(new Regex(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}").Match(model.Email).Success))
+            {
+                e.Data.Add("email_error", "Por favor introduzca una dirección de correo electrónico válida");
+                throw e;
+            }
+            else if (!(new Regex(@"(?=.*\W)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}").Match(model.Password).Success))
+            {
+                e.Data.Add("password_error", "Ingrese una contraseña válida, verifique el patrón debajo de la entrada de contraseña");
+                throw e;
+            }
             var u = await _userRepository.SelectByEmail(model.Email);
             if (u != null)
             {
                 e.Data.Add("email_error", "El correo electrónico ya existe");
                 throw e;
             }
-
-            /*u = await _userRepository.SelectBySocialNumber(model.SocialNumber);
-            if (u != null)
+            /*var res = await _userRepository.CheckPassword(model.Password);
+            if (!res.Succeeded)
             {
-                e.Data.Add("socialNumber_error", "El número social ya existe");
+                List<string> errors = new List<string>();
+                foreach(var error in res.Errors)
+                {
+                    errors.Add(error.Description);
+                }
+                e.Data.Add("password_error", string.Join("\n", errors.ToArray()));
                 throw e;
             }*/
 
@@ -166,6 +191,26 @@ namespace coop2._0.Services
         public async Task<Response> RegisterAdmin(RegisterModel model)
         {
             Exception e = new();
+            if(!(new Regex(@"[a-zA-Z ]{3,30}").Match(model.Name).Success))
+            {
+                e.Data.Add("name_error", "Por favor ingrese un nombre valido");
+                throw e;
+            }
+            else if (!(new Regex(@"[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}").Match(model.Phone).Success))
+            {
+                e.Data.Add("phone_error", "Por favor ingrese un número de teléfono válido");
+                throw e;
+            }
+            else if (!(new Regex(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}").Match(model.Email).Success))
+            {
+                e.Data.Add("email_error", "Por favor introduzca una dirección de correo electrónico válida");
+                throw e;
+            }
+            else if (!(new Regex(@"(?=.*\W)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}").Match(model.Password).Success))
+            {
+                e.Data.Add("password_error", "Ingrese una contraseña válida, verifique el patrón debajo de la entrada de contraseña");
+                throw e;
+            }
             var u = await _userRepository.SelectByEmail(model.Email);
             if (u != null)
             {

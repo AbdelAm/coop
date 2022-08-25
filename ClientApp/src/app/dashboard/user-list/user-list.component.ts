@@ -19,15 +19,15 @@ import Swal from 'sweetalert2';
   styleUrls: ['./user-list.component.css'],
 })
 export class UserListComponent implements OnInit {
-  readonly pageSize = 5;
+  readonly pageSize = 10;
   currentPage: number;
   listUser: Array<string>;
   userItems: ItemsModel<UserItemModel>;
   pageNumber: Array<number>;
   status = [
-    '<strong>En progreso</strong>',
-    '<strong class="text-success">Apresurado</strong>',
-    '<strong class="text-danger text-capitalize">Rechazada</strong>',
+    '<strong>Progreso</strong>',
+    '<strong class="text-success">Aprobado</strong>',
+    '<strong class="text-danger text-capitalize">Rechazado</strong>',
   ];
 
   constructor(
@@ -64,7 +64,7 @@ export class UserListComponent implements OnInit {
           this.router.navigateByUrl('/dashboard/global');
         } else {
           Swal.fire({
-            title: 'There is a Problem!!!',
+            title: 'Hay un problema!!!',
             text: err['error'],
             icon: 'error',
           });
@@ -140,7 +140,7 @@ export class UserListComponent implements OnInit {
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
-          title: 'Success!!!',
+          title: 'Éxito!!!',
           text: res['message'],
           icon: 'success',
         });
@@ -149,7 +149,7 @@ export class UserListComponent implements OnInit {
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
-          title: 'There is probleme !!!',
+          title: 'Hay un problema !!!',
           text: err['error'],
           icon: 'error',
         });
@@ -169,7 +169,7 @@ export class UserListComponent implements OnInit {
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
-          title: 'Success!!!',
+          title: 'Éxito!!!',
           text: res['message'],
           icon: 'success',
         });
@@ -178,7 +178,7 @@ export class UserListComponent implements OnInit {
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
-          title: 'There is probleme !!!',
+          title: 'Hay un problema !!!',
           text: err['error'],
           icon: 'error',
         });
@@ -195,7 +195,7 @@ export class UserListComponent implements OnInit {
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
-          title: 'Success!!!',
+          title: 'Éxito!!!',
           text: res['message'],
           icon: 'success',
         });
@@ -204,7 +204,7 @@ export class UserListComponent implements OnInit {
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
-          title: 'There is probleme !!!',
+          title: 'Hay un problema !!!',
           text: err['error'],
           icon: 'error',
         });
@@ -227,7 +227,7 @@ export class UserListComponent implements OnInit {
         },
         (err) => {
           Swal.fire({
-            title: 'There is a Problem!!!',
+            title: 'Hay un problema!!!',
             text: err['error'],
             icon: 'error',
           });

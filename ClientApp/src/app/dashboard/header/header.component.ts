@@ -45,9 +45,12 @@ export class HeaderComponent implements OnInit {
   showMsg() {
     document.querySelector('.messages-content').classList.toggle('show');
   }
-  removeShow()
+  removeShow(elt: string)
   {
     document.querySelector('.messages-content').classList.toggle('show');
+    let current = document.querySelector('.active');
+    if(current != null) current.classList.remove('active');
+    document.getElementById(elt).classList.add("active");
   }
   logout() {
     this.jwt.removeToken();

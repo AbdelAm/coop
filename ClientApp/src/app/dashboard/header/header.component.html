@@ -61,7 +61,7 @@
                     <div class="message-item" *ngIf="this.userService.progressNumber > 0">
                         <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold" [innerText]="this.userService.progressNumber"></div>
                         <div class="user-message">
-                          <a routerLink="/dashboard/users" (click)="removeShow()" class="text-decoration-none text-info">
+                          <a routerLink="/dashboard/users" (click)="removeShow('users')" class="text-decoration-none text-info">
                             <p class="mb-0">Se han registrado nuevos usuarios</p>
                           </a>
                         </div>

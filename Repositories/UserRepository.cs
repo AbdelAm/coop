@@ -10,7 +10,7 @@ namespace coop2._0.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private const int PageSize = 5;
+        private const int PageSize = 10;
 
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;

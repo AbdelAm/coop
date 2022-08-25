@@ -4,17 +4,16 @@ import {AuthentificationService} from '../shared/services/authentification.servi
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import { UserService } from '../shared/services/user-service.service';
-import {webSocket} from 'rxjs/webSocket'
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
+
 export class SignupComponent implements OnInit {
   registerModel: RegisterModel;
   role: string;
-  //readonly socket = webSocket('ws://localhost:44349');
 
   items = {
     '/signup': 'Usuarias',
@@ -34,17 +33,28 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.registerModel.password == this.registerModel.confirmPassword) {
+    if(!this.registerModel.name.match(/^[a-zA-Z ]{3,30}$/gm))
+    {
+      document.getElementById('name_error').textContent = 'Por favor ingrese un nombre valido';
+    } else if(!this.registerModel.phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im))
+    {
+      document.getElementById('phone_error').textContent = 'Por favor ingrese un número de teléfono válido'; 
+    } else if(!this.registerModel.email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/gm))
+    {
+      document.getElementById('email_error').textContent = 'Por favor introduzca una dirección de correo electrónico válida';
+    } else if(!this.registerModel.password.match(/(?=.*\W)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/gm))
+    {
+      document.getElementById('password_error').textContent ='Por favor introduce una contraseña válida';
+    } else if (this.registerModel.password != this.registerModel.confirmPassword) {
+      document.getElementById('confirmPassword_error').textContent =
+        'La nueva contraseña y la contraseña confirmada deben ser las mismas';
+    } else {
       if (this.router.url === '/signup') {
         this.authService.register(this.registerModel).subscribe(
           (res) => {
-            /*this.socket.subscribe();
-            this.socket.next('done');
-            this.socket.complete();
-            this.socket.error({ code: 4000, reason: 'I think our app just broke!' });*/
             this.userService.progressNumber = this.userService.progressNumber + 1;
             Swal.fire({
-              title: 'User created successfully!!!',
+              title: '¡Usuario creado con éxito!',
               text: res['message'],
               icon: 'success',
             });
@@ -59,7 +69,7 @@ export class SignupComponent implements OnInit {
         this.authService.registerAdmin(this.registerModel).subscribe(
           (res) => {
             Swal.fire({
-              title: 'Admin created successfully!!!',
+              title: '¡Administrador creado con éxito!',
               text: res['message'],
               icon: 'success',
             });
@@ -71,9 +81,6 @@ export class SignupComponent implements OnInit {
           }
         );
       }
-    } else {
-      document.getElementById('confirmPassword_error').textContent =
-        'the two password should be similar';
     }
   }
 

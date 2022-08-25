@@ -23,9 +23,9 @@ export class ProfileComponent implements OnInit {
   passwordUpdate: PasswordUpdateModel;
   bank : BankAccountModel;
   status = [
-    '<strong>In Progress</strong>',
-    '<strong class="text-success">Approuved</strong>',
-    '<strong class="text-danger text-capitalize">Rejected</strong>',
+    '<strong>Progreso</strong>',
+    '<strong class="text-success">Aprobado</strong>',
+    '<strong class="text-danger text-capitalize">Rechazado</strong>',
   ];
 
   constructor(

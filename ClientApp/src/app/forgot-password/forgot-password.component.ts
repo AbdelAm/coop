@@ -22,7 +22,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.authService.forgetPassword(this.forgetModel).subscribe(
       (res) => {
         Swal.fire({
-          title: 'Email has been sent successfully!!!',
+          title: 'Se ha enviado un correo electrónico para confirmar tu registro',
           text: res['message'],
           icon: 'success',
         });

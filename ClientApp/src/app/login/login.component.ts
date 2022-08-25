@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router'; // Pour constructor(private router:Router)  : fonctionne
 import {AuthentificationService} from '../shared/services/authentification.service';
-import {NgForm} from '@angular/forms';
 import {LoginModel} from '../shared/models/login-model';
 import {TokenModel} from '../shared/models/token-model';
 import Swal from 'sweetalert2';
@@ -43,7 +42,7 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         Swal.fire({
-          title: 'There is probleme !!!',
+          title: 'Hay un problema!!!',
           text: err['error'],
           icon: 'error',
         });

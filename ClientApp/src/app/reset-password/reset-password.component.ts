@@ -31,8 +31,8 @@ export class ResetPasswordComponent implements OnInit {
       this.authService.resetPassword(this.resetModel).subscribe(
         (res) => {
           Swal.fire({
-            title: 'Password has been changed successfully',
-            text: 'Click on button bellow to go to login page',
+            title: '¡¡¡Contraseña cambiada con éxito!!!',
+            text: 'Ir a la página de inicio de sesión',
             icon: 'success',
             confirmButtonText: 'Login',
           }).then((result) => {
@@ -47,7 +47,7 @@ export class ResetPasswordComponent implements OnInit {
       );
     } else {
       document.getElementById('confirmPassword_error').textContent =
-        'the two password should be similar';
+        'La contraseña no coincide con la confirmación';
     }
   }
 

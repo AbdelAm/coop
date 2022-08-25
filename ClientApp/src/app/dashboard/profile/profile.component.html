@@ -64,7 +64,7 @@
           (submit)="updateUserInfo()"
           *ngIf="selectedButton === 'user'"
         >
-          <p class="setting-title mb-5">administrar usuario</p>
+          <p class="setting-title mb-5">Administrar usuario</p>
           <div class="form-group mb-4">
             <span>Tu número social : </span>
             <strong
@@ -102,7 +102,7 @@
           <input
             type="submit"
             class="btn btn-primary"
-            value="Submit"
+            value="Enviar"
             [disabled]="!submitAcivated()"
           />
         </form>
@@ -111,7 +111,7 @@
           (submit)="updateUserEmail()"
           *ngIf="selectedButton === 'email'"
         >
-          <p class="setting-title mb-5">administrar correo electrónico</p>
+          <p class="setting-title mb-5">Administrar correo electrónico</p>
           <div class="form-group mb-4">
             <input
               type="email"
@@ -191,7 +191,7 @@
               class="form-text text-danger d-block"
             ></strong>
           </div>
-          <input type="submit" class="btn btn-primary" value="Submit" />
+          <input type="submit" class="btn btn-primary" value="Enviar" />
         </form>
         <form
           *ngIf="selectedButton === 'bank'"
