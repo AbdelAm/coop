@@ -3,7 +3,6 @@ using coop2._0.Entities;
 using coop2._0.Model;
 using coop2._0.Services;
 using Google.Apis.Sheets.v4;
-using Google.Apis.Sheets.v4.Data;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +20,7 @@ namespace coop2._0.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
@@ -408,6 +408,7 @@ namespace coop2._0.Controllers
             return sourceFile;
         }
 
+        /*
         [HttpGet("sheet")]
         public async Task ExportToGoogleSheets()
         {
@@ -424,6 +425,7 @@ namespace coop2._0.Controllers
                 SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
             appendRequest.Execute();
         }
+        */
 
 
         private async Task<DataTable> GetUserTransactionsAsDataTable(int bankAccountId)
