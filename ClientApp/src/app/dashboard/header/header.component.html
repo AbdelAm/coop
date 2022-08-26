@@ -78,7 +78,7 @@
               <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold"
                    [innerText]="this.requestService.progressNumber"></div>
               <div class="user-message">
-                <a  routerLink="dashboard/requests"  class="text-decoration-none text-info">
+                <a  routerLink="dashboard/requests" (click)="removeShow('requests')" class="text-decoration-none text-info">
                   <p class="mb-0">Requests in progress</p>
                 </a>
               </div>
