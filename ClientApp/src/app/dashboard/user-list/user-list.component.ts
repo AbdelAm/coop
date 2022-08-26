@@ -24,6 +24,7 @@ export class UserListComponent implements OnInit {
   listUser: Array<string>;
   userItems: ItemsModel<UserItemModel>;
   pageNumber: Array<number>;
+  temoin: boolean = true;
   status = [
     '<strong>Progreso</strong>',
     '<strong class="text-success">Aprobado</strong>',
@@ -113,6 +114,12 @@ export class UserListComponent implements OnInit {
     document.querySelector('.dataTable-dropdown').classList.add('d-none');
   }
 
+  isNotProgress()
+  {
+    console.log(this.userItems.items.filter((elt) => this.listUser.includes(elt.cif) && elt.status == '1') == null);
+    return this.userItems.items.filter((elt) => this.listUser.includes(elt.cif) && elt.status == '1') == null;
+  }
+
   validateUser(cif: string) {
     this.listUser.length = 0;
     this.listUser.push(cif);
@@ -134,12 +141,15 @@ export class UserListComponent implements OnInit {
   validateAll() {
     this.userService.validateUsers(this.listUser).subscribe(
       (res) => {
+        let num = 0;
         this.userItems.items.map((u) => {
           if (this.listUser.includes(u.cif)) {
+            u.status == '0' && num++;
             u.status = '1';
           }
         });
-        this.userService.progressNumber = this.userService.progressNumber - this.listUser.length;
+        console.log(num);
+        this.userService.progressNumber = this.userService.progressNumber - num;
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
@@ -163,12 +173,15 @@ export class UserListComponent implements OnInit {
   rejectAll() {
     this.userService.rejectUsers(this.listUser).subscribe(
       (res) => {
+        let num = 0;
         this.userItems.items.map((u) => {
           if (this.listUser.includes(u.cif)) {
+            u.status == '0' && num++;
             u.status = '2';
           }
         });
-        this.userService.progressNumber = this.userService.progressNumber - this.listUser.length;
+        console.log(num);
+        this.userService.progressNumber = this.userService.progressNumber - num;
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
@@ -192,9 +205,13 @@ export class UserListComponent implements OnInit {
   deleteAll() {
     this.userService.deleteUsers(this.listUser).subscribe(
       (res) => {
+        let num = 0;
         this.userItems.items = this.userItems.items.filter((u) => {
+          (this.listUser.includes(u.cif) && u.status == '0') && num++;
           return !this.listUser.includes(u.cif);
         });
+        console.log(num);
+        this.userService.progressNumber = this.userService.progressNumber - num;
         this.listUser.length = 0;
         this.uncheckAll();
         Swal.fire({
