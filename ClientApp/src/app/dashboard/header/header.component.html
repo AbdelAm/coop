@@ -53,13 +53,13 @@
           <button (click)="showMsg()"><i class="fa-solid fa-bell"></i></button>
 
           <span class="messages-num"
-                *ngIf="this.userService.progressNumber >0 || this.requestService.progressNumber > 0 || this.inProgressTransactions > 0 ,else request"
-                [innerText]="this.userService.progressNumber"></span>
+                *ngIf="this.userService.progressNumber > 0 || this.requestService.progressNumber > 0 || this.inProgressTransactions > 0"
+                [innerText]="this.userService.progressNumber + this.inProgressTransactions + this.requestService.progressNumber"></span>
 
-          <ng-tempate #request>
+          <!--<ng-tempate #request>
             <span class="messages-num"
                   [innerText]="this.requestService.progressNumber + this.userService.progressNumber+this.inProgressTransactions"></span>
-          </ng-tempate>
+          </ng-tempate>-->
         </div>
         <div class="messages-content">
           <div class="content-header">
