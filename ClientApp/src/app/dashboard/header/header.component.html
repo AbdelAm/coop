@@ -76,7 +76,7 @@
               </div>
             </div><div class="message-item" *ngIf="this.requestService.progressNumber > 0 ">
               <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold"
-                   [innerText]="this.requestService.progressNumber>0"></div>
+                   [innerText]="this.requestService.progressNumber"></div>
               <div class="user-message">
                 <a  routerLink="dashboard/requests"  class="text-decoration-none text-info">
                   <p class="mb-0">Requests in progress</p>
@@ -87,14 +87,14 @@
               <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold"
                    [innerText]="this.inProgressTransactions"></div>
               <div class="user-message">
-                <a  routerLink="/dashboard/transaction" (click)="removeShow('users')" class="text-decoration-none text-info">
+                <a  routerLink="/dashboard/transaction" (click)="removeShow('transactions')" class="text-decoration-none text-info">
                   <p class="mb-0">Transacciones en curso</p>
                 </a>
               </div>
             </div>
             
             <div class="message-item"
-                 *ngIf="this.userService.progressNumber == 0 && this.requestService.progressNumber==0">
+                 *ngIf="this.userService.progressNumber <= 0 && this.requestService.progressNumber <= 0 && this.inProgressTransactions <= 0">
               <div class="no-notifications">
                 No hay notificación por el momento
               </div>
