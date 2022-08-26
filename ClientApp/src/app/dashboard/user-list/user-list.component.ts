@@ -114,16 +114,19 @@ export class UserListComponent implements OnInit {
   }
 
   validateUser(cif: string) {
+    this.listUser.length = 0;
     this.listUser.push(cif);
     this.validateAll();
   }
 
   rejectUser(cif: string) {
+    this.listUser.length = 0;
     this.listUser.push(cif);
     this.rejectAll();
   }
 
   deleteUser(cif: string) {
+    this.listUser.length = 0;
     this.listUser.push(cif);
     this.deleteAll();
   }
