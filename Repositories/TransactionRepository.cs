@@ -265,5 +265,10 @@ namespace coop2._0.Repositories
 
             return new { response, pagination };
         }
+
+        public async Task<int> CountInProgressTransactions()
+        {
+            return await _context.Transactions.Where(t => t.Status == Status.Progress).CountAsync();
+        }
     }
 }

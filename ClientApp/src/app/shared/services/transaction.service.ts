@@ -28,6 +28,10 @@ export class TransactionService {
     this.refreshTransactions.next();
   }
 
+  countInProgressTransactions(): Observable<number> {
+    return this.httpClient.get<number>(this.baseUrl + '/count');
+  }
+
   getTransactionsByUser(
     userBankAccountId: number,
     pageNumber = 1,

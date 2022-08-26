@@ -72,5 +72,10 @@ namespace coop2._0.Services
         {
             return _transactionRepository.GetAllTransactionsByStatus(status,filter);
         }
+
+        public Task<int> CountInProgressTransactions()
+        {
+            return _transactionRepository.CountInProgressTransactions();
+        }
     }
 }

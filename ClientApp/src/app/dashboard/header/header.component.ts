@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import { UserService } from 'src/app/shared/services/user-service.service';
+import {UserService} from 'src/app/shared/services/user-service.service';
 import {JwtService} from '../../shared/services/jwt.service';
-import { RequestServiceService } from '../../shared/services/request-service.service';
+import {RequestServiceService} from '../../shared/services/request-service.service';
+import {TransactionService} from '../../shared/services/transaction.service';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +11,20 @@ import { RequestServiceService } from '../../shared/services/request-service.ser
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private jwt: JwtService, private router: Router, public userService: UserService, public requestService: RequestServiceService) {
+
+  inProgressTransactions = 0;
+
+  constructor(private jwt: JwtService, private router: Router, public userService: UserService, public requestService: RequestServiceService, private transactionService: TransactionService) {
   }
 
   ngOnInit(): void {
+    this.countInProgressTransactions();
   }
+
+  countInProgressTransactions() {
+    this.transactionService.countInProgressTransactions().subscribe(res => this.inProgressTransactions = res);
+  }
+
 
   isAdmin() {
     return this.jwt.isAdmin();
@@ -31,7 +41,9 @@ export class HeaderComponent implements OnInit {
 
   setActiveClass(e: Event) {
     const current = document.querySelector('.active');
-    if(current != null) current.classList.remove('active');
+    if (current != null) {
+      current.classList.remove('active');
+    }
     document.querySelector('.dropdown-menu.dropdown-menu-end').classList.remove('show');
   }
 
@@ -43,16 +55,21 @@ export class HeaderComponent implements OnInit {
         : this.router.navigateByUrl('/dashboard/global');
     });
   }
+
   showMsg() {
     document.querySelector('.messages-content').classList.toggle('show');
   }
-  removeShow(elt: string)
-  {
+
+
+  removeShow(elt: string) {
     document.querySelector('.messages-content').classList.toggle('show');
     let current = document.querySelector('.active');
-    if(current != null) current.classList.remove('active');
-    document.getElementById(elt).classList.add("active");
+    if (current != null) {
+      current.classList.remove('active');
+    }
+    document.getElementById(elt).classList.add('active');
   }
+
   logout() {
     this.jwt.removeToken();
     this.router.navigateByUrl('/login');

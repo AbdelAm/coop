@@ -19,5 +19,6 @@ namespace coop2._0.Services
         Task<IEnumerable<TransactionResponse>> GetAllTransactions();
         Task<IEnumerable<TransactionResponse>> GetTransactionsByUser(int userBankAccountId);
         Task<object> GetAllTransactionsByStatus(Status status, PaginationFilter filter);
+        Task<int> CountInProgressTransactions();
     }
 }

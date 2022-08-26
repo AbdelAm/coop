@@ -57,6 +57,13 @@ namespace coop2._0.Controllers
             return Ok(transaction);
         }
 
+        [HttpGet("count")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<int> CountInProgressTransactions()
+        {
+            return await _transactionService.CountInProgressTransactions();
+        }
+
         [HttpGet("user/{userBankAccountId:int}")]
         [Authorize(Roles = "ADMIN,USER")]
         public async Task<object> GetTransactionsByUser([FromQuery] PaginationFilter filter
@@ -421,9 +428,6 @@ namespace coop2._0.Controllers
 
             return sourceFile;
         }
-
-
-
 
 
         private async Task<DataTable> GetUserTransactionsAsDataTable(int bankAccountId)

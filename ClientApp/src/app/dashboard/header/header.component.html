@@ -1,7 +1,7 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
   <a class="navbar-brand ps-3" href="index.html"
-    ><img src="../../assets/CoopHalal icon 1.png" width="100px" height="60px"
+  ><img src="../../assets/CoopHalal icon 1.png" width="100px" height="60px"
   /></a>
   <!-- Sidebar Toggle-->
   <button
@@ -49,46 +49,59 @@
   <div class="d-flex justify-content-center align-items-center" style="margin-left: auto !important">
     <ul class="notifications mb-0 p-0" style="margin-right: 10px;" *ngIf="this.isAdmin()">
       <li class="messages">
-          <div class="messages-header">
-              <button (click)="showMsg()"><i class="fa-solid fa-bell"></i></button>
+        <div class="messages-header">
+          <button (click)="showMsg()"><i class="fa-solid fa-bell"></i></button>
 
-              <span class="messages-num" *ngIf="this.userService.progressNumber >0 && this.requestService.progressNumber==0 ,else request" [innerText]="this.userService.progressNumber"></span>
+          <span class="messages-num"
+                *ngIf="this.userService.progressNumber >0 || this.requestService.progressNumber > 0 || this.inProgressTransactions > 0 ,else request"
+                [innerText]="this.userService.progressNumber"></span>
 
-              <ng-tempate #request>
-                <span class="messages-num" *ngIf="this.requestService.progressNumber > 0" [innerText]="this.requestService.progressNumber + this.userService.progressNumber"></span>
-              </ng-tempate>
+          <ng-tempate #request>
+            <span class="messages-num"
+                  [innerText]="this.requestService.progressNumber + this.userService.progressNumber+this.inProgressTransactions"></span>
+          </ng-tempate>
+        </div>
+        <div class="messages-content">
+          <div class="content-header">
+            <strong>Notificaciones</strong>
           </div>
-          <div class="messages-content">
-              <div class="content-header">
-                  <strong>Notificaciones</strong>
+          <div class="message-items">
+            <div class="message-item" *ngIf="this.userService.progressNumber > 0 ">
+              <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold"
+                   [innerText]="this.userService.progressNumber"></div>
+              <div class="user-message">
+                <a routerLink="/dashboard/users" (click)="removeShow('users')" class="text-decoration-none text-info">
+                  <p class="mb-0">Se han registrado nuevos usuarios</p>
+                </a>
               </div>
-              <div class="message-items">
-                    <div class="message-item" *ngIf="this.userService.progressNumber > 0">
-                        <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold" [innerText]="this.userService.progressNumber"></div>
-                        <div class="user-message">
-                          <a routerLink="/dashboard/users" (click)="removeShow('users')" class="text-decoration-none text-info">
-                            <p class="mb-0">Se han registrado nuevos usuarios</p>
-                          </a>
-                        </div>
-                    </div>
-
-                <div class="message-item" *ngIf="this.requestService.progressNumber > 0">
-                        <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold" [innerText]="this.requestService.progressNumber"></div>
-                        <div class="user-message">
-                          <a routerLink="/dashboard/requests" (click)="removeShow('requests')" class="text-decoration-none text-info">
-                            <p class="mb-0">Se han registrado nuevos petisions</p>
-                          </a>
-                        </div>
-                    </div>
-
-                  <div class="message-item" *ngIf="this.userService.progressNumber == 0 && this.requestService.progressNumber==0">
-                    <div class="no-notifications">
-                      No hay notificación por el momento
-                    </div>
-                </div>
-
+            </div><div class="message-item" *ngIf="this.requestService.progressNumber > 0 ">
+              <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold"
+                   [innerText]="this.requestService.progressNumber>0"></div>
+              <div class="user-message">
+                <a  routerLink="dashboard/requests"  class="text-decoration-none text-info">
+                  <p class="mb-0">Requests in progress</p>
+                </a>
               </div>
+            </div>
+            <div class="message-item" *ngIf="this.inProgressTransactions > 0 ">
+              <div class="user-img d-flex justify-content-center align-items-center text-white font-weight-bold"
+                   [innerText]="this.inProgressTransactions"></div>
+              <div class="user-message">
+                <a  routerLink="/dashboard/transaction" (click)="removeShow('users')" class="text-decoration-none text-info">
+                  <p class="mb-0">Transacciones en curso</p>
+                </a>
+              </div>
+            </div>
+            
+            <div class="message-item"
+                 *ngIf="this.userService.progressNumber == 0 && this.requestService.progressNumber==0">
+              <div class="no-notifications">
+                No hay notificación por el momento
+              </div>
+            </div>
+
           </div>
+        </div>
       </li>
     </ul>
     <ul class="navbar-nav ms-auto ms-md-0 me-lg-4">
@@ -100,7 +113,7 @@
           role="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
-          ><i class="fas fa-user fa-fw"></i
+        ><i class="fas fa-user fa-fw"></i
         ></a>
         <ul
           class="dropdown-menu dropdown-menu-end"
@@ -111,11 +124,13 @@
               class="dropdown-item"
               routerLink="/dashboard/profile"
               (click)="setActiveClass($event)"
-              ><i class="fa-solid fa-user"></i
-              ><span style="margin-left: 8px">Perfil</span></a
+            ><i class="fa-solid fa-user"></i
+            ><span style="margin-left: 8px">Perfil</span></a
             >
           </li>
-          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <hr class="dropdown-divider"/>
+          </li>
           <li>
             <button class="dropdown-item" (click)="logout()">
               Cerrar sesión
