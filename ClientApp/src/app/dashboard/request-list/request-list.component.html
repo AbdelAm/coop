@@ -3,7 +3,7 @@
     <h1 class="mt-4">Peticiones</h1>
     <ol class="breadcrumb mb-4">
       <li class="breadcrumb-item">
-        <a routerLink="/Dashboard/global">Global</a>
+        <a routerLink="/dashboard/global">Global</a>
       </li>
       <li class="breadcrumb-item active">Peticiones</li>
     </ol>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="dataTable-search btn-group" role="group" aria-label="Basic example">
 
-                  <button type="button" class="btn btn-outline-primary" (click)="filterByProgress()">Progreso</button>
+                  <button type="button" class="btn btn-outline-info" (click)="filterByProgress()">Progreso</button>
                   <button type="button" class="btn btn-outline-success" (click)="filterByApproved()">Aprobada</button>
                   <button type="button" class="btn btn-outline-secondary" (click)="getRequests()">Todos</button>
 
@@ -89,7 +89,7 @@
                           <i class="fa-regular fa-circle-xmark" style="  margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate;"></i>
                         </button>
 
-                        <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)">
+                        <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)" *ngIf="request.status == 1 || request.status == 2" >
                           <i class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: red; "></i>
                         </button>
                       </td>
