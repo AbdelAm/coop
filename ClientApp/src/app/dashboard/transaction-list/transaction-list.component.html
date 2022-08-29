@@ -94,20 +94,24 @@
                   </ul>
                 </nav>
               </div>
-              <div *ngIf="isConnected && hasAdminRole && switchBtn" class="d-xl-none d-md-none d-lg-none d-flex justify-content-evenly my-3" role="group"
-                   aria-label="Basic example">
-                <button type="button" class="btn btn-outline-info" (click)="getAllTransactionsByStatus('0')">
-                  Progreso
-                </button>
-                <button type="button" class="btn btn-outline-success" (click)="getAllTransactionsByStatus('1')">
-                  Aprobado
-                </button>
-                <button type="button" class="btn btn-outline-danger" (click)="getAllTransactionsByStatus('2')">
-                  Rechazado
-                </button>
-                <button type="button" class="btn btn-outline-secondary" (click)="getTransactions()">Todos
-                </button>
+              <div class="grid">
+                <div *ngIf="isConnected && hasAdminRole && switchBtn"
+                     class="d-xl-none d-md-none d-lg-none  my-3" role="group"
+                     aria-label="Basic example" >
+                  <button type="button" class="btn btn-outline-info" (click)="getAllTransactionsByStatus('0')">
+                    Progreso
+                  </button>
+                  <button type="button" class="btn btn-outline-success" (click)="getAllTransactionsByStatus('1')">
+                    Aprobado
+                  </button>
+                  <button type="button" class="btn btn-outline-danger" (click)="getAllTransactionsByStatus('2')">
+                    Rechazado
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary" (click)="getTransactions()">Todos
+                  </button>
+                </div>
               </div>
+
             </div>
 
           </div>
@@ -126,7 +130,7 @@
                 <th *ngIf="isConnected && hasAdminRole && switchBtn;else normalStatus">
                   <select #filter (change)="getAllTransactionsByStatus(filter.value)"
                           class="d-none d-md-block d-xl-block d-lg-block  form-select form-select-sm">
-                    <option selected value="3">Normal</option>
+                    <option selected value="3">Todos</option>
                     <option value="0">En progreso</option>
                     <option value="1">Aprobado</option>
                     <option value="2">Rechazado</option>
@@ -151,6 +155,7 @@
                 <td *ngIf="isConnected && hasAdminRole && switchBtn">
                   <input
                     (change)="setTransaction(transaction.id, $event)"
+                    value="{{transaction.id}}"
                     class="items"
                     type="checkbox"
                     value="1"
@@ -175,6 +180,7 @@
                   class="icons"
                 >
                   <button
+                    *ngIf="transaction.status!=1 && transaction.status!=2"
                     (click)="validateTransaction(transaction.id)"
                     class="border-0 bg-transparent align-middle"
                   >
@@ -189,6 +195,7 @@
                     ></i>
                   </button>
                   <button
+                    *ngIf="transaction.status!=1 && transaction.status!=2"
                     (click)="rejectTransaction(transaction.id)"
                     class="border-0 bg-transparent align-middle"
                   >
