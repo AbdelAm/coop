@@ -1,132 +1,129 @@
 <main style="width: calc(100vw - 245px)">
   <div class="container-fluid px-4">
     <h1 class="mt-4">Peticiones</h1>
-    <ol class="breadcrumb mb-4">
-      <li class="breadcrumb-item">
-        <a routerLink="/dashboard/global">Global</a>
-      </li>
-      <li class="breadcrumb-item active">Peticiones</li>
-    </ol>
-    <button
-      style="margin-bottom: 30px"
-      type="button"
-      *ngIf="isConnected && !hasAdminRole "
-      class="btn btn-success"
-      (click)="open(content)"
-    >
-      Agregar petición
-    </button>
-    <div class="card mb-4">
-      <div
-        class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-        <div class="card mb-4">
-          <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            Listas de Peticiones
-          </div>
-          <div class="card-body">
-            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-              <div class="dataTable-top" *ngIf="isConnected && hasAdminRole && switchBtn">
-                <div class="dataTable-dropdown pt-2 d-none">
-                  <button class="border-0 bg-transparent align-middle" (click)="validateAll()">
-                    <i class="fa-regular fa-circle-check" style=" color: green;  font-size: 20px; font-weight: 500; margin: 0 10px; " ></i>
-                  </button>
+    <ng-container *ngIf="isConnected && !hasAdminRole && switchBtn">
+      <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item">
+          <a routerLink="/dashboard/global">Global</a>
+        </li>
+        <li class="breadcrumb-item active">Peticiones</li>
+      </ol>
+    </ng-container>
+      <button style="margin-bottom: 30px"
+              type="button"
+              *ngIf="isConnected && !hasAdminRole "
+              class="btn btn-success"
+              (click)="open(content)">
+        Agregar petición
+      </button>
+      <div class="card mb-4">
+        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+          <div class="card mb-4">
+            <div class="card-header">
+              <i class="fas fa-table me-1"></i>
+              Listas de Peticiones
+            </div>
+            <div class="card-body">
+              <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                <div class="dataTable-top" *ngIf="isConnected && hasAdminRole && switchBtn">
+                  <div class="dataTable-dropdown pt-2 d-none">
+                    <button class="border-0 bg-transparent align-middle" (click)="validateAll()">
+                      <i class="fa-regular fa-circle-check" style=" color: green;  font-size: 20px; font-weight: 500; margin: 0 10px; "></i>
+                    </button>
 
-                  <button class="border-0 bg-transparent align-middle" (click)="rejectAll()" >
-                    <i class="fa-regular fa-circle-xmark" style="  margin: 0 10px; font-size: 20px;  font-weight: 500; color: chocolate; " ></i>
-                  </button>
+                    <button class="border-0 bg-transparent align-middle" (click)="rejectAll()">
+                      <i class="fa-regular fa-circle-xmark" style="  margin: 0 10px; font-size: 20px;  font-weight: 500; color: chocolate; "></i>
+                    </button>
 
-                  <button class="border-0 bg-transparent align-middle" (click)="deleteAll()" >
-                    <i  class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px;  font-weight: 500; color: red; " ></i>
-                  </button>
+                    <button class="border-0 bg-transparent align-middle" (click)="deleteAll()">
+                      <i class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px;  font-weight: 500; color: red; "></i>
+                    </button>
 
+                  </div>
+                  <div class="dataTable-search btn-group" role="group" aria-label="Basic example">
+
+                    <button type="button" class="btn btn-outline-info" (click)="filterByProgress()">Progreso</button>
+                    <button type="button" class="btn btn-outline-success" (click)="filterByApproved()">Aprobada</button>
+                    <button type="button" class="btn btn-outline-secondary" (click)="getRequests()">Todos</button>
+
+                  </div>
                 </div>
-                <div class="dataTable-search btn-group" role="group" aria-label="Basic example">
-
-                  <button type="button" class="btn btn-outline-info" (click)="filterByProgress()">Progreso</button>
-                  <button type="button" class="btn btn-outline-success" (click)="filterByApproved()">Aprobada</button>
-                  <button type="button" class="btn btn-outline-secondary" (click)="getRequests()">Todos</button>
-
-                </div>
-              </div>
-              <div class="dataTable-container">
-                <table id="datatablesSimple" class="dataTable-table">
-                  <thead>
-                  <tr>
-                    <th *ngIf="isConnected && hasAdminRole && switchBtn">
-                      <input
-                        type="checkbox" (change)="selectAll($event)"/>
-                    </th>
-                    <th class="text-capitalize" *ngIf="isConnected && hasAdminRole && switchBtn">identificación</th>
-                    <th class="text-capitalize" *ngIf="isConnected && hasAdminRole && switchBtn">usuario</th>
-                    <th class="text-capitalize">Tipo </th>
-                    <th class="text-capitalize">mensaje</th>
-                    <th class="text-capitalize">Fecha</th>
-                    <th class="text-capitalize">Estado</th>
-                    <th *ngIf="isConnected  && switchBtn" >
-                      Action
-                    </th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let request of requests">
-                      <td *ngIf="isConnected && hasAdminRole && switchBtn">
-                        <input (change)="setrequestTogg(request.id, $event)" class="items" type="checkbox" value="{{ request.id }}" />
-                      </td>
-                      <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.id }}</td>
-                      <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.userId }}</td>
-                      <td>{{request.type}}</td>
-                      <td>{{ request.message }}</td>
-                      <td>{{ request.dateRequest  | date: "dd-MM-yyyy"}}</td>
-                      <td [innerHTML]="this.status[request.status]"></td>
-                    <ng-container *ngIf="isConnected && hasAdminRole && switchBtn;else second">
-                      <td class="icons d-flex justify-i-center align-items-center h-100">
-                        <button class="border-0 bg-transparent align-middle" (click)="validateRequest(request.id)" *ngIf="request.status != 1 && request.status != 2">
-                          <i class="fa-regular fa-circle-check" style=" color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
-                        </button>
-
-                        <button class="border-0 bg-transparent align-middle" (click)="rejectRequest(request.id)" *ngIf="request.status != 1 && request.status != 2">
-                          <i class="fa-regular fa-circle-xmark" style="  margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate;"></i>
-                        </button>
-
-                        <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)" *ngIf="request.status == 1 || request.status == 2" >
-                          <i class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: red; "></i>
-                        </button>
-                      </td>
-                    </ng-container>
-
-                    <ng-template #second>
-                      <ng-container *ngIf="isConnected && !hasAdminRole && switchBtn">
-                        <td class="icons d-flex justify-i-center align-items-center h-100">
-
-                          <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)" *ngIf="request.status != 1">
-                            <i class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: red; "></i>
-                          </button>
-
+                <div class="dataTable-container">
+                  <table id="datatablesSimple" class="dataTable-table">
+                    <thead>
+                      <tr>
+                        <th *ngIf="isConnected && hasAdminRole && switchBtn">
+                          <input type="checkbox" (change)="selectAll($event)" />
+                        </th>
+                        <th class="text-capitalize" *ngIf="isConnected && hasAdminRole && switchBtn">identificación</th>
+                        <th class="text-capitalize" *ngIf="isConnected && hasAdminRole && switchBtn">usuario</th>
+                        <th class="text-capitalize">Tipo </th>
+                        <th class="text-capitalize">mensaje</th>
+                        <th class="text-capitalize">Fecha</th>
+                        <th class="text-capitalize">Estado</th>
+                        <th *ngIf="isConnected  && switchBtn">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let request of requests">
+                        <td *ngIf="isConnected && hasAdminRole && switchBtn">
+                          <input (change)="setrequestTogg(request.id, $event)" class="items" type="checkbox" value="{{ request.id }}" />
                         </td>
-                      </ng-container>
-                    </ng-template>
+                        <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.id }}</td>
+                        <td *ngIf="isConnected && hasAdminRole && switchBtn">{{ request.userId }}</td>
+                        <td>{{request.type}}</td>
+                        <td>{{ request.message }}</td>
+                        <td>{{ request.dateRequest  | date: "dd-MM-yyyy"}}</td>
+                        <td [innerHTML]="this.status[request.status]"></td>
+                        <ng-container *ngIf="isConnected && hasAdminRole && switchBtn;else second">
+                          <td class="icons d-flex justify-i-center align-items-center h-100">
+                            <button class="border-0 bg-transparent align-middle" (click)="validateRequest(request.id)" *ngIf="request.status != 1 && request.status != 2">
+                              <i class="fa-regular fa-circle-check" style=" color: green; font-size: 20px; font-weight: 500; margin: 0 10px;"></i>
+                            </button>
+
+                            <button class="border-0 bg-transparent align-middle" (click)="rejectRequest(request.id)" *ngIf="request.status != 1 && request.status != 2">
+                              <i class="fa-regular fa-circle-xmark" style="  margin: 0 10px; font-size: 20px; font-weight: 500; color: chocolate;"></i>
+                            </button>
+
+                            <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)" *ngIf="request.status == 1 || request.status == 2">
+                              <i class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: red; "></i>
+                            </button>
+                          </td>
+                        </ng-container>
+
+                        <ng-template #second>
+                          <ng-container *ngIf="isConnected && !hasAdminRole && switchBtn">
+                            <td class="icons d-flex justify-i-center align-items-center h-100">
+
+                              <button class="border-0 bg-transparent align-middle" (click)="deleteRequest(request.id)" *ngIf="request.status != 1">
+                                <i class="fa-regular fa-trash-can" style=" margin: 0 10px; font-size: 20px; font-weight: 500; color: red; "></i>
+                              </button>
+
+                            </td>
+                          </ng-container>
+                        </ng-template>
 
 
-                    </tr>
-                  </tbody>
-                </table>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <ngb-pagination [(page)]="pageNumber"
+                                [pageSize]="pageSize"
+                                [maxSize]="3"
+                                [collectionSize]="totalElements"
+                                [boundaryLinks]="true"
+                                [rotate]="true"
+                                [ellipses]="false"
+                                (pageChange)="loadRequestsByRole()">
+                </ngb-pagination>
               </div>
-              <ngb-pagination
-                [(page)]="pageNumber"
-                [pageSize]="pageSize"
-                [maxSize]="3"
-                [collectionSize]="totalElements"
-                [boundaryLinks]="true"
-                [rotate]="true"
-                [ellipses]="false"
-                (pageChange)="loadRequestsByRole()">
-              </ngb-pagination>
-              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </main>
 
