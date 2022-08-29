@@ -42,7 +42,7 @@
 
                 </div>
                 <div class="dataTable-search btn-group" role="group" aria-label="Basic example">
-               
+
                   <button type="button" class="btn btn-outline-primary" (click)="filterByProgress()">Progreso</button>
                   <button type="button" class="btn btn-outline-success" (click)="filterByApproved()">Aprobada</button>
                   <button type="button" class="btn btn-outline-secondary" (click)="getRequests()">Todos</button>
@@ -147,7 +147,6 @@
           <div class="col-lg-12 w-100">
             <label for="typeRequest">Tipo petición</label>
             <select [(ngModel)]="selected"
-                    (change)="selectOption($event.target.value)"
                     class="form-control"
                     id="optdata"
                     name="typeDemande">

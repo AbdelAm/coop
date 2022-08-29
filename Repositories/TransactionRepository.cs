@@ -185,7 +185,7 @@ namespace coop2._0.Repositories
                                 b.SenderBankAccountId == userBankAccountId)
                     .Include(t => t.SenderBankAccount.User)
                     .Include(b => b.ReceiverBankAccount.User)
-                    .OrderByDescending(d => d.DateTransaction > DateTime.Today.AddMonths(-3))
+                    .OrderByDescending( d=> d.DateTransaction)
                     .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                     .Take(validFilter.PageSize)
                     .ToListAsync();

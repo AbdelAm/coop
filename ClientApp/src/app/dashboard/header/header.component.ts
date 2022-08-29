@@ -19,12 +19,16 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.countInProgressTransactions();
+    this.refreshTransactionCounter();
   }
 
   countInProgressTransactions() {
     this.transactionService.countInProgressTransactions().subscribe(res => this.inProgressTransactions = res);
   }
 
+  refreshTransactionCounter() {
+    this.transactionService.refreshTransactions.subscribe(res => this.countInProgressTransactions());
+  }
 
   isAdmin() {
     return this.jwt.isAdmin();

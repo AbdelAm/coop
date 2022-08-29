@@ -26,7 +26,7 @@ export class RequestListComponent implements OnInit {
   listRequest: Array<number>;
   requests: RequestModel[];
   pageNumber = 1;
-  pgNumber=[]
+  pgNumber = [];
   pageSize = 5;
   totalElements = 100;
   isConnected: boolean;
@@ -91,7 +91,7 @@ export class RequestListComponent implements OnInit {
     window.scrollTo(0, 0);
   }
 
- 
+
   filterByApproved() {
     this.requestService.FilterRequest(StatusModel.Approuved, this.pageNumber, this.pageSize).subscribe(
       this.processResult()
@@ -108,7 +108,6 @@ export class RequestListComponent implements OnInit {
     return this.witness = true;
   }
 
-  
 
   getRequests() {
     this.requestService.getRequests(this.pageNumber, this.pageSize).subscribe(
@@ -137,34 +136,25 @@ export class RequestListComponent implements OnInit {
 
     if (this.isConnected && this.hasAdminRole) {
       if (this.switchBtn) {
-          if (this.witness == true && this.state == 0) {
-            this.filterByProgress();
-          }
-          else if (this.witness == true && this.state == 1) {
-            this.filterByApproved();
-          }
-          else if (this.witness == false && this.state != 0 && this.state != 1)
-          {
-            this.getRequests();
-          }
-      else
-          {
-            this.getRequests();
-          }
-        
+        if (this.witness == true && this.state == 0) {
+          this.filterByProgress();
+        } else if (this.witness == true && this.state == 1) {
+          this.filterByApproved();
+        } else if (this.witness == false && this.state != 0 && this.state != 1) {
+          this.getRequests();
+        } else {
+          this.getRequests();
+        }
+
       }
-    }
-    else {
+    } else {
       if (this.isConnected && !this.hasAdminRole) {
         this.getRequestsByUser();
-      }
-      else {
+      } else {
         this.router.navigateByUrl('/login');
       }
     }
   }
-  
-  
 
 
   setRequest() {
@@ -187,13 +177,15 @@ export class RequestListComponent implements OnInit {
         Swal.fire({
           title: '¡Solicitud añadida con éxito!',
           icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
         });
-        
-        this.loadRequestsByRole()
+
+        this.loadRequestsByRole();
       },
       (err) => console.log(err)
     );
-    
+
   }
 
   toggleItem(id: number, isChecked: boolean) {
@@ -209,7 +201,7 @@ export class RequestListComponent implements OnInit {
     } else {
       elt.classList.add('d-none');
     }
-    console.log(this.listRequest);
+
   }
 
   selectAll(e: Event) {
@@ -224,11 +216,13 @@ export class RequestListComponent implements OnInit {
   }
 
   @ViewChildren('checkboxes') checkboxes: QueryList<ElementRef>;
+
   uncheckAll() {
     this.checkboxes.forEach((element) => {
       element.nativeElement.checked = false;
     });
   }
+
   setrequestTogg(id: number, e: Event) {
     this.toggleItem(id, (<HTMLInputElement>e.target).checked);
   }
@@ -251,7 +245,7 @@ export class RequestListComponent implements OnInit {
   }
 
   validateAll() {
-    console.log(this.listRequest);
+
     this.requestService.validateRequests(this.listRequest).subscribe(
       (res) => {
         this.requests.map((req) => {
@@ -264,7 +258,8 @@ export class RequestListComponent implements OnInit {
         Swal.fire({
           title: 'La Solicitud ha sido validada con éxito!',
           icon: 'success',
-          confirmButtonText:'OK'
+          showConfirmButton: false,
+          timer: 1500
         });
       },
       (err) => console.log(err)
@@ -272,7 +267,7 @@ export class RequestListComponent implements OnInit {
   }
 
   rejectAll() {
-    console.log(this.listRequest);
+
     this.requestService.rejectRequests(this.listRequest).subscribe(
       (res) => {
         this.requests.map((req) => {
@@ -285,7 +280,8 @@ export class RequestListComponent implements OnInit {
         Swal.fire({
           title: 'La solicitud ha sido rechazada!',
           icon: 'success',
-          confirmButtonText: 'OK'
+          showConfirmButton: false,
+          timer: 1500
         });
       },
       (err) => console.log(err)
@@ -303,7 +299,8 @@ export class RequestListComponent implements OnInit {
         Swal.fire({
           title: 'La solicitud ha sido eliminada!',
           icon: 'success',
-          confirmButtonText: 'OK'
+          showConfirmButton: false,
+          timer: 1500
         });
         this.loadRequestsByRole();
       },
@@ -312,20 +309,16 @@ export class RequestListComponent implements OnInit {
   }
 
 
-
   // ------------------------------ POPUP METHODES ------------------------------
   options = [
     {name: 'Consultarnos dudas', value: 1},
     {name: 'Informarnos de cambios en tus datos', value: 2},
-    {name: 'Solicitar alta o modificación de aportaciones periodicas',value: 3},
+    {name: 'Solicitar alta o modificación de aportaciones periodicas', value: 3},
     {name: 'Solicitar la baja como socio', value: 4},
     {name: 'Solicitar mi historial de cuenta de años anteriores', value: 5},
   ];
 
-  selectOption(id: number) {
-    console.log(id);
-  }
-
+  s
   getElement() {
     const input = document.getElementById('msg') as HTMLTextAreaElement | null;
     const e = document.getElementById('TypeRequest') as HTMLSelectElement;
@@ -361,6 +354,7 @@ export class RequestListComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+
   // ------------------------------ ------------ ------------------------------
 
 }

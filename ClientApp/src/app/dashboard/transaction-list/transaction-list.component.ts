@@ -90,6 +90,7 @@ export class TransactionListComponent implements OnInit {
       (<HTMLInputElement>items[i]).checked = (<HTMLInputElement>(
         e.target
       )).checked;
+      // tslint:disable-next-line:radix
       const id = parseInt((<HTMLInputElement>items[i]).value);
       this.toggleItem(id, (<HTMLInputElement>e.target).checked);
     }
@@ -151,6 +152,8 @@ export class TransactionListComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500,
         });
+        this.transactionService.refresh();
+
         this.transactions = [];
         this.loadTransactionsByRole();
       },
@@ -174,6 +177,8 @@ export class TransactionListComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500,
         });
+        this.transactionService.refresh();
+
         this.transactions = [];
         this.loadTransactionsByRole();
       },
@@ -197,6 +202,8 @@ export class TransactionListComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500,
         });
+        this.transactionService.refresh();
+
         this.transactions = [];
         this.loadTransactionsByRole();
       },
@@ -217,28 +224,33 @@ export class TransactionListComponent implements OnInit {
     );
   }
 
-  validateAllTransactions(listTransaction: Array<number>) {
+  validateAllTransactions() {
     this.transactionService
-      .validateAllTransaction(listTransaction)
+      .validateAllTransaction(this.listTransaction)
       .subscribe((next) => {
+        this.transactionService.refresh();
+
         this.transactions = [];
         this.loadTransactionsByRole();
       });
   }
 
-  rejectAllTransactions(listTransaction: Array<number>) {
+  rejectAllTransactions() {
     this.transactionService
-      .rejectAllTransaction(listTransaction)
+      .rejectAllTransaction(this.listTransaction)
       .subscribe((next) => {
+        this.transactionService.refresh();
+
         this.transactions = [];
         this.loadTransactionsByRole();
       });
   }
 
-  removeAllTransactions(listTransaction: Array<number>) {
+  removeAllTransactions() {
     this.transactionService
-      .removeAllTransaction(listTransaction)
+      .removeAllTransaction(this.listTransaction)
       .subscribe((next) => {
+        this.transactionService.refresh();
         this.transactions = [];
         this.loadTransactionsByRole();
       });
