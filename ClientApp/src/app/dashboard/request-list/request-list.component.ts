@@ -294,7 +294,6 @@ export class RequestListComponent implements OnInit {
         this.requests = this.requests.filter((u) => {
           return !this.listRequest.includes(u.id);
         });
-        this.requestService.progressNumber = this.requestService.progressNumber - this.listRequest.length;
         this.listRequest.length = 0;
         Swal.fire({
           title: 'La solicitud ha sido eliminada!',
