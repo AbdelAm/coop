@@ -1,12 +1,7 @@
 <main style="width: calc(100vw - 245px)">
   <div class="container-fluid px-4">
     <h1 class="mt-4">Peticiones</h1>
-    <ng-container *ngIf="isConnected && !hasAdminRole && switchBtn">
-      <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="index.html">Global</a></li>
-        <li class="breadcrumb-item active">Peticiones</li>
-      </ol>
-    </ng-container>
+    
       <button style="margin-bottom: 30px"
               type="button"
               *ngIf="isConnected && !hasAdminRole "

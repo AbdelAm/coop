@@ -18,7 +18,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {TransactionPopupComponent} from './transaction-popup/transaction-popup.component';
-import {RequestPopupComponent} from './request-popup/request-popup.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {TokenInterceptorService} from '../shared/services/token-interceptor.service';
 
@@ -33,7 +32,6 @@ import {TokenInterceptorService} from '../shared/services/token-interceptor.serv
     ProfileComponent,
     GlobalComponent,
     TransactionPopupComponent,
-    RequestPopupComponent,
   ],
   imports: [
     CommonModule,
