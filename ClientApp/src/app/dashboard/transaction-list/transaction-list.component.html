@@ -102,10 +102,10 @@
                     Progreso
                   </button>
                   <button type="button" class="btn btn-outline-success" (click)="getAllTransactionsByStatus('1')">
-                    Aprobado
+                    Aprobada
                   </button>
                   <button type="button" class="btn btn-outline-danger" (click)="getAllTransactionsByStatus('2')">
-                    Rechazado
+                    Rechazada
                   </button>
                   <button type="button" class="btn btn-outline-secondary" (click)="getTransactions()">Todos
                   </button>
@@ -123,7 +123,7 @@
                   <input type="checkbox" (change)="selectAll($event)"/>
                 </th>
                 <th>Monto</th>
-                <th>Fetcha</th>
+                <th>Fecha</th>
                 <th>Concepto</th>
                 <th>Cuenta original</th>
                 <th>Cuenta de destino</th>
@@ -131,9 +131,9 @@
                   <select #filter (change)="getAllTransactionsByStatus(filter.value)"
                           class="d-none d-md-block d-xl-block d-lg-block  form-select form-select-sm">
                     <option selected value="3">Todos</option>
-                    <option value="0">En progreso</option>
-                    <option value="1">Aprobado</option>
-                    <option value="2">Rechazado</option>
+                    <option value="0">Progreso</option>
+                    <option value="1">Aprobada</option>
+                    <option value="2">Rechazada</option>
                   </select>
                   <span class="d-md-none d-lg-none d-xl-none">Estado</span>
 
@@ -244,7 +244,7 @@
                     </div>
                     <div class="modal-body">
                       <h3 class="text-black">Monto :<small class="text-danger">{{transaction.amount}}</small></h3>
-                      <h3 class="text-black">Fetcha :<small> {{transaction.dateTransaction | date:"full"}}</small></h3>
+                      <h3 class="text-black">Fecha :<small> {{transaction.dateTransaction | date:"full"}}</small></h3>
                       <h3 class="text-black">Concepto :<small>{{transaction.motif}}</small></h3>
                       <h3 class="text-black">Cueta orginal : <small>{{transaction.senderBankAccount.user.name}}</small>
                       </h3>

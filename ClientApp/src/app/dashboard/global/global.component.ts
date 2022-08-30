@@ -58,7 +58,7 @@ export class GlobalComponent implements OnInit {
   statusCasting(status: number): string {
     switch (status) {
       case 0:
-        return 'En progreso';
+        return 'Progreso';
       case 1:
         return 'Aprobada';
       case 2:
